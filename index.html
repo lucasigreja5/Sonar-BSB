@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sonar BSB - Events Discovery App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- Preview Controller Header for Web Showcase -->
+  <aside class="preview-banner" aria-label="Preview Controller">
+    <div class="preview-brand">
+      <span class="preview-pill">SONAR BSB</span>
+      <span class="preview-divider">|</span>
+      <span class="preview-label">Figma Design Implementation (Responsive Web)</span>
+    </div>
+    <div class="preview-toggle-group">
+      <button id="btnModeFluid" class="preview-btn" title="Show responsive fluid web page">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+        Responsive Web
+      </button>
+      <button id="btnModeMobile" class="preview-btn active" title="Simulate 1:1 mobile phone canvas">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+        Mobile Frame (1:1)
+      </button>
+    </div>
+  </aside>
+
+  <!-- App Wrapper (Defaulting to Mobile Frame as requested, easily toggled to fluid) -->
+  <div id="appContainer" class="app-container mobile-frame">
+    
+    <!-- Simulated Mobile Status Bar (Visible in Mobile Frame Mode) -->
+    <div class="mobile-status-bar" aria-hidden="true">
+      <span class="status-time">10:04</span>
+      <div class="status-notch"></div>
+      <div class="status-icons">
+        <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor">
+          <path d="M1 9.5a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0zm4-2a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0zm4-2a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0zm4-2a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0z"/>
+        </svg>
+        <svg width="15" height="11" viewBox="0 0 15 11" fill="currentColor">
+          <path d="M7.5 2.5a8.4 8.4 0 0 1 6 2.4l1-1.2A9.9 9.9 0 0 0 7.5 1 9.9 9.9 0 0 0 .5 3.7l1 1.2a8.4 8.4 0 0 1 6-2.4zm0 3.8a5 5 0 0 1 3.5 1.4l1-1.2a6.5 6.5 0 0 0-9 0l1 1.2a5 5 0 0 1 3.5-1.4zm0 3.7a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+        </svg>
+        <svg width="22" height="11" viewBox="0 0 22 11" fill="currentColor">
+          <rect x="1" y="1" width="18" height="9" rx="3" fill="none" stroke="currentColor" stroke-width="1.2"/>
+          <rect x="2.5" y="2.5" width="14" height="6" rx="1.5"/>
+          <path d="M20.5 4v3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Header: BSBTech Secondary Color #3F32D3 with Logo & Profile -->
+    <header class="site-header">
+      <div class="header-inner">
+        <!-- Logo -->
+        <a href="#" class="brand-logo" onclick="switchView('home'); return false;" title="Sonar BSB Home">
+          <img src="./assets/sonar-logo.svg" alt="SONAR BSB" class="brand-logo-img" />
+        </a>
+
+        <!-- Desktop Quick Search & Actions -->
+        <div class="header-actions">
+          <div class="desktop-search-bar">
+            <svg class="desktop-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input 
+              type="text" 
+              id="desktopSearchInput" 
+              class="desktop-search-input" 
+              placeholder="Search events, artists, venues... (/)" 
+              autocomplete="off"
+            />
+            <span class="search-kbd-shortcut">/</span>
+          </div>
+
+          <!-- Profile Avatar Button -->
+          <button id="profileAvatarBtn" class="profile-avatar-btn" title="View Profile" onclick="openProfileModal()">
+            <img src="./assets/profile-picture.png" alt="User Profile" width="43" height="43" />
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Container (Internally Scrollable in Mobile Frame) -->
+    <main id="mainScrollContent" class="main-content">
+      
+      <!-- Sub-header: Back Button, City & Date Filter Tabs -->
+      <section id="subHeaderNav" class="sub-header">
+        <div class="back-btn-row">
+          <button id="backButton" class="back-btn" title="Go back to Home" onclick="handleBackAction()">
+            <img src="./assets/back-button.svg" alt="Back Button" width="32" height="32" />
+          </button>
+          <div class="location-indicator">
+            <span class="location-dot"></span>
+            <span>Brasília, DF &bull; Plano Piloto</span>
+          </div>
+        </div>
+
+        <!-- Filter Navigation Pills: Today, This Month, Upcoming -->
+        <nav id="navTabsContainer" class="page-nav-tabs" aria-label="Event Time Filter">
+          <button class="nav-tab-btn active" data-tab="today" onclick="selectTab('today')">Today</button>
+          <button class="nav-tab-btn" data-tab="month" onclick="selectTab('month')">This Month</button>
+          <button class="nav-tab-btn" data-tab="upcoming" onclick="selectTab('upcoming')">Upcoming</button>
+        </nav>
+      </section>
+
+      <!-- Search Filter Panel (Figma 3.1.1- SearchOff / SearchOn) -->
+      <section id="searchFilterPanel" class="search-filter-panel" style="display: none;" aria-label="Search Filter Form">
+        <div class="search-form-card">
+          <h2 class="search-form-heading">Search</h2>
+          
+          <div class="form-group">
+            <label class="form-label" for="searchFormName">Event Name</label>
+            <div class="input-wrapper">
+              <input type="text" id="searchFormName" class="form-input" placeholder="e.g. Trema Techno, Concrete Beats..." oninput="executeLiveSearch()" />
+            </div>
+          </div>
+
+          <div class="form-row-2col">
+            <div class="form-group">
+              <label class="form-label" for="searchFormDate">Event Date</label>
+              <div class="input-wrapper">
+                <input type="text" id="searchFormDate" class="form-input" placeholder="e.g. 15 AUG, Tonight..." oninput="executeLiveSearch()" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="searchFormLocation">Event Location</label>
+              <div class="input-wrapper">
+                <input type="text" id="searchFormLocation" class="form-input" placeholder="e.g. SCS, Conic, Parque..." oninput="executeLiveSearch()" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Boolean Toggle (Figma 762:7417) -->
+          <div class="toggle-card">
+            <div class="toggle-info">
+              <span class="toggle-title">Only Events Happening Today?</span>
+              <span class="toggle-sub">Narrow your search so you can see what’s going on tonight</span>
+            </div>
+            <label class="switch" for="toggleTodayOnly">
+              <input type="checkbox" id="toggleTodayOnly" onchange="executeLiveSearch()" />
+              <span class="slider round"></span>
+            </label>
+          </div>
+
+          <!-- Submit Button (Figma 758:6909) -->
+          <button id="btnFindEvents" class="btn-find-events" onclick="executeAdvancedSearch()">
+            <span>Find Events Near Me</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          </button>
+        </div>
+      </section>
+
+      <!-- Section Title & Dynamic Counter (Visible at the top on Home, Search, Favorites, Tickets, Shopping Cart) -->
+      <div id="sectionHeaderBlock" class="section-header">
+        <div>
+          <h1 id="sectionTitle" class="section-title">What’s on Today</h1>
+          <p id="sectionSubtitle" class="section-subtitle">Underground music and curated raves in Brasília</p>
+        </div>
+        <span id="eventCountBadge" class="event-count-badge">3 events</span>
+      </div>
+
+      <!-- Checkout Flow View (Figma 5.1.1- CheckoutFlow1.1 "Shopping Cart") -->
+      <section id="checkoutSection" class="checkout-section" style="display: none;" aria-label="Checkout Flow">
+        <div class="checkout-card">
+          <!-- Back to Events Button -->
+          <div class="checkout-top-bar">
+            <button class="btn-back-round" onclick="switchView('home')" title="Back to Events">
+              <img src="./assets/back-button.svg" alt="Back" width="32" height="32" />
+            </button>
+          </div>
+
+          <div class="checkout-header-row">
+            <div class="checkout-event-details">
+              <h2 id="checkoutEventTitle" class="checkout-event-title">Trema Techno: Subsolo Urbano</h2>
+              <p id="checkoutEventDateTime" class="checkout-event-datetime">15/08/26 - 10:00 PM</p>
+              <p id="checkoutEventVenue" class="checkout-event-venue">Galeria dos Estados, Setor Comercial Sul</p>
+            </div>
+            <div class="checkout-thumb-box">
+              <img id="checkoutEventImage" src="./assets/event-trema.png" alt="Event Cover" />
+            </div>
+          </div>
+
+          <hr class="checkout-divider" />
+
+          <!-- Regular Tickets Row -->
+          <div class="ticket-counter-row">
+            <div class="counter-control-group">
+              <button class="btn-counter-btn" onclick="updateTicketQty('regular', -1)">-</button>
+              <span id="qtyRegular" class="qty-badge">1</span>
+              <button class="btn-counter-btn" onclick="updateTicketQty('regular', 1)">+</button>
+            </div>
+            <div class="ticket-label-col">
+              <span class="ticket-type-name">Regular Tickets</span>
+              <span id="pricePerRegular" class="ticket-subprice">$ 60.00 each</span>
+            </div>
+            <div id="subtotalRegular" class="ticket-subtotal-val">$ 60.00</div>
+          </div>
+
+          <!-- Students Tickets Row -->
+          <div class="ticket-counter-row">
+            <div class="counter-control-group">
+              <button class="btn-counter-btn" onclick="updateTicketQty('student', -1)">-</button>
+              <span id="qtyStudent" class="qty-badge">0</span>
+              <button class="btn-counter-btn" onclick="updateTicketQty('student', 1)">+</button>
+            </div>
+            <div class="ticket-label-col">
+              <span class="ticket-type-name">Students Tickets</span>
+              <span id="pricePerStudent" class="ticket-subprice">$ 30.00 each (50% off)</span>
+            </div>
+            <div id="subtotalStudent" class="ticket-subtotal-val">$ 0.00</div>
+          </div>
+
+          <hr class="checkout-divider" />
+
+          <!-- Total Price Row -->
+          <div class="checkout-total-row">
+            <span class="checkout-total-label">Total Price</span>
+            <span id="checkoutTotalPrice" class="checkout-total-value">$ 60.00</span>
+          </div>
+
+          <!-- Continue to Payment Button -->
+          <button id="btnContinuePayment" class="btn-continue-payment" onclick="processCheckoutPayment()">
+            Continue to Payment
+          </button>
+        </div>
+      </section>
+
+      <!-- Select Payment Method View (Figma 431:960 5.2.1- CheckoutFlow2.1) -->
+      <section id="paymentSection" class="payment-section" style="display: none;" aria-label="Select Payment Method">
+        <div class="payment-card">
+          <!-- Back Button to Shopping Cart -->
+          <div class="payment-top-bar">
+            <button class="btn-back-round" onclick="switchView('checkout')" title="Back to Shopping Cart">
+              <img src="./assets/back-button.svg" alt="Back" width="32" height="32" />
+            </button>
+          </div>
+
+          <!-- Heading from Figma node 504:1930 -->
+          <h2 class="payment-heading">Select Payment Method</h2>
+
+          <!-- Payment Modes List (Figma 510:2269, 510:2324, 510:2334) -->
+          <div id="paymentModesContainer" class="payment-modes-list">
+            <!-- Mode 1: Mastercard (Default Selected) -->
+            <div class="payment-mode-item is-selected" onclick="selectPaymentMode(this, 'Mastercard 2304')">
+              <div class="payment-mode-logo">
+                <img src="./assets/logo-mastercard.svg" alt="Master Card" width="32" height="32" />
+              </div>
+              <span class="payment-mode-title">Master Card</span>
+              <span class="payment-mode-details">**** **** **** 2304</span>
+              <div class="payment-mode-checkbox">
+                <div class="checkbox-indicator"></div>
+              </div>
+            </div>
+
+            <!-- Mode 2: PayPal -->
+            <div class="payment-mode-item" onclick="selectPaymentMode(this, 'PayPal')">
+              <div class="payment-mode-logo">
+                <img src="./assets/logo-paypal.svg" alt="PayPal" width="32" height="32" />
+              </div>
+              <span class="payment-mode-title">PayPal</span>
+              <span class="payment-mode-details">**** **** **** 1732</span>
+              <div class="payment-mode-checkbox">
+                <div class="checkbox-indicator"></div>
+              </div>
+            </div>
+
+            <!-- Mode 3: Apple Pay -->
+            <div class="payment-mode-item" onclick="selectPaymentMode(this, 'Apple Pay')">
+              <div class="payment-mode-logo">
+                <img src="./assets/logo-applepay.svg" alt="Apple Pay" width="32" height="32" />
+              </div>
+              <span class="payment-mode-title">Apple Pay</span>
+              <span class="payment-mode-details">**** **** **** 7482</span>
+              <div class="payment-mode-checkbox">
+                <div class="checkbox-indicator"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Add New Payment Method Button (Figma node 518:2459) -->
+          <button id="btnOpenAddCardModal" class="btn-add-new-payment" onclick="openAddPaymentModal()">
+            <span>Add New Payment Method</span>
+            <img src="./assets/icon-add-payment.svg" alt="Add" width="22" height="22" />
+          </button>
+
+          <hr class="payment-divider" />
+
+          <!-- Order Summary (Figma node 541:1691) -->
+          <div class="order-summary-block">
+            <h3 class="order-summary-heading">Order Summary</h3>
+            <p id="summaryEventTitle" class="summary-event-title">Trema Techno: Subsolo Urbano</p>
+
+            <div class="summary-line-row">
+              <span class="summary-line-label">Regular Tickets x <span id="summaryQtyRegular">1</span></span>
+              <span id="summaryValRegular" class="summary-line-val">$ 60.00</span>
+            </div>
+
+            <div class="summary-line-row">
+              <span class="summary-line-label">Students Tickets x <span id="summaryQtyStudent">0</span></span>
+              <span id="summaryValStudent" class="summary-line-val">$ 0.00</span>
+            </div>
+
+            <div class="summary-total-line">
+              <span class="summary-total-label">Total Price</span>
+              <span id="summaryValTotal" class="summary-total-val">$ 60.00</span>
+            </div>
+          </div>
+
+          <!-- Pay Now Button (Figma node 505:2180) -->
+          <button id="btnPayNow" class="btn-pay-now" onclick="processFinalPayment()">
+            Pay Now
+          </button>
+        </div>
+      </section>
+
+      <!-- Purchase Confirmation View (Figma 5.4- CheckoutFlowConfirmation) -->
+      <section id="confirmationSection" class="confirmation-section" style="display: none;" aria-label="Purchase Confirmation">
+        <div class="confirmation-card">
+          <div class="success-icon-badge">
+            <svg width="84" height="84" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="10" fill="#3F32D3"/>
+              <path d="M8 12.5l2.5 2.5 5.5-5.5" stroke="#F2F862" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          
+          <h2 class="confirmation-heading">Purchase Successful!</h2>
+          <p class="confirmation-desc">Your ticket is ready. Check your inbox or your tickets page for event details. Enjoy the show!</p>
+
+          <div class="confirmation-summary-table">
+            <div class="conf-row">
+              <span class="conf-label">Transaction ID</span>
+              <span id="confTransactionId" class="conf-val mono">#WFHT100492</span>
+            </div>
+            <div class="conf-row">
+              <span class="conf-label">Date</span>
+              <span id="confDate" class="conf-val">11:49 15/08/2026</span>
+            </div>
+            <div class="conf-row">
+              <span class="conf-label">Payment</span>
+              <span id="confPaymentMethod" class="conf-val">Mastercard 2304</span>
+            </div>
+            <div class="conf-row">
+              <span class="conf-label">Status</span>
+              <span id="confStatus" class="conf-val status-approved">Approved</span>
+            </div>
+          </div>
+
+          <div class="confirmation-actions">
+            <button class="btn-conf-action primary" onclick="viewNewlyPurchasedTicket()">
+              View My E-Ticket
+            </button>
+            <button class="btn-conf-action secondary" onclick="switchView('tickets')">
+              Go to My Tickets
+            </button>
+            <button class="btn-conf-action tertiary" onclick="switchView('home')">
+              Return to Home
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Events Cards Grid / Favorites List / Tickets List -->
+      <section id="eventsContainer" class="events-grid" aria-label="Events Lineup">
+        <!-- Event Cards dynamically rendered by app.js -->
+      </section>
+
+    </main>
+
+    <!-- Bottom Navigation Dock (Figma 751:6292) -->
+    <!-- Sticky to user mobile frame in mobile mode, sticky to viewport in fluid mode -->
+    <div class="bottom-nav-container">
+      <nav class="bottom-nav-bar" aria-label="Bottom Navigation">
+        <!-- Floating white bar background with drop shadow -->
+        <div class="dock-bg-layer"></div>
+
+        <!-- 1. Home -->
+        <button id="navHomeBtn" class="nav-item is-selected" title="Home" onclick="switchView('home')">
+          <svg viewBox="0 0 42 42" fill="none">
+            <path d="M37.9022 16.9027C37.9022 16.5664 37.8359 16.2334 37.7072 15.9227C37.5785 15.612 37.3899 15.3297 37.1521 15.0919C36.9143 14.8541 36.632 14.6654 36.3213 14.5367C36.0106 14.408 35.6775 14.3418 35.3412 14.3418C35.0049 14.3418 34.6719 14.408 34.3612 14.5367C34.0505 14.6654 33.7682 14.8541 33.5304 15.0919C33.2926 15.3297 33.1039 15.612 32.9752 15.9227C32.8465 16.2334 32.7803 16.5664 32.7803 16.9027H37.9022ZM9.2197 16.9027C9.2197 16.2235 8.94989 15.5721 8.46962 15.0919C7.98935 14.6116 7.33797 14.3418 6.65877 14.3418C5.97957 14.3418 5.32818 14.6116 4.84791 15.0919C4.36765 15.5721 4.09783 16.2235 4.09783 16.9027H9.2197ZM37.6276 22.8113C38.108 23.2917 38.7594 23.5615 39.4387 23.5615C40.118 23.5615 40.7695 23.2917 41.2498 22.8113C41.7302 22.331 42 21.6795 42 21.0002C42 20.3209 41.7302 19.6695 41.2498 19.1891L37.6276 22.8113ZM21 2.56142L22.8111 0.750323C22.5733 0.512445 22.2909 0.323747 21.9802 0.195005C21.6694 0.0662631 21.3364 0 21 0C20.6636 0 20.3306 0.0662631 20.0198 0.195005C19.7091 0.323747 19.4267 0.512445 19.1889 0.750323L21 2.56142ZM0.750179 19.1891C0.269847 19.6695 0 20.3209 0 21.0002C0 21.6795 0.269847 22.331 0.750179 22.8113C1.23051 23.2917 1.88198 23.5615 2.56127 23.5615C3.24056 23.5615 3.89203 23.2917 4.37237 22.8113L0.750179 19.1891ZM10.7563 42H31.2437V36.8781H10.7563V42ZM37.9022 35.3415V16.9027H32.7803V35.3415H37.9022ZM9.2197 35.3415V16.9027H4.09783V35.3415H9.2197ZM41.2498 19.1891L22.8111 0.750323L19.1889 4.37253L37.6276 22.8113L41.2498 19.1891ZM19.1889 0.750323L0.750179 19.1891L4.37237 22.8113L22.8111 4.37253L19.1889 0.750323ZM31.2437 42C33.0097 42 34.7033 41.2985 35.952 40.0498C37.2007 38.8011 37.9022 37.1075 37.9022 35.3415H32.7803C32.7803 35.7491 32.6184 36.1399 32.3303 36.4281C32.0421 36.7162 31.6513 36.8781 31.2437 36.8781V42ZM10.7563 36.8781C10.3487 36.8781 9.95791 36.7162 9.66975 36.4281C9.38159 36.1399 9.2197 35.7491 9.2197 35.3415H4.09783C4.09783 37.1075 4.79934 38.8011 6.04804 40.0498C7.29674 41.2985 8.99034 42 10.7563 42V36.8781Z" fill="currentColor"/>
+          </svg>
+        </button>
+
+        <!-- 2. Search -->
+        <button id="navSearchBtn" class="nav-item" title="Search" onclick="switchView('search')">
+          <svg viewBox="0 0 32 32" fill="none">
+            <path d="M26 13C26 15.8687 25.0688 18.5188 23.5 20.6688L31.4125 28.5875C32.1937 29.3687 32.1937 30.6375 31.4125 31.4188C30.6313 32.2 29.3625 32.2 28.5812 31.4188L20.6688 23.5C18.5188 25.075 15.8687 26 13 26C5.81875 26 0 20.1812 0 13C0 5.81875 5.81875 0 13 0C20.1812 0 26 5.81875 26 13ZM13 22C14.1819 22 15.3522 21.7672 16.4442 21.3149C17.5361 20.8626 18.5282 20.1997 19.364 19.364C20.1997 18.5282 20.8626 17.5361 21.3149 16.4442C21.7672 15.3522 22 14.1819 22 13C22 11.8181 21.7672 10.6478 21.3149 9.55585C20.8626 8.46392 20.1997 7.47177 19.364 6.63604C18.5282 5.80031 17.5361 5.13738 16.4442 4.68508C15.3522 4.23279 14.1819 4 13 4C11.8181 4 10.6478 4.23279 9.55585 4.68508C8.46392 5.13738 7.47177 5.80031 6.63604 6.63604C5.80031 7.47177 5.13738 8.46392 4.68508 9.55585C4.23279 10.6478 4 11.8181 4 13C4 14.1819 4.23279 15.3522 4.68508 16.4442C5.13738 17.5361 5.80031 18.5282 6.63604 19.364C7.47177 20.1997 8.46392 20.8626 9.55585 21.3149C10.6478 21.7672 11.8181 22 13 22Z" fill="currentColor"/>
+          </svg>
+        </button>
+
+        <!-- 3. Favorites -->
+        <button id="navFavBtn" class="nav-item" title="Favorites" onclick="switchView('favorites')">
+          <svg viewBox="0 0 32 32" fill="none">
+            <path d="M15.31 5.09391L15.9483 5.85653L16.6383 5.09518C18.5645 3.02021 21.2325 2.07583 23.8545 2.55819C27.8163 3.28776 30.72 7.07673 30.72 11.519V11.8876C30.72 14.525 29.731 17.048 27.983 18.8466L17.5928 29.5678C17.1615 30.0126 16.5923 30.2605 16 30.2605C15.4078 30.2605 14.8385 30.0126 14.4073 29.5678L4.01643 18.8466C2.27072 17.048 1.28 14.525 1.28 11.8876V11.519C1.28 7.07673 4.1849 3.28776 8.1455 2.55819C10.7157 2.07583 13.4355 3.02021 15.31 5.09391C15.31 5.09454 15.2583 5.09391 15.31 5.09391ZM15.9483 10.1717L13.3608 7.19748C12.113 5.87433 10.342 5.24643 8.59975 5.56674C5.96913 6.05164 4.04 8.5702 4.04 11.519V11.8876C4.04 13.6798 4.71332 15.3957 5.89955 16.6159L16 27.0384L26.1028 16.6159C27.2873 15.3957 27.96 13.6798 27.96 11.8876V11.519C27.96 8.5702 26.028 6.05164 23.4003 5.56674C21.658 5.24643 19.887 5.87433 18.6392 7.19748L15.9483 10.1717Z" fill="currentColor"/>
+          </svg>
+        </button>
+
+        <!-- 4. Tickets (My Tickets and Events) -->
+        <button id="navTicketBtn" class="nav-item" title="My Tickets and Events" onclick="switchView('tickets')">
+          <svg viewBox="0 0 32.0471 35" fill="none">
+            <path d="M16.8591 3.16865C17.5137 2.51444 18.4013 2.14695 19.3268 2.14695C20.2523 2.14695 21.1399 2.51444 21.7945 3.16865L23.7417 5.11581C24.4383 5.81245 24.263 6.83025 23.7168 7.37483C23.4453 7.6457 23.2602 7.99101 23.1848 8.36709C23.1095 8.74318 23.1474 9.13315 23.2937 9.48771C23.44 9.84226 23.6882 10.1455 24.0068 10.359C24.3254 10.5725 24.7002 10.6868 25.0837 10.6873C25.6175 10.6873 26.0984 10.4686 26.4522 10.1133L26.5608 10.014C27.0852 9.57644 27.9354 9.44921 28.5778 9.96587L28.7128 10.0869L30.649 12.0232L30.8895 12.2869C31.4347 12.9573 31.7119 13.8061 31.6675 14.669C31.6231 15.5319 31.2602 16.3477 30.649 16.9586L15.455 32.1526C14.8004 32.8068 13.9128 33.1743 12.9873 33.1743C12.0618 33.1743 11.1742 32.8068 10.5196 32.1526L8.5802 30.2148C7.88512 29.5197 8.05889 28.5019 8.60658 27.9573L8.7338 27.8177C9.02224 27.4733 9.17992 27.0381 9.17909 26.5889C9.17855 26.2055 9.0644 25.8309 8.85106 25.5124C8.63773 25.1939 8.33478 24.9457 7.98048 24.7993C7.62618 24.6528 7.23643 24.6147 6.86047 24.6897C6.4845 24.7646 6.13919 24.9493 5.86814 25.2204C5.32511 25.7666 4.30576 25.9403 3.60912 25.2437L1.66352 23.2965C1.00931 22.6419 0.641809 21.7543 0.641809 20.8289C0.641809 19.9034 1.00931 19.0158 1.66352 18.3612L16.8591 3.16865ZM20.1484 4.81327C19.9302 4.59535 19.6344 4.47296 19.326 4.47296C19.0177 4.47296 18.7219 4.59535 18.5037 4.81327L14.8313 8.48417L16.1159 9.77038C16.3215 9.99097 16.4334 10.2827 16.4281 10.5842C16.4228 10.8857 16.3006 11.1733 16.0874 11.3865C15.8742 11.5997 15.5866 11.7218 15.2851 11.7271C14.9837 11.7324 14.6919 11.6205 14.4713 11.415L13.1851 10.1303L3.30968 20.0073C3.09177 20.2255 2.96937 20.5213 2.96937 20.8296C2.96937 21.138 3.09177 21.4338 3.30968 21.6519L4.77121 23.115C5.40935 22.662 6.15979 22.3931 6.94045 22.338C7.72111 22.2828 8.50191 22.4434 9.19741 22.8022C9.89292 23.161 10.4763 23.7042 10.8839 24.3723C11.2914 25.0405 11.5073 25.8078 11.5079 26.5904C11.5079 27.5136 11.2085 28.3623 10.7135 29.0574L12.1658 30.5096C12.384 30.7275 12.6797 30.8499 12.9881 30.8499C13.2964 30.8499 13.5922 30.7275 13.8104 30.5096L23.6874 20.6326L22.4151 19.3603C22.304 19.2529 22.2154 19.1245 22.1545 18.9825C22.0936 18.8405 22.0616 18.6878 22.0603 18.5333C22.059 18.3788 22.0886 18.2256 22.1471 18.0826C22.2057 17.9396 22.2922 17.8097 22.4015 17.7005C22.5108 17.5913 22.6408 17.505 22.7838 17.4465C22.9268 17.3881 23.0801 17.3587 23.2346 17.3601C23.3891 17.3616 23.5418 17.3937 23.6837 17.4548C23.8256 17.5158 23.954 17.6045 24.0613 17.7157L25.3335 18.9864L29.006 15.3155C29.2239 15.0973 29.3463 14.8016 29.3463 14.4932C29.3463 14.1848 29.2239 13.8891 29.006 13.6709L27.5522 12.2171C26.8571 12.7136 26.0084 13.0146 25.0853 13.0146C24.5249 13.0148 23.9699 12.9046 23.452 12.6903C22.9342 12.4759 22.4637 12.1617 22.0673 11.7655C21.6709 11.3693 21.3565 10.8988 21.142 10.3811C20.9275 9.86332 20.8171 9.30837 20.8171 8.74793C20.8171 7.82632 21.1118 6.97299 21.6099 6.27635L20.1484 4.81327ZM17.7637 13.0612C17.9818 12.8432 18.2776 12.7208 18.586 12.7208C18.8943 12.7208 19.1901 12.8432 19.4083 13.0612L20.7736 14.4249C20.9855 14.6445 21.1026 14.9385 21.0998 15.2436C21.097 15.5487 20.9745 15.8405 20.7587 16.0562C20.5428 16.2718 20.2509 16.394 19.9458 16.3966C19.6407 16.3991 19.3468 16.2816 19.1274 16.0696L17.7621 14.7058C17.5442 14.4876 17.4218 14.1918 17.4218 13.8835C17.4218 13.5751 17.5457 13.2793 17.7637 13.0612Z" fill="currentColor"/>
+          </svg>
+        </button>
+      </nav>
+    </div>
+
+    <!-- Add Payment Method Modal (Figma 625:3126 5.3-CheckoutFlowAddCardPopup) -->
+    <div id="addPaymentModal" class="modal-overlay" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="addCardTitle">
+      <div class="add-card-sheet">
+        <!-- Top Header -->
+        <div class="add-card-header">
+          <h3 id="addCardTitle" class="add-card-heading">Add Payment Method</h3>
+          <button class="add-card-close-btn" onclick="closeAddPaymentModal()" aria-label="Close modal">
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+              <circle cx="14" cy="14" r="12.5" stroke="#3F32D3" stroke-width="2"/>
+              <path d="M10 10L18 18M18 10L10 18" stroke="#3F32D3" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Realistic Credit Card Preview (Figma 625:3000) -->
+        <div class="credit-card-preview">
+          <div class="card-preview-top">
+            <div class="card-sim-chip"></div>
+            <img src="./assets/logo-mastercard.svg" alt="Mastercard" class="card-preview-brand" />
+          </div>
+          <div id="cardPreviewNumber" class="card-preview-number">**** **** **** 1234</div>
+          <div class="card-preview-bottom">
+            <div class="card-preview-col">
+              <span class="card-preview-label">Card Holder Name</span>
+              <span id="cardPreviewName" class="card-preview-val">John Doe</span>
+            </div>
+            <div class="card-preview-col right">
+              <span class="card-preview-label">Expiry Date</span>
+              <span id="cardPreviewExpiry" class="card-preview-val">06/32</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Add Card Form -->
+        <form id="addCardForm" onsubmit="handleNewPaymentSubmit(event)">
+          <div class="add-card-field-group">
+            <input 
+              type="text" 
+              id="inputCardNumber" 
+              class="add-card-input" 
+              placeholder="Card Number" 
+              maxlength="19" 
+              required 
+              autocomplete="cc-number"
+              oninput="onCardNumberChange(this)"
+            />
+          </div>
+
+          <div class="add-card-field-group">
+            <input 
+              type="text" 
+              id="inputCardName" 
+              class="add-card-input" 
+              placeholder="Name on Card" 
+              required 
+              autocomplete="cc-name"
+              oninput="onCardNameChange(this)"
+            />
+          </div>
+
+          <div class="add-card-two-col">
+            <div class="add-card-field-group">
+              <input 
+                type="text" 
+                id="inputCardExp" 
+                class="add-card-input" 
+                placeholder="Exp. Date" 
+                maxlength="5" 
+                required 
+                autocomplete="cc-exp"
+                oninput="onCardExpChange(this)"
+              />
+            </div>
+            <div class="add-card-field-group">
+              <input 
+                type="password" 
+                id="inputCardCVV" 
+                class="add-card-input" 
+                placeholder="CVV" 
+                maxlength="4" 
+                required 
+                autocomplete="cc-csc"
+              />
+            </div>
+          </div>
+
+          <!-- Save This Card? Toggle (Figma 625:3046 & 625:3049) -->
+          <div class="save-card-toggle-box">
+            <div class="save-card-copy">
+              <span class="save-card-title">Save This Card?</span>
+              <span class="save-card-desc">For faster checkout in future purchases</span>
+            </div>
+            <label class="switch" for="toggleSaveCard">
+              <input type="checkbox" id="toggleSaveCard" />
+              <span class="slider round"></span>
+            </label>
+          </div>
+
+          <!-- Add Payment Method Submit Button (Figma 625:3048) -->
+          <button type="submit" class="btn-submit-add-card">
+            <span>Add Payment Method</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M12 5V19M5 12H19" stroke="white" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </form>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Event Details Modal / Slide-up Sheet (Figma 4.1- EventDetails1) -->
+  <div id="eventModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-sheet">
+      <div class="modal-drag-handle"></div>
+      <button id="modalCloseBtn" class="modal-close-btn" aria-label="Close modal" onclick="closeEventModal()">&times;</button>
+
+      <div class="modal-image-wrapper">
+        <img id="modalImage" src="" alt="Event Banner" />
+        <div id="modalDateTag" class="modal-date-tag">15 AUG</div>
+      </div>
+
+      <div class="modal-tags">
+        <span id="modalGenre" class="modal-tag">Techno / Industrial</span>
+        <span class="modal-tag tag-verified">Sonar BSB Verified</span>
+      </div>
+
+      <h2 id="modalTitle" class="modal-title">Trema Techno: Subsolo Urbano</h2>
+      <p id="modalTagline" class="modal-tagline">Raw concrete, deep loops.</p>
+
+      <div class="modal-info-grid">
+        <div class="modal-info-item">
+          <span class="modal-info-label">Date & Time</span>
+          <span id="modalDateTime" class="modal-info-val">Saturday, Aug 15 &bull; 22:00h</span>
+        </div>
+        <div class="modal-info-item">
+          <span class="modal-info-label">Standard Entry</span>
+          <span id="modalPriceHeader" class="modal-info-val price-accent">$ 60.00</span>
+        </div>
+        <div class="modal-info-item full-width">
+          <span class="modal-info-label">Venue / Location</span>
+          <span id="modalVenue" class="modal-info-val">Galeria dos Estados, Setor Comercial Sul</span>
+        </div>
+      </div>
+
+      <!-- Section: Event Story -->
+      <div class="modal-section">
+        <h3 class="modal-section-title">Event Details</h3>
+        <p id="modalDesc" class="modal-desc"></p>
+      </div>
+
+      <!-- Section: The Lineup -->
+      <div class="modal-section">
+        <h3 class="modal-section-title">The Lineup</h3>
+        <div id="modalLineupList" class="modal-lineup-list"></div>
+      </div>
+
+      <!-- Section: The Venue Context -->
+      <div class="modal-section">
+        <h3 class="modal-section-title">The Venue</h3>
+        <p id="modalVenueDesc" class="modal-desc"></p>
+      </div>
+
+      <!-- Sticky Footer Buy Ticket Bar -->
+      <div class="modal-footer">
+        <div class="modal-price-box">
+          <span class="modal-price-label">Price per ticket</span>
+          <span id="modalPrice" class="modal-price-value">$ 60.00</span>
+        </div>
+        <button id="modalBuyBtn" class="btn-buy-ticket" onclick="startCheckoutFromModal()">
+          <span>Purchase Tickets</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- E-Ticket Popup Modal (Figma 7.3.2- ETicketPopUp) -->
+  <div id="ticketModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="ticketModalTitle">
+    <div class="eticket-card">
+      <div class="eticket-header">
+        <h2 id="ticketModalTitle" class="eticket-title">E-Ticket</h2>
+        <button class="modal-close-btn" onclick="closeTicketModal()">&times;</button>
+      </div>
+
+      <div class="eticket-qr-box">
+        <!-- High-fidelity Vector QR Code -->
+        <svg class="eticket-qr-svg" viewBox="0 0 200 200" fill="currentColor">
+          <rect width="200" height="200" fill="white" />
+          <!-- QR pattern elements -->
+          <rect x="20" y="20" width="45" height="45" rx="6" fill="#3F32D3"/>
+          <rect x="26" y="26" width="33" height="33" rx="3" fill="white"/>
+          <rect x="33" y="33" width="19" height="19" fill="#3F32D3"/>
+
+          <rect x="135" y="20" width="45" height="45" rx="6" fill="#3F32D3"/>
+          <rect x="141" y="26" width="33" height="33" rx="3" fill="white"/>
+          <rect x="148" y="33" width="19" height="19" fill="#3F32D3"/>
+
+          <rect x="20" y="135" width="45" height="45" rx="6" fill="#3F32D3"/>
+          <rect x="26" y="141" width="33" height="33" rx="3" fill="white"/>
+          <rect x="33" y="148" width="19" height="19" fill="#3F32D3"/>
+
+          <!-- Decorative matrix bits -->
+          <rect x="75" y="25" width="10" height="10" fill="#1D1D1D"/>
+          <rect x="95" y="25" width="10" height="10" fill="#1D1D1D"/>
+          <rect x="115" y="25" width="10" height="10" fill="#1D1D1D"/>
+          <rect x="75" y="45" width="10" height="10" fill="#3F32D3"/>
+          <rect x="85" y="55" width="10" height="10" fill="#1D1D1D"/>
+          <rect x="105" y="45" width="10" height="10" fill="#1D1D1D"/>
+          
+          <rect x="25" y="75" width="10" height="10" fill="#1D1D1D"/>
+          <rect x="45" y="85" width="10" height="10" fill="#3F32D3"/>
+          <rect x="25" y="105" width="10" height="10" fill="#1D1D1D"/>
+
+          <rect x="75" y="75" width="50" height="50" rx="4" fill="#3F32D3"/>
+          <path d="M85 88h30M85 100h30M85 112h30" stroke="#F2F862" stroke-width="3" stroke-linecap="round"/>
+
+          <rect x="135" y="75" width="10" height="10" fill="#1D1D1D"/>
+          <rect x="155" y="85" width="10" height="10" fill="#1D1D1D"/>
+          <rect x="145" y="105" width="10" height="10" fill="#3F32D3"/>
+
+          <rect x="75" y="135" width="10" height="10" fill="#1D1D1D"/>
+          <rect x="95" y="145" width="10" height="10" fill="#1D1D1D"/>
+          <rect x="115" y="135" width="10" height="10" fill="#1D1D1D"/>
+          <rect x="85" y="165" width="10" height="10" fill="#3F32D3"/>
+          <rect x="105" y="165" width="10" height="10" fill="#1D1D1D"/>
+
+          <rect x="135" y="135" width="45" height="10" fill="#1D1D1D"/>
+          <rect x="135" y="155" width="25" height="10" fill="#1D1D1D"/>
+          <rect x="165" y="165" width="15" height="15" fill="#3F32D3"/>
+        </svg>
+      </div>
+
+      <div class="eticket-details-table">
+        <div class="eticket-row">
+          <span class="eticket-label">Event</span>
+          <span id="ticketEventTitle" class="eticket-val title-val">Trema Techno: Subsolo Urbano</span>
+        </div>
+        <div class="eticket-row">
+          <span class="eticket-label">Transaction ID</span>
+          <span id="ticketTransactionId" class="eticket-val mono">#WFHT100492</span>
+        </div>
+        <div class="eticket-row">
+          <span class="eticket-label">Date & Time</span>
+          <span id="ticketDateTime" class="eticket-val">11:49 15/08/2026</span>
+        </div>
+        <div class="eticket-row">
+          <span class="eticket-label">Payment</span>
+          <span id="ticketPayment" class="eticket-val">Mastercard &bull;&bull;&bull;&bull; 2304</span>
+        </div>
+        <div class="eticket-row">
+          <span class="eticket-label">Status</span>
+          <span class="eticket-val status-approved">Approved</span>
+        </div>
+      </div>
+
+      <div class="eticket-actions">
+        <button class="btn-ticket-action" onclick="window.print()">Save PDF / Print</button>
+        <button class="btn-ticket-action btn-primary-action" onclick="closeTicketModal()">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- User Profile Modal (Figma 7.1- UserProfile with Edit Photo & Profile) -->
+  <div id="profileModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="profileTitle">
+    <div class="profile-card">
+      
+      <!-- 1. View Profile Mode (Default) -->
+      <div id="profileViewMode" class="profile-subview">
+        <div class="profile-header">
+          <h2 id="profileTitle" class="profile-heading">My Profile</h2>
+          <button class="modal-close-btn" onclick="closeProfileModal()">&times;</button>
+        </div>
+
+        <div class="profile-avatar-large">
+          <img id="profileAvatarLargeImg" src="./assets/profile-picture.png" alt="Profile Large" />
+        </div>
+
+        <h3 class="profile-user-name">John Doe</h3>
+        <p class="profile-user-email">johndoe@mail.com</p>
+        <div class="profile-badge-vip">Sonar Club VIP &bull; Brasília</div>
+
+        <div class="profile-actions-list">
+          <button class="profile-action-btn primary" onclick="closeProfileModal(); switchView('tickets');">
+            My Tickets and Events
+          </button>
+          <button class="profile-action-btn secondary" onclick="closeProfileModal(); switchView('favorites');">
+            Saved Favorites
+          </button>
+          <button class="profile-action-btn tertiary" onclick="toggleEditProfileView(true)">
+            Edit Profile
+          </button>
+        </div>
+      </div>
+
+      <!-- 2. Edit Profile Mode -->
+      <div id="profileEditMode" class="profile-subview" style="display: none;">
+        <div class="profile-header">
+          <h2 class="profile-heading">Edit Profile</h2>
+          <button class="modal-close-btn" onclick="toggleEditProfileView(false)">&times;</button>
+        </div>
+
+        <!-- Interactive Profile Picture Picker -->
+        <div class="edit-avatar-wrapper" onclick="triggerProfilePicUpload()" title="Click to upload profile photo">
+          <div class="edit-avatar-preview">
+            <img id="editAvatarPreviewImg" src="./assets/profile-picture.png" alt="Edit Avatar" />
+            <div class="avatar-edit-overlay">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              <span>Change</span>
+            </div>
+          </div>
+          <div class="avatar-camera-badge">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          </div>
+          <input type="file" id="profileImageFileInput" accept="image/*" style="display: none;" onchange="handleProfilePicSelected(event)" />
+        </div>
+
+        <button type="button" class="btn-upload-photo" onclick="triggerProfilePicUpload()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          Upload New Photo
+        </button>
+
+        <!-- Form fields -->
+        <div class="edit-profile-fields">
+          <div class="form-group">
+            <label class="form-label" for="editProfileNameInput">Full Name</label>
+            <input type="text" id="editProfileNameInput" class="form-input" value="John Doe" placeholder="Your name" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="editProfileEmailInput">Email Address</label>
+            <input type="email" id="editProfileEmailInput" class="form-input" value="johndoe@mail.com" placeholder="Your email" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="editProfilePhotoUrlInput">Or Photo Web URL</label>
+            <input type="url" id="editProfilePhotoUrlInput" class="form-input" placeholder="https://example.com/avatar.jpg" oninput="handlePhotoUrlInput(event)" />
+          </div>
+        </div>
+
+        <div class="profile-actions-list">
+          <button class="profile-action-btn primary" onclick="saveProfileChanges()">
+            Save Changes
+          </button>
+          <button class="profile-action-btn tertiary" onclick="toggleEditProfileView(false)">
+            Cancel
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
