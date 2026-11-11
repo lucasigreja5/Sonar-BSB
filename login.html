@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login &bull; Sonar BSB Events (Version 0.6.2)</title>
+  <title>Login &bull; Sonar BSB Events (Version 1.0)</title>
   <link rel="stylesheet" href="styles.css" />
   <style>
     /* Standalone Login Page Tweaks */
@@ -105,11 +105,13 @@
       const username = usernameInput ? usernameInput.value.trim() : "John Doe";
       sessionStorage.setItem("sonar_user_logged_in", "true");
       sessionStorage.setItem("sonar_username", username || "John Doe");
+      sessionStorage.setItem("sonar_redirect_from_login", "true");
       window.location.href = "index.html";
     }
 
     function handleGuestSubmit() {
       sessionStorage.setItem("sonar_user_logged_in", "guest");
+      sessionStorage.setItem("sonar_redirect_from_login", "true");
       window.location.href = "index.html";
     }
   </script>

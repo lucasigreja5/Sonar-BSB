@@ -6,7 +6,24 @@ This directory contains versioned snapshots of the Sonar BSB Events web applicat
 
 ## 🏷️ Version History
 
-### Version 0.6.2 (Current Working Version — `v0.6.2`)
+### Version 1.0 (Production Release — `v1.0`)
+- **Release Date**: November 2026
+- **Git Tag**: `v1.0`
+- **Original User Prompt**:
+  > *"I think version 0.6.2 is ready to be depolyed. Please check if there's any issues or bugs and if its all clear, save it as version 1.0, and include a handoff file for this conversation named after the version 1.0, and include everything into a zip file"*
+- **Key Features & Changes**:
+  - **Production Master Release**: Full audit completed covering all 18 vector & raster assets, 84 DOM IDs, 23 event handlers, and responsive CSS across mobile, tablet, and widescreen.
+  - **Login First Launch & Redirect Token**: App consistently initializes on `1- WelcomeLogin`; submitting credentials via standalone `login.html` auto-redirects directly into `index.html`'s home feed without loop issues.
+  - **1- WelcomeLogin Aesthetic**: Houdini text reveal with 0.5s pause, solid neon yellow glowing dot core (`#F2F862`) without ripple waves, completely unclipped in `.houdini-bottom-row`.
+  - **90% Grey Side Bars (#1D1D1D)**: Soft modernist cinema pillarbox framing on displays wider than 1280px.
+  - **Bottom Dock Stroke Centering**: 1pt center stroke on Favorites and 0.75pt center stroke on Tickets icons, matching fill color across both active and resting states.
+  - **Master Handoff Guide**: Full specifications documented in `HANDOFF_V1.0.md`.
+  - **Snapshot Directory**: `versions/v1.0/source/`
+  - **ZIP Package**: `versions/v1.0/sonar-bsb-events-v1.0.zip`
+
+---
+
+### Version 0.6.2 (Previous Working Version — `v0.6.2`)
 - **Release Date**: November 2026
 - **Git Tag**: `v0.6.2`
 - **Original User Prompt**:

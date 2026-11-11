@@ -2,22 +2,24 @@
 
 > **To resume this project in Antigravity on macOS or another machine:**
 > 1. Open the project folder `sonar-bsb-events` in Antigravity.
-> 2. In a new conversation, type `@PROJECT_HANDOFF.md` or mention this file to restore complete context.
+> 2. In a new conversation, type `@HANDOFF_V1.0.md` or `@PROJECT_HANDOFF.md` to restore complete context.
 
 ---
 
 ## 📌 Project Overview
 - **Product**: Sonar BSB — Events Discovery & Ticketing Web Application
 - **Figma Design**: [Sonar-BSB-EventsApp-v1 (Node 365:525)](https://www.figma.com/design/i3bqFIafJrUlUqn2NMUwIl/Sonar-BSB-EventsApp-v1?node-id=365-525)
-- **Current Version**: `V-1.0` (Committed and tagged on local `main` branch)
+- **Current Version**: `v1.0` (Production Master Release)
 - **Tech Stack**: Vanilla HTML5, modern CSS3 (Custom Properties, Grid & Flexbox), vanilla ES6+ JavaScript. Completely zero external runtime dependencies.
+- **Detailed Handoff**: See [HANDOFF_V1.0.md](HANDOFF_V1.0.md) for complete specifications, data schemas, and design tokens.
 
 ---
 
 ## 🎨 Design System Tokens
 - **Brand Secondary (Royal Blue)**: `#3F32D3` (Headers, active navigation, buttons, titles)
-- **Brand Primary (Neon Yellow)**: `#F2F862` (Brasília cathedral logo, active icon glyphs, badge highlights)
-- **Background Interface**: `#F2F2F2` (Body background)
+- **Brand Primary (Neon Yellow)**: `#F2F862` (Brasília cathedral logo, active icon glyphs, Houdini text)
+- **Background Interface**: `#F7F7F8` (App background)
+- **Viewport Side Bars**: `#1D1D1D` (90% Charcoal grey cinema pillarboxing)
 - **Text Main**: `#1D1D1D` & `#363636`
 - **Text Muted**: `#64748B`, `#888888`, `#CBD5E1`
 - **Cards**: White `#ffffff` with `border-radius: 30px` (events) / `28px` (modals) / `14px` (payment cards)
@@ -26,11 +28,17 @@
 
 ## 🛠️ Implemented Architecture & Flows
 
-### 1. Dual-View Mode Controller
-- **Responsive Web**: Multi-column fluid layout scaling up to 1280px desktop with top quick-search bar.
-- **Mobile Frame (1:1)**: Accurate 402px × 874px iPhone viewport mockup with simulated status bar, notch, and sticky dock.
+### 1. 1- WelcomeLogin & Houdini Text Reveal
+- Application starts directly on `1- WelcomeLogin` as the first screen upon launch.
+- Houdini text reveal emerges from masked frame with a 0.5s initial pause ("Frequency" in 500, "Found" in 900).
+- Solid neon yellow heartbeat blinking dot beside "Found" without ripple waves, completely unclipped.
+- Standalone page available at `login.html`.
 
-### 2. Complete 9-Event Lineup
+### 2. Pure Responsive Web Layout with 90% Grey Side Bars
+- Natively fluid from mobile up to desktop (1280px).
+- Screens wider than 1280px are framed by `#1D1D1D` 90% grey bars with deep ambient shadow.
+
+### 3. Complete 9-Event Brasília Lineup
 - **Today**:
   1. `Trema Techno: Subsolo Urbano` (15 AUG • Galeria dos Estados • $60.00)
   2. `Vapø_R: Cybernetic Cathedral` (15 AUG • Birosca do Conic • $80.00)
@@ -44,29 +52,20 @@
   8. `Hum Rooftop Sessions: Overdrive` (04 DEC • HUM • $100.00)
   9. `Batrave: The Last Dance` (31 DEC • Galpão Setor Industrial • $240.00)
 
-### 3. Bottom Navigation Dock
-- Sticky floating dock with drop shadow.
-- Center active button has blue fill (`#3F32D3`) with yellow icon (`#F2F862`).
-- Navigation across Home, Search, Favorites, and Tickets.
+### 4. Bottom Navigation Dock
+- Sticky floating dock with elevated active circular indicator (`#3F32D3` circle with `#F2F862` icon).
+- Favorites icon has `1pt` center stroke with same color as fill.
+- Tickets icon has `0.75pt` center stroke with same color as fill.
 
-### 4. Checkout & Payment Flow (Figma 5.1 → 5.2.1 → 5.3 → 5.4)
-- **Shopping Cart (5.1)**: Review header positioned at the top; dynamic quantity selectors for Regular ($60.00) & Student ($30.00) tickets.
-- **Select Payment Method (5.2.1)**:
-  - Custom CSS Grid layout (`32px auto 1fr 22px`) guaranteeing the boolean selection circle always fits cleanly inside the card without overflow.
-  - Card number typography reduced to `12px` bold with ellipsis clipping.
-- **Add Payment Method Popup (5.3)**:
-  - Slide-up card with `#3F32D3` circular close icon.
-  - Petrol teal credit card preview (`linear-gradient(135deg, #24637d 0%, #194a5e 100%)`) with gold SIM chip and vector Mastercard logo.
-  - Form validation with formatted inputs (`Card Number`, `Name on Card`, `Exp. Date`, `CVV`).
-  - "Save This Card?" toggle switch.
-  - Submitting appends the card to the list, auto-selects it, and triggers a `"✓ Payment Added!"` toast.
-- **Confirmation View (5.4)**: Displays transaction ID, date, payment method, and approved badge.
+### 5. Checkout & Payment Flow (Figma 5.1 → 5.2.1 → 5.3 → 5.4)
+- Shopping Cart with quantity selectors.
+- Select Payment Method with cleanly fitted selection boolean.
+- Add Payment Method popup (Figma 5.3) with credit card preview and Mastercard logo.
+- Transaction confirmation screen.
 
-### 5. E-Ticket Modal (Figma 7.3.2)
-- High-fidelity vector QR code, transaction details, and ticket wallet.
-
-### 6. User Profile (Figma 7.1)
-- User details view for "John Doe" (`johndoe@mail.com`) with Sonar VIP badge and photo URL edit option.
+### 6. E-Ticket Modal & Profile
+- E-Ticket with QR code and barcode.
+- User profile with avatar upload and Sign Out flow.
 
 ---
 

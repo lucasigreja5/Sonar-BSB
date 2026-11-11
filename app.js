@@ -298,8 +298,14 @@ function initApp() {
   updateBadges();
   setupNavEventListeners();
 
-  // Version 0.6.2: When opening the app, always start with the login screen as the first screen
-  switchView("welcome");
+  // Version 1.0: If arriving from standalone login.html, land directly on home; otherwise start on welcome
+  if (sessionStorage.getItem("sonar_redirect_from_login") === "true") {
+    sessionStorage.removeItem("sonar_redirect_from_login");
+    switchView("home");
+  } else {
+    // When opening the app, always start with the login screen as the first screen
+    switchView("welcome");
+  }
 
   setupKeyboardShortcuts();
 }
