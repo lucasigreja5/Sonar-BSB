@@ -6,7 +6,23 @@ This directory contains versioned snapshots of the Sonar BSB Events web applicat
 
 ## 🏷️ Version History
 
-### Version 0.6 (Current Working Version — `v0.6`)
+### Version 0.6.1 (Current Working Version — `v0.6.1`)
+- **Release Date**: November 2026
+- **Git Tag**: `v0.6.1`
+- **Original User Prompt**:
+  > *"Version 0.6.1 Make the following adjustments: - On the login screen, the blinking dot effect is getting cropped inside a box from the figma file houdini effect, please remove this crop from the box - On the login screen, add a .5s delay on the start of the houdini text for the home screen - On the login screen, remove the Live frequency Brasilia DF element above the houdini text - On the login screen, remove the blinking yellow dots from the background - On the home screen, on the top nav bar, remove the button taking to the login screen, have the option to return to that screen be only the sign out button - On the home screen of the main page, if the screen size exceeds the app total size, use black bars on the sides of the screen, as it was when it had the dual preview switcher"*
+- **Key Features & Changes**:
+  - **Uncropped Radar Ping Dot**: Separated the blinking dot container from the text clip box with a visible `.houdini-bottom-row`, allowing radar ripples (`scale(2.8)`) and neon halos to expand unclipped into open space.
+  - **0.5s Initial Houdini Delay**: Introduced a 0.5s pause before "Frequency" (0.5s delay) and "Found" (0.75s delay) emerge, creating an intentional, cinematic entrance.
+  - **Cleaner Login Artboard**: Removed the status badge and ambient floating yellow dots from the login mesh background.
+  - **Header Nav Cleaned**: Removed the header login button; returning to login is now strictly through the profile "Sign Out" flow.
+  - **Cinema Black Side Bars**: Added `background-color: #000000` to body and deep framing shadows to the 1280px `.app-container`, displaying sleek black bars on wide viewports as during the dual-view switcher era.
+  - **Snapshot Directory**: `versions/v0.6.1/source/`
+  - **ZIP Package**: `versions/v0.6.1/sonar-bsb-events-v0.6.1.zip`
+
+---
+
+### Version 0.6 (Previous Working Version — `v0.6`)
 - **Release Date**: November 2026
 - **Git Tag**: `v0.6`
 - **Original User Prompt**:

@@ -88,7 +88,46 @@ This log documents each iterative release of the project, recording the exact us
 
 ---
 
-### 🏷️ Version 0.6 (Current Release — `v0.6`)
+### 🏷️ Version 0.6.1 (Current Release — `v0.6.1`)
+
+#### 💬 Original User Prompt:
+> *"Version 0.6.1*  
+> *Make the following adjustments:*  
+> *- On the login screen, the blinking dot effect is getting cropped inside a box from the figma file houdini effect, please remove this crop from the box*  
+> *- On the login screen, add a .5s delay on the start of the houdini text for the home screen*  
+> *- On the login screen, remove the Live frequency Brasilia DF element above the houdini text*  
+> *- On the login screen, remove the blinking yellow dots from the background*  
+> *- On the home screen, on the top nav bar, remove the button taking to the login screen, have the option to return to that screen be only the sign out button*  
+> *- On the home screen of the main page, if the screen size exceeds the app total size, use black bars on the sides of the screen, as it was when it had the dual preview switcher"*
+
+#### 🧠 Reasoning & Architecture:
+1. **Uncropping the Blinking Sonar Radar Dot**:
+   - *Problem*: In Figma frame `654:5110`, the Houdini text reveal relies on clipping boxes (`overflow: hidden`) to mask the text as it slides upward into view. Previously, the signature blinking dot was placed inside the same `bottom-line` overflow-clipped wrapper as the word "Found". As a result, when the acoustic radar ripples (`.dot-ring`) expanded with `scale(2.8)` and the dot emitted neon glow halos (`box-shadow`), they were abruptly cropped by the bounding box edges.
+   - *Fix*: Created a dedicated `.houdini-bottom-row` flex container with `overflow: visible;`. The word "Found" remains isolated within its own `.houdini-line-wrapper.bottom-line` with `overflow: hidden`, while `.houdini-blinking-dot` sits as an unclipped sibling. The sonar ripple rings now expand freely into space with full radiant glow.
+2. **0.5s Initial Animation Delay for Houdini Text**:
+   - *Reasoning*: When navigating to or entering the login screen, having the text start sliding upward immediately felt rushed before the user could register the branded mesh backdrop and logo.
+   - *Implementation*: Added a `0.5s` base delay to the animation sequence:
+     - `frequency-text`: `animation-delay: 0.5s` (slides up between 0.5s – 1.35s).
+     - `found-text`: `animation-delay: 0.75s` (slides up between 0.75s – 1.65s).
+     - `houdini-blinking-dot`: `animation-delay: 1.5s` (fades in smoothly as "Found" settles).
+3. **Streamlined Login Aesthetic (Removed Badge & Ambient Dots)**:
+   - *Reasoning*: Per user specification, removed `.welcome-status-badge` (`LIVE FREQUENCY • BRASÍLIA DF`) and the ambient floating dots (`.ambient-dots-layer`) from both `index.html` and `login.html`.
+   - *Result*: The login view now presents a cleaner, ultra-minimalist aesthetic matching the Figma artboard with pure focus on the typography, vector mesh backdrop, and uncropped sonar radar dot.
+4. **Header Navigation Cleanup & Exclusive Sign-Out Return**:
+   - *Reasoning*: Removed the top header "Login Page" pill button (`.header-login-btn`). Returning to the login screen is now strictly controlled via the "Sign Out" button inside the User Profile modal, which properly cleans session authentication (`sessionStorage.removeItem("sonar_user_logged_in")`) and invokes `switchView("welcome")`.
+5. **Black Side Bars (Pillarboxing) for Large Displays**:
+   - *Problem*: When the dual-view preview switcher was removed in v0.5, the `body` background was set to the light gray interface color (`#f7f7f8`). On large widescreen monitors (> 1280px), the margins on the sides blended into the page rather than framing the app as a focused, high-end experience.
+   - *Implementation*: Set `body { background-color: #000000; }` and gave `.app-container` a centered 1280px bounding box (`margin: 0 auto; max-width: 1280px;`) with a deep ambient shadow (`box-shadow: 0 0 60px rgba(0,0,0,0.85)`). The sticky header and bottom floating dock remain strictly within the 1280px frame. Viewports exceeding 1280px now display sleek solid black bars on both sides, exactly restoring the cinema-pillarbox frame styling from the dual-view era.
+
+#### 🛠️ Files Modified:
+- `index.html`: Restructured Houdini line into uncropped `.houdini-bottom-row`, removed status badge, removed ambient dots layer, and removed header login shortcut button.
+- `login.html`: Updated title to Version 0.6.1, restructured Houdini section, removed status badge and ambient dots.
+- `styles.css`: Set `body` background to pure black (`#000000`), added framing box-shadow to `.app-container`, implemented `.houdini-bottom-row` with `overflow: visible;`, updated animation delays (0.5s / 0.75s / 1.5s), and cleaned up ambient dot styles.
+- `VERSIONS.md` & `README.md`: Version 0.6.1 registry and changelog updates.
+
+---
+
+### 🏷️ Version 0.6 (Previous Release — `v0.6`)
 
 #### 💬 Original User Prompt:
 > *"Version 0.6*  

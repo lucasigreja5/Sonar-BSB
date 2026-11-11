@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login &bull; Sonar BSB Events (Version 0.6)</title>
+  <title>Login &bull; Sonar BSB Events (Version 0.6.1)</title>
   <link rel="stylesheet" href="styles.css" />
   <style>
     /* Standalone Login Page Tweaks */
@@ -35,12 +35,6 @@
     <section id="welcomeSection" class="welcome-section" aria-label="Welcome and Login">
       <div class="welcome-backdrop">
         <img src="./assets/welcome-gradient.svg" alt="" class="welcome-gradient-img" />
-        <div class="ambient-dots-layer" aria-hidden="true">
-          <span class="ambient-dot dot-top-left"></span>
-          <span class="ambient-dot dot-mid-right"></span>
-          <span class="ambient-dot dot-bottom-left"></span>
-          <span class="ambient-dot dot-top-right"></span>
-        </div>
       </div>
 
       <div class="welcome-content">
@@ -49,19 +43,15 @@
           <img src="./assets/sonar-logo.svg" alt="SONAR BSB" class="welcome-logo-img" />
         </div>
 
-        <!-- Live Frequency Radar Status Badge with Blinking Dot -->
-        <div class="welcome-status-badge">
-          <span class="blinking-status-dot"></span>
-          <span class="status-badge-text">LIVE FREQUENCY &bull; BRASÍLIA DF</span>
-        </div>
-
-        <!-- Houdini Text Animation (Figma 654:5110) with Signature Blinking Sonar Radar Dot -->
+        <!-- Houdini Text Animation (Figma 654:5110) with Uncropped Blinking Sonar Radar Dot -->
         <div class="houdini-text-container" aria-label="Frequency Found">
           <div class="houdini-line-wrapper top-line">
             <h1 class="houdini-text frequency-text">Frequency</h1>
           </div>
-          <div class="houdini-line-wrapper bottom-line">
-            <h2 class="houdini-text found-text">Found</h2>
+          <div class="houdini-bottom-row">
+            <div class="houdini-line-wrapper bottom-line">
+              <h2 class="houdini-text found-text">Found</h2>
+            </div>
             <div class="houdini-blinking-dot" title="Live frequency active">
               <span class="dot-core"></span>
               <span class="dot-ring ring-1"></span>
