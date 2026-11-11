@@ -52,7 +52,7 @@ textarea {
 
 body {
   font-family: var(--font-family-primary);
-  background-color: #000000;
+  background-color: #1D1D1D;
   color: var(--color-text-main);
   min-height: 100vh;
   display: flex;
@@ -285,14 +285,14 @@ body {
   animation: houdiniReveal 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.75s forwards;
 }
 
-/* Houdini Signature Blinking Sonar Radar Dot - Uncropped with Free Expanding Rings */
+/* Houdini Signature Blinking Sonar Radar Dot - Solid Core (Ripple Waves Removed) */
 .houdini-blinking-dot {
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 20px;
-  height: 20px;
+  width: 14px;
+  height: 14px;
   margin-left: 12px;
   margin-bottom: 8px;
   overflow: visible;
@@ -327,38 +327,6 @@ body {
     opacity: 0.25;
     transform: scale(0.7);
     box-shadow: 0 0 4px #f2f862;
-  }
-}
-
-.houdini-blinking-dot .dot-ring {
-  position: absolute;
-  inset: -6px;
-  border-radius: 50%;
-  border: 2px solid var(--color-primary);
-  opacity: 0;
-  pointer-events: none;
-}
-
-.houdini-blinking-dot .dot-ring.ring-1 {
-  animation: sonarPing 2.4s cubic-bezier(0, 0.2, 0.8, 1) infinite;
-}
-
-.houdini-blinking-dot .dot-ring.ring-2 {
-  animation: sonarPing 2.4s cubic-bezier(0, 0.2, 0.8, 1) 1.2s infinite;
-}
-
-@keyframes sonarPing {
-  0% {
-    transform: scale(0.3);
-    opacity: 0.9;
-  }
-  80% {
-    transform: scale(2.2);
-    opacity: 0.1;
-  }
-  100% {
-    transform: scale(2.8);
-    opacity: 0;
   }
 }
 
@@ -2333,6 +2301,21 @@ input:checked + .slider:before {
 
 .nav-item.is-selected svg path {
   fill: var(--color-primary) !important;
+  stroke: var(--color-primary) !important;
+}
+
+/* Bottom Nav Bar: Favorites Icon 1pt center stroke with same color as fill */
+#navFavBtn svg path {
+  stroke: currentColor;
+  stroke-width: 1pt;
+  stroke-linejoin: round;
+}
+
+/* Bottom Nav Bar: Tickets Icon 0.75pt center stroke with same color as fill */
+#navTicketBtn svg path {
+  stroke: currentColor;
+  stroke-width: 0.75pt;
+  stroke-linejoin: round;
 }
 
 .nav-item.is-selected:hover {

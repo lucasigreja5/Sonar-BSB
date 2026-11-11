@@ -209,7 +209,7 @@ const EVENTS_DATA = [
 // ============================================================================
 const state = {
   activeTab: "today",       // 'today' | 'month' | 'upcoming'
-  activeView: "home",       // 'home' | 'search' | 'favorites' | 'tickets' | 'checkout' | 'confirmation'
+  activeView: "welcome",    // 'welcome' | 'home' | 'search' | 'favorites' | 'tickets' | 'checkout' | 'confirmation'
   favorites: new Set(["trema-techno", "vapor-cybernetic"]), // Default pre-saved
   tickets: [
     {
@@ -298,12 +298,8 @@ function initApp() {
   updateBadges();
   setupNavEventListeners();
 
-  // If user is already logged in or explored in this session, show home; otherwise show 1- WelcomeLogin
-  if (sessionStorage.getItem("sonar_user_logged_in") === "true" || sessionStorage.getItem("sonar_user_logged_in") === "guest") {
-    switchView("home");
-  } else {
-    switchView("welcome");
-  }
+  // Version 0.6.2: When opening the app, always start with the login screen as the first screen
+  switchView("welcome");
 
   setupKeyboardShortcuts();
 }

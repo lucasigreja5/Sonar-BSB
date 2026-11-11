@@ -6,7 +6,22 @@ This directory contains versioned snapshots of the Sonar BSB Events web applicat
 
 ## 🏷️ Version History
 
-### Version 0.6.1 (Current Working Version — `v0.6.1`)
+### Version 0.6.2 (Current Working Version — `v0.6.2`)
+- **Release Date**: November 2026
+- **Git Tag**: `v0.6.2`
+- **Original User Prompt**:
+  > *"Version 0.6.2 Please make the following adjustments - When opening the app, start with the login screen as the first screen - On the login screen, on the blinking dot effect, remove the ripple waves effects - Change the color of the black bars on the side to a 90% grey (#1D1D1D) - On the bottom nav bar, on the favorites icon, add a 1pt stroke center position, with the same color as the fill - On the bottom nav bar, on the tickets icon, add a 0.75pt stroke center position, with the same color as the fill"*
+- **Key Features & Changes**:
+  - **Login First on Launch**: Application consistently initializes directly on the `1- WelcomeLogin` view upon fresh launch or reload, offering Login or Guest explore flows.
+  - **Solid Blinking Dot**: Removed the expanding acoustic ripple rings (`.dot-ring`) from the blinking dot next to "Found", maintaining the glowing neon yellow heartbeat core.
+  - **90% Grey Side Bars (#1D1D1D)**: Replaced pitch-black bars on wide displays with refined 90% charcoal grey (`#1D1D1D`), matching the design system's primary dark token.
+  - **Bottom Nav Icon Center Strokes**: Added 1pt center stroke to the Favorites icon and 0.75pt center stroke to the Tickets icon, perfectly matching fill color across both unselected (`#1D1D1D`) and selected (`#F2F862`) states.
+  - **Snapshot Directory**: `versions/v0.6.2/source/`
+  - **ZIP Package**: `versions/v0.6.2/sonar-bsb-events-v0.6.2.zip`
+
+---
+
+### Version 0.6.1 (Previous Working Version — `v0.6.1`)
 - **Release Date**: November 2026
 - **Git Tag**: `v0.6.1`
 - **Original User Prompt**:

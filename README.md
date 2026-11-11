@@ -88,7 +88,43 @@ This log documents each iterative release of the project, recording the exact us
 
 ---
 
-### 🏷️ Version 0.6.1 (Current Release — `v0.6.1`)
+### 🏷️ Version 0.6.2 (Current Release — `v0.6.2`)
+
+#### 💬 Original User Prompt:
+> *"Version 0.6.2*  
+> *Please make the following adjustments*  
+> *- When opening the app, start with the login screen as the first screen*  
+> *- On the login screen, on the blinking dot effect, remove the ripple waves effects*  
+> *- Change the color of the black bars on the side to a 90% grey (#1D1D1D)*  
+> *- On the bottom nav bar, on the favorites icon, add a 1pt stroke center position, with the same color as the fill*  
+> *- On the bottom nav bar, on the tickets icon, add a 0.75pt stroke center position, with the same color as the fill"*
+
+#### 🧠 Reasoning & Architecture:
+1. **Login Screen as Default Entry Point**:
+   - *Requirement*: The application must consistently open directly into the `1- WelcomeLogin` view upon fresh launch or reload, without auto-bypassing to the home feed based on previous session state.
+   - *Implementation*: Updated `app.js` (`initApp()` and `state.activeView`) so `switchView("welcome")` executes immediately on app initialization. The markup in `index.html` has `welcomeSection` visible by default to eliminate any initial view flash. Logging in (`handleWelcomeLogin`) or continuing as guest (`continueAsGuest`) smoothly transitions into the event discovery feed.
+2. **Solid Blinking Dot (Ripple Waves Removed)**:
+   - *Requirement*: Strip away the expanding acoustic ripple rings (`.dot-ring`) from the signature blinking dot on the login screen, keeping solely the pulsing neon yellow dot core.
+   - *Implementation*: Removed the ripple elements (`.dot-ring.ring-1`, `.dot-ring.ring-2`) and `@keyframes sonarPing` from `index.html`, `login.html`, and `styles.css`. The solid core continues its smooth, rhythmic heartbeat glow (`@keyframes dotBlink`) in `#F2F862` alongside "Found".
+3. **90% Grey Side Bars (#1D1D1D)**:
+   - *Requirement*: Soften the outer viewport framing from pitch black (`#000000`) to a refined 90% charcoal grey (`#1D1D1D`), matching the design system's primary dark token (`--color-text-main`).
+   - *Implementation*: Changed `body { background-color: #1D1D1D; }`. On viewports exceeding the 1280px container bounds, the pillarbox side bars now render in uniform `#1D1D1D` with subtle ambient shadow casting.
+4. **Bottom Nav Icon Center Strokes**:
+   - *Favorites Icon (1pt stroke)*: Added `stroke="currentColor" stroke-width="1pt"` to `#navFavBtn svg path` with `stroke-linejoin: round`. When unselected, both fill and stroke render in `#1D1D1D`; when selected, both adapt to neon yellow (`#F2F862`).
+   - *Tickets Icon (0.75pt stroke)*: Added `stroke="currentColor" stroke-width="0.75pt"` to `#navTicketBtn svg path` with `stroke-linejoin: round`. Both fill and stroke remain perfectly color-synchronized across states.
+   - Default SVG vector outline geometry guarantees center stroke alignment.
+
+#### 🛠️ Files Modified:
+- `app.js`: Set `state.activeView = "welcome"` and updated `initApp()` to always open the login screen first.
+- `index.html`: Set `welcomeSection` visible on load, removed ripple wave spans from blinking dot, added 1pt stroke to favorites icon and 0.75pt stroke to tickets icon.
+- `login.html`: Updated title to Version 0.6.2 and removed ripple wave spans.
+- `styles.css`: Updated `body` background to `#1D1D1D`, removed sonar ripple wave styles and keyframes, added stroke rules for `#navFavBtn` and `#navTicketBtn`.
+- `assets/nav-favorites.svg` & `assets/nav-ticket.svg`: Synchronized vector asset stroke properties.
+- `VERSIONS.md` & `README.md`: Version 0.6.2 registry and changelog updates.
+
+---
+
+### 🏷️ Version 0.6.1 (Previous Release — `v0.6.1`)
 
 #### 💬 Original User Prompt:
 > *"Version 0.6.1*  
