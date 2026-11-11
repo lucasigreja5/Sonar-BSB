@@ -242,8 +242,7 @@ const state = {
     name: "John Doe",
     email: "johndoe@mail.com",
     avatar: "./assets/profile-picture.png"
-  },
-  previewMode: "mobile"      // default to mobile frame as requested
+  }
 };
 
 // Checkout flow dynamic state
@@ -260,6 +259,10 @@ let currentEventInModal = null;
 
 // DOM References
 const appContainer = document.getElementById("appContainer");
+const welcomeSection = document.getElementById("welcomeSection");
+const siteHeader = document.querySelector(".site-header");
+const mainScrollContent = document.getElementById("mainScrollContent");
+const bottomNavContainer = document.getElementById("bottomNavContainer");
 const eventsContainer = document.getElementById("eventsContainer");
 const sectionHeaderBlock = document.getElementById("sectionHeaderBlock");
 const sectionTitleEl = document.getElementById("sectionTitle");
@@ -267,6 +270,7 @@ const sectionSubtitleEl = document.getElementById("sectionSubtitle");
 const eventCountBadge = document.getElementById("eventCountBadge");
 const navTabsContainer = document.getElementById("navTabsContainer");
 const subHeaderNav = document.getElementById("subHeaderNav");
+const backButton = document.getElementById("backButton");
 const searchFilterPanel = document.getElementById("searchFilterPanel");
 const desktopSearchInput = document.getElementById("desktopSearchInput");
 const favBadgeEl = document.getElementById("favBadge");
@@ -284,31 +288,57 @@ const profileModal = document.getElementById("profileModal");
 const addPaymentModal = document.getElementById("addPaymentModal");
 
 // ============================================================================
-// App Initialization
+// App Initialization - Responsive Web Model
 // ============================================================================
 function initApp() {
-  // Ensure starting in mobile frame mode
   if (appContainer) {
-    appContainer.className = "app-container mobile-frame";
-    const btnMobile = document.getElementById("btnModeMobile");
-    const btnFluid = document.getElementById("btnModeFluid");
-    if (btnMobile) btnMobile.classList.add("active");
-    if (btnFluid) btnFluid.classList.remove("active");
+    appContainer.className = "app-container";
   }
 
   updateBadges();
-  switchView("home");
+
+  // If already logged in this session, show Home; otherwise show 1- WelcomeLogin with Houdini animation
+  if (sessionStorage.getItem("sonar_user_logged_in")) {
+    switchView("home");
+  } else {
+    switchView("welcome");
+  }
+
   setupKeyboardShortcuts();
-  setupBannerToggles();
 }
 
 // ============================================================================
-// View Navigation (Home, Search, Favorites, Tickets, Checkout, Payment, Confirmation)
+// View Navigation (Welcome, Home, Search, Favorites, Tickets, Checkout, Payment, Confirmation)
 // ============================================================================
 window.switchView = function(viewName) {
   state.activeView = viewName;
 
-  // 1. Hide dedicated custom full-page sections
+  // 1. Handle Welcome Screen View (Figma 1- WelcomeLogin)
+  if (viewName === "welcome") {
+    if (welcomeSection) {
+      welcomeSection.style.display = "flex";
+      // Re-trigger Houdini animation on view entry
+      const hTexts = welcomeSection.querySelectorAll(".houdini-text");
+      hTexts.forEach(el => {
+        el.style.animation = "none";
+        el.offsetHeight; /* trigger reflow */
+        el.style.animation = "";
+      });
+    }
+    if (siteHeader) siteHeader.style.display = "none";
+    if (mainScrollContent) mainScrollContent.style.display = "none";
+    if (bottomNavContainer) bottomNavContainer.style.display = "none";
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    return;
+  }
+
+  // Non-welcome views: ensure main site layout is visible
+  if (welcomeSection) welcomeSection.style.display = "none";
+  if (siteHeader) siteHeader.style.display = "block";
+  if (mainScrollContent) mainScrollContent.style.display = "block";
+  if (bottomNavContainer) bottomNavContainer.style.display = "flex";
+
+  // Hide dedicated custom full-page sections
   if (checkoutSection) checkoutSection.style.display = "none";
   if (paymentSection) paymentSection.style.display = "none";
   if (confirmationSection) confirmationSection.style.display = "none";
@@ -316,6 +346,7 @@ window.switchView = function(viewName) {
   // 2. Configure visibility based on view
   if (viewName === "search") {
     if (subHeaderNav) subHeaderNav.style.display = "block";
+    if (backButton) backButton.style.display = "flex";
     if (searchFilterPanel) searchFilterPanel.style.display = "block";
     if (navTabsContainer) navTabsContainer.style.display = "none";
     if (sectionHeaderBlock) sectionHeaderBlock.style.display = "flex";
@@ -351,12 +382,14 @@ window.switchView = function(viewName) {
     if (sectionHeaderBlock) sectionHeaderBlock.style.display = "none";
   } else if (viewName === "favorites") {
     if (subHeaderNav) subHeaderNav.style.display = "block";
+    if (backButton) backButton.style.display = "flex";
     if (searchFilterPanel) searchFilterPanel.style.display = "none";
     if (navTabsContainer) navTabsContainer.style.display = "none";
     if (sectionHeaderBlock) sectionHeaderBlock.style.display = "flex";
     if (eventsContainer) eventsContainer.style.display = "flex";
   } else if (viewName === "tickets") {
     if (subHeaderNav) subHeaderNav.style.display = "block";
+    if (backButton) backButton.style.display = "flex";
     if (searchFilterPanel) searchFilterPanel.style.display = "none";
     if (navTabsContainer) navTabsContainer.style.display = "none";
     if (sectionHeaderBlock) sectionHeaderBlock.style.display = "flex";
@@ -364,6 +397,7 @@ window.switchView = function(viewName) {
   } else {
     // Default: Home
     if (subHeaderNav) subHeaderNav.style.display = "block";
+    if (backButton) backButton.style.display = "none";
     if (searchFilterPanel) searchFilterPanel.style.display = "none";
     if (navTabsContainer) navTabsContainer.style.display = "flex";
     if (sectionHeaderBlock) sectionHeaderBlock.style.display = "flex";
@@ -1268,30 +1302,34 @@ function setupKeyboardShortcuts() {
 }
 
 // ============================================================================
-// Preview Banner Device Mode Switcher (Fluid vs 1:1 Mobile Canvas)
+// Welcome Screen & Session Handlers (1- WelcomeLogin)
 // ============================================================================
-function setupBannerToggles() {
-  const btnFluid = document.getElementById("btnModeFluid");
-  const btnMobile = document.getElementById("btnModeMobile");
-
-  if (btnFluid) {
-    btnFluid.addEventListener("click", () => {
-      appContainer.className = "app-container fluid-mode";
-      btnFluid.classList.add("active");
-      if (btnMobile) btnMobile.classList.remove("active");
-      state.previewMode = "fluid";
-    });
+window.handleWelcomeLogin = function(event) {
+  if (event) event.preventDefault();
+  const usernameInput = document.getElementById("loginUsername");
+  const username = usernameInput ? usernameInput.value.trim() : "John Doe";
+  if (username) {
+    state.userProfile.name = username;
+    const nameEls = document.querySelectorAll(".profile-user-name");
+    nameEls.forEach(el => el.textContent = username);
   }
+  sessionStorage.setItem("sonar_user_logged_in", "true");
+  showToast(`✓ Welcome to Sonar BSB, ${state.userProfile.name}!`);
+  switchView("home");
+};
 
-  if (btnMobile) {
-    btnMobile.addEventListener("click", () => {
-      appContainer.className = "app-container mobile-frame";
-      btnMobile.classList.add("active");
-      if (btnFluid) btnFluid.classList.remove("active");
-      state.previewMode = "mobile";
-    });
-  }
-}
+window.continueAsGuest = function() {
+  sessionStorage.setItem("sonar_user_logged_in", "guest");
+  showToast("Exploring as Guest");
+  switchView("home");
+};
+
+window.handleLogout = function() {
+  sessionStorage.removeItem("sonar_user_logged_in");
+  closeProfileModal();
+  showToast("Logged out successfully");
+  switchView("welcome");
+};
 
 // Initialize on DOM load
 document.addEventListener("DOMContentLoaded", initApp);

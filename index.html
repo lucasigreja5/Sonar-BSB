@@ -8,46 +8,67 @@
 </head>
 <body>
 
-  <!-- Preview Controller Header for Web Showcase -->
-  <aside class="preview-banner" aria-label="Preview Controller">
-    <div class="preview-brand">
-      <span class="preview-pill">SONAR BSB</span>
-      <span class="preview-divider">|</span>
-      <span class="preview-label">Figma Design Implementation (Responsive Web)</span>
+  <!-- 1- WelcomeLogin Screen (Figma frame 374:537 & 654:5110 HoudiniText) -->
+  <section id="welcomeSection" class="welcome-section" style="display: none;" aria-label="Welcome and Login">
+    <div class="welcome-backdrop">
+      <img src="./assets/welcome-gradient.svg" alt="" class="welcome-gradient-img" />
     </div>
-    <div class="preview-toggle-group">
-      <button id="btnModeFluid" class="preview-btn" title="Show responsive fluid web page">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
-        Responsive Web
-      </button>
-      <button id="btnModeMobile" class="preview-btn active" title="Simulate 1:1 mobile phone canvas">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
-        Mobile Frame (1:1)
-      </button>
-    </div>
-  </aside>
 
-  <!-- App Wrapper (Defaulting to Mobile Frame as requested, easily toggled to fluid) -->
-  <div id="appContainer" class="app-container mobile-frame">
-    
-    <!-- Simulated Mobile Status Bar (Visible in Mobile Frame Mode) -->
-    <div class="mobile-status-bar" aria-hidden="true">
-      <span class="status-time">10:04</span>
-      <div class="status-notch"></div>
-      <div class="status-icons">
-        <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor">
-          <path d="M1 9.5a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0zm4-2a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0zm4-2a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0zm4-2a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0z"/>
-        </svg>
-        <svg width="15" height="11" viewBox="0 0 15 11" fill="currentColor">
-          <path d="M7.5 2.5a8.4 8.4 0 0 1 6 2.4l1-1.2A9.9 9.9 0 0 0 7.5 1 9.9 9.9 0 0 0 .5 3.7l1 1.2a8.4 8.4 0 0 1 6-2.4zm0 3.8a5 5 0 0 1 3.5 1.4l1-1.2a6.5 6.5 0 0 0-9 0l1 1.2a5 5 0 0 1 3.5-1.4zm0 3.7a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
-        </svg>
-        <svg width="22" height="11" viewBox="0 0 22 11" fill="currentColor">
-          <rect x="1" y="1" width="18" height="9" rx="3" fill="none" stroke="currentColor" stroke-width="1.2"/>
-          <rect x="2.5" y="2.5" width="14" height="6" rx="1.5"/>
-          <path d="M20.5 4v3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
-        </svg>
+    <div class="welcome-content">
+      <!-- Logo (Figma 426:689) -->
+      <div class="welcome-logo-box">
+        <img src="./assets/sonar-logo.svg" alt="SONAR BSB" class="welcome-logo-img" />
       </div>
+
+      <!-- Houdini Text Animation (Figma 654:5110) -->
+      <div class="houdini-text-container" aria-label="Frequency Found">
+        <div class="houdini-line-wrapper top-line">
+          <h1 class="houdini-text frequency-text">Frequency</h1>
+        </div>
+        <div class="houdini-line-wrapper bottom-line">
+          <h2 class="houdini-text found-text">Found</h2>
+        </div>
+      </div>
+
+      <!-- Login Form (Figma 672:1636, 672:1646, 393:1050) -->
+      <form class="welcome-form" id="welcomeLoginForm" onsubmit="handleWelcomeLogin(event)">
+        <div class="welcome-input-group">
+          <input 
+            type="text" 
+            id="loginUsername" 
+            class="welcome-input" 
+            placeholder="Username" 
+            value="johndoe" 
+            required 
+            autocomplete="username"
+          />
+        </div>
+
+        <div class="welcome-input-group">
+          <input 
+            type="password" 
+            id="loginPassword" 
+            class="welcome-input" 
+            placeholder="Password" 
+            value="••••••••" 
+            required 
+            autocomplete="current-password"
+          />
+        </div>
+
+        <button type="submit" id="btnLoginSubmit" class="btn-login-submit">
+          <span>Login</span>
+        </button>
+
+        <button type="button" class="btn-guest-explore" onclick="continueAsGuest()">
+          Explore Events Without Logging In &rarr;
+        </button>
+      </form>
     </div>
+  </section>
+
+  <!-- App Wrapper: Pure Responsive Web Model (Fits Desktop, Tablet & Mobile) -->
+  <div id="appContainer" class="app-container">
 
     <!-- Header: BSBTech Secondary Color #3F32D3 with Logo & Profile -->
     <header class="site-header">
@@ -88,10 +109,6 @@
           <button id="backButton" class="back-btn" title="Go back to Home" onclick="handleBackAction()">
             <img src="./assets/back-button.svg" alt="Back Button" width="32" height="32" />
           </button>
-          <div class="location-indicator">
-            <span class="location-dot"></span>
-            <span>Brasília, DF &bull; Plano Piloto</span>
-          </div>
         </div>
 
         <!-- Filter Navigation Pills: Today, This Month, Upcoming -->
@@ -685,6 +702,9 @@
             </button>
             <button class="profile-action-btn tertiary" onclick="toggleEditProfileView(true)">
               Edit Profile
+            </button>
+            <button class="profile-action-btn tertiary" style="color: #dc2626; border-color: #fecaca;" onclick="handleLogout()">
+              Sign Out (Back to Welcome Screen)
             </button>
           </div>
         </div>
