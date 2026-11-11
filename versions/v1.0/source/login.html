@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login &bull; Sonar BSB Events (Version 1.0)</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Standalone Login Page Tweaks */
+    body {
+      background-color: #1a1668;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+
+    .standalone-welcome-container {
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+  </style>
+</head>
+<body>
+
+  <main class="standalone-welcome-container">
+    <!-- 1- WelcomeLogin Screen (Figma frame 374:537, 654:5110 HoudiniText & Blinking Dot Animations) -->
+    <section id="welcomeSection" class="welcome-section" aria-label="Welcome and Login">
+      <div class="welcome-backdrop">
+        <img src="./assets/welcome-gradient.svg" alt="" class="welcome-gradient-img" />
+      </div>
+
+      <div class="welcome-content">
+        <!-- Logo (Figma 426:689) -->
+        <div class="welcome-logo-box">
+          <img src="./assets/sonar-logo.svg" alt="SONAR BSB" class="welcome-logo-img" />
+        </div>
+
+        <!-- Houdini Text Animation (Figma 654:5110) with Uncropped Blinking Sonar Radar Dot -->
+        <div class="houdini-text-container" aria-label="Frequency Found">
+          <div class="houdini-line-wrapper top-line">
+            <h1 class="houdini-text frequency-text">Frequency</h1>
+          </div>
+          <div class="houdini-bottom-row">
+            <div class="houdini-line-wrapper bottom-line">
+              <h2 class="houdini-text found-text">Found</h2>
+            </div>
+            <div class="houdini-blinking-dot" title="Live frequency active">
+              <span class="dot-core"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Login Form (Figma 672:1636, 672:1646, 393:1050) with Interactive Blinking Caret -->
+        <form class="welcome-form" id="welcomeLoginForm" onsubmit="handleLoginSubmit(event)">
+          <div class="welcome-input-group">
+            <input 
+              type="text" 
+              id="loginUsername" 
+              class="welcome-input" 
+              placeholder="Username" 
+              value="johndoe" 
+              required 
+              autocomplete="username"
+            />
+            <span class="welcome-input-indicator" title="Input active"></span>
+          </div>
+
+          <div class="welcome-input-group">
+            <input 
+              type="password" 
+              id="loginPassword" 
+              class="welcome-input" 
+              placeholder="Password" 
+              value="••••••••" 
+              required 
+              autocomplete="current-password"
+            />
+            <span class="welcome-input-indicator" title="Input active"></span>
+          </div>
+
+          <button type="submit" id="btnLoginSubmit" class="btn-login-submit">
+            <span>Login</span>
+          </button>
+
+          <button type="button" class="btn-guest-explore" onclick="handleGuestSubmit()">
+            Explore Events Without Logging In &rarr;
+          </button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    function handleLoginSubmit(e) {
+      if (e) e.preventDefault();
+      const usernameInput = document.getElementById("loginUsername");
+      const username = usernameInput ? usernameInput.value.trim() : "John Doe";
+      sessionStorage.setItem("sonar_user_logged_in", "true");
+      sessionStorage.setItem("sonar_username", username || "John Doe");
+      sessionStorage.setItem("sonar_redirect_from_login", "true");
+      window.location.href = "index.html";
+    }
+
+    function handleGuestSubmit() {
+      sessionStorage.setItem("sonar_user_logged_in", "guest");
+      sessionStorage.setItem("sonar_redirect_from_login", "true");
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>
