@@ -6,7 +6,26 @@ This directory contains versioned snapshots of the Sonar BSB Events web applicat
 
 ## 🏷️ Version History
 
-### Version 1.0 (Production Release — `v1.0`)
+### Version 1.1 (Current Production Release — `v1.1`)
+- **Release Date**: November 2026
+- **Git Tag**: `v1.1`
+- **Original User Prompt**:
+  > *"Version 1.1*  
+  > *Please Make the following adjustments:*  
+  > *- On the login page, in the mobile screen size, the houdini text is distorted and aligned to the left of the screen. Adjust its porportions to the correct ratio, and make it aligned to the center*  
+  > *- On the search screen, in the mobile screen size, only open the touch screen keyboard if one of the text boxes is interacted with*  
+  > *- On the event cards, make the text for the event name, time and location larger, while still mantaining the current alignment inside the cards and in relation to the other cards. You can make the event title and event location span more than one text line. Make adjustments to the cards sizes if necessary"*
+- **Key Features & Changes**:
+  - **Centered & Proportional Houdini Text on Mobile**: Mathematically bound the 5:8 ratio (54px / 86.4px = 0.625) using CSS custom properties with dynamic `clamp(42px, 14vw, 86.4px)` scaling and proportional wrapper heights. Fully centered horizontally across all mobile screens with zero clipping or text squishing.
+  - **Touchscreen Keyboard Only on Direct Interaction**: Suppressed auto-focus on `#searchFormName` for touch and mobile devices in `switchView("search")`. The virtual keyboard now opens only when the user explicitly taps or interacts with one of the search inputs.
+  - **Enlarged Event Card Typography & Uniform Alignment**: Increased card title to 19px (multi-line up to 2 lines), event time to 14px bold, venue location to 13.5px (multi-line up to 2 lines), and ticket price to 24px bold. Card height scaled to 450px with `margin-top: auto` on `.card-actions` ensuring all "Learn More" and direct purchase buttons remain locked to the exact same baseline across all cards.
+  - **Master Handoff Guide**: Full specifications documented in `HANDOFF_V1.1.md`.
+  - **Snapshot Directory**: `versions/v1.1/source/`
+  - **ZIP Package**: `versions/v1.1/sonar-bsb-events-v1.1.zip`
+
+---
+
+### Version 1.0 (Previous Production Release — `v1.0`)
 - **Release Date**: November 2026
 - **Git Tag**: `v1.0`
 - **Original User Prompt**:

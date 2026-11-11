@@ -1,3 +1,7 @@
+This is a personal project. My background is with graphic design, and since the start of 2026 I have started to study and learn about UI/UX design. This project was originally created with Figma in august 2026 for a Skillshare Figma Training program, and in november 2026 vibe coded into an webpage using Antigravity with Gemini 3.8 Flash on High, running on my local machine. This is my first vibe coded project, and i'm open to recieve some feedback on how I can improve my craft and be not only be more efficient but also have better results when vibe coding. Thank you!
+
+
+
 # Sonar BSB - Events Discovery App (Responsive Web Page)
 
 Production-ready responsive web implementation of the **[Sonar BSB Events App v1 Figma Design](https://www.figma.com/design/i3bqFIafJrUlUqn2NMUwIl/Sonar-BSB-EventsApp-v1?node-id=365-525)** (Node `365:525`).
@@ -88,7 +92,54 @@ This log documents each iterative release of the project, recording the exact us
 
 ---
 
-### 🏷️ Version 1.0 (Production Release — `v1.0`)
+### 🏷️ Version 1.1 (Current Release — `v1.1`)
+
+#### 💬 Original User Prompt:
+> *"Version 1.1*  
+> *Please Make the following adjustments:*  
+> *- On the login page, in the mobile screen size, the houdini text is distorted and aligned to the left of the screen. Adjust its porportions to the correct ratio, and make it aligned to the center*  
+> *- On the search screen, in the mobile screen size, only open the touch screen keyboard if one of the text boxes is interacted with*  
+> *- On the event cards, make the text for the event name, time and location larger, while still mantaining the current alignment inside the cards and in relation to the other cards. You can make the event title and event location span more than one text line. Make adjustments to the cards sizes if necessary"*
+
+#### 🧠 Reasoning & Architecture:
+1. **Login Page Houdini Text Mobile Proportions & Centering (Figma 654:5110)**:
+   - *Problem*: In mobile viewports (< 480px), the two lines of the Houdini text reveal ("Frequency" and "Found") appeared distorted and biased to the left margin. Fixed line wrapper heights (52px / 82px) and independent viewport font sizes broke the typographic harmony, while left-aligned flex containers skewed the visual balance against the centered login card and logo.
+   - *Design System Ratio*: Inspected Figma component `654:5110` (`HoudiniText`) via design context: "Frequency" is 54px font size (Regular 500) and "Found" is 86.4px font size (Black 900). The exact ratio is `54 / 86.4 = 0.625` (a clean 5:8 ratio).
+   - *Implementation*:
+     - Bound the two font sizes mathematically using CSS variables: `--houdini-found-size: clamp(42px, 14vw, 86.4px);` and `--houdini-freq-size: calc(var(--houdini-found-size) * 0.625);`.
+     - Replaced fixed wrapper heights with proportional `calc()` values: `calc(var(--houdini-freq-size) * 1.15)` for `.top-line` and `calc(var(--houdini-found-size) * 1.12)` for `.bottom-line`.
+     - Applied `align-items: center; justify-content: center; text-align: center;` to `.houdini-text-container`, `.houdini-line-wrapper.top-line`, `.houdini-bottom-row`, and `.houdini-line-wrapper.bottom-line`.
+     - Scaled letter spacing proportionally (`-0.015em` / `-0.025em`) to eliminate character distortion across all mobile viewport widths (320px–480px).
+     - Scaled the uncropped neon radar dot and spacing dynamically with `clamp(10px, 3vw, 14px)`.
+2. **Search Screen Mobile Virtual Keyboard Suppression**:
+   - *Problem*: In mobile and touchscreen environments, navigating to the search view triggered an automated `focus()` call on `#searchFormName`. On smartphones and tablets, programmatic focus on navigation immediately summons the virtual on-screen keyboard, obscuring over 50% of the viewport and disorienting the user before they can browse the curated search filter buttons.
+   - *Implementation*:
+     - In `app.js` (`switchView("search")`), introduced touch and mobile detection: `const isMobileOrTouch = window.innerWidth <= 768 || ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);`.
+     - On desktop with a hardware keyboard, `searchInput.focus()` continues to execute for immediate typing.
+     - On mobile and touchscreens, automatic focus is bypassed; the virtual touch keyboard will ONLY open when the user explicitly taps or interacts with one of the search text inputs (`#searchFormName`, `#searchFormDate`, `#searchFormLocation`), as requested.
+3. **Event Cards Typography Enlargement & Uniform Geometric Alignment**:
+   - *Problem*: Event titles (16px), times (12px), and venues (12px) were small and hard to read at a glance, especially when exploring Brasília's nightlife lineup on mobile or high-DPI displays. Expanding the typography risked misaligning the "Learn More" and "Purchase" buttons across adjacent cards in the grid.
+   - *Implementation*:
+     - Increased `.card-title` font size to `19px` (weight 800) with a 2-line display clamp (`-webkit-line-clamp: 2`) and fixed title slot height `48px`.
+     - Increased `.card-time` font size to `14px` (weight 700) with `line-height: 1.2`.
+     - Increased `.card-venue` font size to `13.5px` (weight 500) and allowed it to span up to 2 lines (`-webkit-line-clamp: 2; line-height: 1.3`).
+     - Increased `.card-price` font size to `24px` (weight 800) for stronger visual hierarchy.
+     - Expanded `.card-info-row` height to `62px` (from 50px).
+     - Increased overall `.event-card` height to `450px` (from 420px).
+     - Retained `margin-top: auto` on `.card-actions` (height 46px), guaranteeing that all "Learn More" and direct purchase buttons remain locked to the exact same horizontal baseline across every card in the grid, regardless of title or venue line count.
+
+#### 🛠️ Files Modified:
+- `styles.css`: Proportional centered Houdini variables and wrapper heights; enlarged event card typography (title 19px, time 14px, venue 13.5px, price 24px) and card height (450px).
+- `app.js`: Touchscreen/mobile detection in `switchView("search")` to prevent virtual keyboard auto-popup.
+- `index.html`: Updated page title to Version 1.1.
+- `login.html`: Updated page title to Version 1.1.
+- `HANDOFF_V1.1.md`: New production handoff documentation for Version 1.1.
+- `PROJECT_HANDOFF.md`: Updated to point to Version 1.1.
+- `VERSIONS.md` & `README.md`: Version 1.1 changelog and registry entries.
+
+---
+
+### 🏷️ Version 1.0 (Previous Production Release — `v1.0`)
 
 #### 💬 Original User Prompt:
 > *"I think version 0.6.2 is ready to be depolyed. Please check if there's any issues or bugs and if its all clear, save it as version 1.0, and include a handoff file for this conversation named after the version 1.0, and include everything into a zip file"*

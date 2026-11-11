@@ -379,8 +379,13 @@ window.switchView = function(viewName) {
     if (navTabsContainer) navTabsContainer.style.display = "none";
     if (sectionHeaderBlock) sectionHeaderBlock.style.display = "flex";
     if (eventsContainer) eventsContainer.style.display = "grid";
-    const searchInput = document.getElementById("searchFormName");
-    if (searchInput) searchInput.focus();
+    // Version 1.1: On mobile/touch screen sizes, do NOT auto-focus so the virtual touch
+    // keyboard only opens when the user explicitly interacts with/taps one of the input text boxes.
+    const isMobileOrTouch = window.innerWidth <= 768 || ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+    if (!isMobileOrTouch) {
+      const searchInput = document.getElementById("searchFormName");
+      if (searchInput) searchInput.focus();
+    }
   } else if (viewName === "checkout") {
     if (subHeaderNav) subHeaderNav.style.display = "none";
     if (searchFilterPanel) searchFilterPanel.style.display = "none";
