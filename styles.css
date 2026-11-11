@@ -4,6 +4,9 @@
    ========================================================================== */
 
 :root {
+  /* Brand Typography - Single Unified Font Family */
+  --font-family-primary: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
   /* Brand Tokens */
   --color-primary: #f2f862;          /* Neon Lime / Yellow BSB Accent */
   --color-primary-dark: #d8de43;
@@ -36,10 +39,19 @@
   margin: 0;
   padding: 0;
   -webkit-tap-highlight-color: transparent;
+  font-family: var(--font-family-primary);
+}
+
+body,
+button,
+input,
+select,
+textarea {
+  font-family: var(--font-family-primary);
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", Roboto, Arial, sans-serif;
+  font-family: var(--font-family-primary);
   background-color: #27272a;
   color: var(--color-text-main);
   min-height: 100vh;
@@ -1252,7 +1264,7 @@ input:checked + .slider:before {
 }
 
 .card-preview-number {
-  font-family: monospace, sans-serif;
+  font-family: var(--font-family-primary);
   font-size: 18px;
   font-weight: 700;
   letter-spacing: 2px;
@@ -1457,7 +1469,7 @@ input:checked + .slider:before {
 }
 
 .conf-val.mono {
-  font-family: monospace;
+  font-family: var(--font-family-primary);
   color: var(--color-secondary);
 }
 
@@ -1561,17 +1573,19 @@ input:checked + .slider:before {
   }
 }
 
-/* Event Card (Figma EventCard) */
+/* Event Card (Figma EventCard) - Fixed Uniform Size & Button Alignment */
 .event-card {
   background-color: var(--color-white);
   border-radius: 30px;
   padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
   box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.08);
   position: relative;
   transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  height: 420px;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .event-card:hover {
@@ -1582,11 +1596,12 @@ input:checked + .slider:before {
 /* Card Image Box */
 .card-image-box {
   position: relative;
-  height: 200px;
+  height: 185px;
   width: 100%;
   border-radius: 16px;
   overflow: hidden;
   background-color: var(--color-secondary);
+  flex-shrink: 0;
 }
 
 .card-image {
@@ -1619,15 +1634,15 @@ input:checked + .slider:before {
 }
 
 .date-day {
-  font-family: Roboto, sans-serif;
-  font-weight: 200;
+  font-family: var(--font-family-primary);
+  font-weight: 300;
   font-size: 16px;
   line-height: 1.1;
   color: #202020;
 }
 
 .date-month {
-  font-family: Roboto, sans-serif;
+  font-family: var(--font-family-primary);
   font-weight: 700;
   font-size: 13px;
   line-height: 1.1;
@@ -1672,12 +1687,20 @@ input:checked + .slider:before {
 /* Event Title */
 .card-title {
   color: var(--color-secondary);
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 800;
   text-transform: uppercase;
   line-height: 1.25;
   letter-spacing: -0.2px;
-  margin-top: 4px;
+  margin-top: 10px;
+  margin-bottom: 0;
+  height: 40px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-shrink: 0;
 }
 
 /* Venue, Time & Price row */
@@ -1685,61 +1708,112 @@ input:checked + .slider:before {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 12px;
+  gap: 10px;
+  margin-top: 8px;
+  height: 50px;
+  flex-shrink: 0;
 }
 
 .card-venue-time {
-  font-size: 14px;
+  font-size: 13px;
   color: var(--color-text-main);
-  line-height: 1.35;
+  line-height: 1.25;
   flex: 1;
+  min-width: 0;
 }
 
 .card-time {
   font-weight: 700;
   margin-bottom: 2px;
   color: var(--color-text-secondary);
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .card-venue {
   color: #4b5563;
+  font-size: 12px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.25;
 }
 
 .card-price {
   color: var(--color-secondary);
-  font-size: 24px;
-  font-weight: 700;
+  font-size: 22px;
+  font-weight: 800;
   text-align: right;
   white-space: nowrap;
   letter-spacing: -0.5px;
+  line-height: 1;
+  padding-top: 2px;
+}
+
+/* Card Actions Container - Pinned at Equal Height */
+.card-actions {
+  margin-top: auto;
+  display: flex;
+  gap: 8px;
+  height: 46px;
+  width: 100%;
+  flex-shrink: 0;
 }
 
 /* Learn More Action Button */
 .btn-learn-more {
+  flex: 1;
   background-color: var(--color-secondary);
   color: #f2f2f2;
   border: none;
   border-radius: 12px;
   height: 46px;
-  padding: 12px 24px;
   font-family: inherit;
-  font-size: 17px;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 700;
   cursor: pointer;
   box-shadow: var(--shadow-btn);
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  margin-top: 4px;
   transition: all 0.2s ease;
   text-decoration: none;
+  padding: 0 16px;
+  margin: 0;
 }
 
 .btn-learn-more:hover {
   background-color: var(--color-secondary-hover);
   transform: translateY(-2px);
   box-shadow: 0px 6px 14px rgba(63, 50, 211, 0.35);
+}
+
+.btn-purchase-direct {
+  width: 48px;
+  height: 46px;
+  background-color: var(--color-primary);
+  color: #130f40;
+  border: none;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: var(--shadow-btn);
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.btn-purchase-direct:hover {
+  background-color: var(--color-primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0px 6px 14px rgba(242, 248, 98, 0.35);
 }
 
 /* ==========================================================================
@@ -2096,8 +2170,17 @@ input:checked + .slider:before {
   box-shadow: var(--shadow-modal);
   transform: translateY(100%);
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-  padding: 24px 24px 40px;
+  padding: 24px 24px 0 24px;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.mobile-frame .modal-sheet {
+  max-height: 85%;
+  border-bottom-left-radius: 42px;
+  border-bottom-right-radius: 42px;
 }
 
 .modal-overlay.open .modal-sheet {
@@ -2296,10 +2379,20 @@ input:checked + .slider:before {
   align-items: center;
   justify-content: space-between;
   border-top: 1px solid #e2e8f0;
-  padding-top: 20px;
+  padding: 16px 24px 24px;
   position: sticky;
   bottom: 0;
   background: #ffffff;
+  margin-top: 20px;
+  margin-left: -24px;
+  margin-right: -24px;
+  margin-bottom: 0;
+  z-index: 10;
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
+  width: calc(100% + 48px);
+  border-bottom-left-radius: inherit;
+  border-bottom-right-radius: inherit;
 }
 
 .modal-price-box {
@@ -2440,7 +2533,7 @@ input:checked + .slider:before {
 }
 
 .eticket-val.mono {
-  font-family: monospace;
+  font-family: var(--font-family-primary);
   letter-spacing: 0.5px;
   color: var(--color-secondary);
 }

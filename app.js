@@ -266,6 +266,7 @@ const sectionTitleEl = document.getElementById("sectionTitle");
 const sectionSubtitleEl = document.getElementById("sectionSubtitle");
 const eventCountBadge = document.getElementById("eventCountBadge");
 const navTabsContainer = document.getElementById("navTabsContainer");
+const subHeaderNav = document.getElementById("subHeaderNav");
 const searchFilterPanel = document.getElementById("searchFilterPanel");
 const desktopSearchInput = document.getElementById("desktopSearchInput");
 const favBadgeEl = document.getElementById("favBadge");
@@ -314,6 +315,7 @@ window.switchView = function(viewName) {
 
   // 2. Configure visibility based on view
   if (viewName === "search") {
+    if (subHeaderNav) subHeaderNav.style.display = "block";
     if (searchFilterPanel) searchFilterPanel.style.display = "block";
     if (navTabsContainer) navTabsContainer.style.display = "none";
     if (sectionHeaderBlock) sectionHeaderBlock.style.display = "flex";
@@ -321,6 +323,7 @@ window.switchView = function(viewName) {
     const searchInput = document.getElementById("searchFormName");
     if (searchInput) searchInput.focus();
   } else if (viewName === "checkout") {
+    if (subHeaderNav) subHeaderNav.style.display = "none";
     if (searchFilterPanel) searchFilterPanel.style.display = "none";
     if (navTabsContainer) navTabsContainer.style.display = "none";
     if (eventsContainer) eventsContainer.style.display = "none";
@@ -329,6 +332,7 @@ window.switchView = function(viewName) {
     if (checkoutSection) checkoutSection.style.display = "block";
     if (sectionHeaderBlock) sectionHeaderBlock.style.display = "flex";
   } else if (viewName === "payment") {
+    if (subHeaderNav) subHeaderNav.style.display = "none";
     if (searchFilterPanel) searchFilterPanel.style.display = "none";
     if (navTabsContainer) navTabsContainer.style.display = "none";
     if (eventsContainer) eventsContainer.style.display = "none";
@@ -337,6 +341,7 @@ window.switchView = function(viewName) {
     if (sectionHeaderBlock) sectionHeaderBlock.style.display = "none";
     if (paymentSection) paymentSection.style.display = "block";
   } else if (viewName === "confirmation") {
+    if (subHeaderNav) subHeaderNav.style.display = "none";
     if (searchFilterPanel) searchFilterPanel.style.display = "none";
     if (navTabsContainer) navTabsContainer.style.display = "none";
     if (eventsContainer) eventsContainer.style.display = "none";
@@ -345,17 +350,20 @@ window.switchView = function(viewName) {
     if (confirmationSection) confirmationSection.style.display = "block";
     if (sectionHeaderBlock) sectionHeaderBlock.style.display = "none";
   } else if (viewName === "favorites") {
+    if (subHeaderNav) subHeaderNav.style.display = "block";
     if (searchFilterPanel) searchFilterPanel.style.display = "none";
     if (navTabsContainer) navTabsContainer.style.display = "none";
     if (sectionHeaderBlock) sectionHeaderBlock.style.display = "flex";
     if (eventsContainer) eventsContainer.style.display = "flex";
   } else if (viewName === "tickets") {
+    if (subHeaderNav) subHeaderNav.style.display = "block";
     if (searchFilterPanel) searchFilterPanel.style.display = "none";
     if (navTabsContainer) navTabsContainer.style.display = "none";
     if (sectionHeaderBlock) sectionHeaderBlock.style.display = "flex";
     if (eventsContainer) eventsContainer.style.display = "flex";
   } else {
     // Default: Home
+    if (subHeaderNav) subHeaderNav.style.display = "block";
     if (searchFilterPanel) searchFilterPanel.style.display = "none";
     if (navTabsContainer) navTabsContainer.style.display = "flex";
     if (sectionHeaderBlock) sectionHeaderBlock.style.display = "flex";
@@ -644,12 +652,12 @@ function renderEvents() {
           <div class="card-price">${evt.priceFormatted}</div>
         </div>
 
-        <!-- Learn More & Purchase Tickets Actions -->
-        <div style="display: flex; gap: 8px;">
-          <button class="btn-learn-more" style="flex: 1;" onclick="openEventModal('${evt.id}')">
+        <!-- Learn More & Purchase Tickets Actions (Uniform Alignment) -->
+        <div class="card-actions">
+          <button class="btn-learn-more" onclick="openEventModal('${evt.id}')">
             Learn More
           </button>
-          <button class="btn-learn-more" style="width: auto; padding: 0 16px; background-color: var(--color-primary); color: #130f40;" onclick="startCheckout('${evt.id}')" title="Buy Tickets Directly">
+          <button class="btn-purchase-direct" onclick="startCheckout('${evt.id}')" title="Buy Tickets Directly">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
           </button>
         </div>

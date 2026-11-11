@@ -4,9 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sonar BSB - Events Discovery App</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -165,13 +162,6 @@
       <!-- Checkout Flow View (Figma 5.1.1- CheckoutFlow1.1 "Shopping Cart") -->
       <section id="checkoutSection" class="checkout-section" style="display: none;" aria-label="Checkout Flow">
         <div class="checkout-card">
-          <!-- Back to Events Button -->
-          <div class="checkout-top-bar">
-            <button class="btn-back-round" onclick="switchView('home')" title="Back to Events">
-              <img src="./assets/back-button.svg" alt="Back" width="32" height="32" />
-            </button>
-          </div>
-
           <div class="checkout-header-row">
             <div class="checkout-event-details">
               <h2 id="checkoutEventTitle" class="checkout-event-title">Trema Techno: Subsolo Urbano</h2>
@@ -515,248 +505,248 @@
       </div>
     </div>
 
-  </div>
+    <!-- Event Details Modal / Slide-up Sheet (Figma 4.1- EventDetails1) -->
+    <div id="eventModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-sheet">
+        <div class="modal-drag-handle"></div>
+        <button id="modalCloseBtn" class="modal-close-btn" aria-label="Close modal" onclick="closeEventModal()">&times;</button>
 
-  <!-- Event Details Modal / Slide-up Sheet (Figma 4.1- EventDetails1) -->
-  <div id="eventModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <div class="modal-sheet">
-      <div class="modal-drag-handle"></div>
-      <button id="modalCloseBtn" class="modal-close-btn" aria-label="Close modal" onclick="closeEventModal()">&times;</button>
-
-      <div class="modal-image-wrapper">
-        <img id="modalImage" src="" alt="Event Banner" />
-        <div id="modalDateTag" class="modal-date-tag">15 AUG</div>
-      </div>
-
-      <div class="modal-tags">
-        <span id="modalGenre" class="modal-tag">Techno / Industrial</span>
-        <span class="modal-tag tag-verified">Sonar BSB Verified</span>
-      </div>
-
-      <h2 id="modalTitle" class="modal-title">Trema Techno: Subsolo Urbano</h2>
-      <p id="modalTagline" class="modal-tagline">Raw concrete, deep loops.</p>
-
-      <div class="modal-info-grid">
-        <div class="modal-info-item">
-          <span class="modal-info-label">Date & Time</span>
-          <span id="modalDateTime" class="modal-info-val">Saturday, Aug 15 &bull; 22:00h</span>
+        <div class="modal-image-wrapper">
+          <img id="modalImage" src="" alt="Event Banner" />
+          <div id="modalDateTag" class="modal-date-tag">15 AUG</div>
         </div>
-        <div class="modal-info-item">
-          <span class="modal-info-label">Standard Entry</span>
-          <span id="modalPriceHeader" class="modal-info-val price-accent">$ 60.00</span>
+
+        <div class="modal-tags">
+          <span id="modalGenre" class="modal-tag">Techno / Industrial</span>
+          <span class="modal-tag tag-verified">Sonar BSB Verified</span>
         </div>
-        <div class="modal-info-item full-width">
-          <span class="modal-info-label">Venue / Location</span>
-          <span id="modalVenue" class="modal-info-val">Galeria dos Estados, Setor Comercial Sul</span>
+
+        <h2 id="modalTitle" class="modal-title">Trema Techno: Subsolo Urbano</h2>
+        <p id="modalTagline" class="modal-tagline">Raw concrete, deep loops.</p>
+
+        <div class="modal-info-grid">
+          <div class="modal-info-item">
+            <span class="modal-info-label">Date & Time</span>
+            <span id="modalDateTime" class="modal-info-val">Saturday, Aug 15 &bull; 22:00h</span>
+          </div>
+          <div class="modal-info-item">
+            <span class="modal-info-label">Standard Entry</span>
+            <span id="modalPriceHeader" class="modal-info-val price-accent">$ 60.00</span>
+          </div>
+          <div class="modal-info-item full-width">
+            <span class="modal-info-label">Venue / Location</span>
+            <span id="modalVenue" class="modal-info-val">Galeria dos Estados, Setor Comercial Sul</span>
+          </div>
         </div>
-      </div>
 
-      <!-- Section: Event Story -->
-      <div class="modal-section">
-        <h3 class="modal-section-title">Event Details</h3>
-        <p id="modalDesc" class="modal-desc"></p>
-      </div>
-
-      <!-- Section: The Lineup -->
-      <div class="modal-section">
-        <h3 class="modal-section-title">The Lineup</h3>
-        <div id="modalLineupList" class="modal-lineup-list"></div>
-      </div>
-
-      <!-- Section: The Venue Context -->
-      <div class="modal-section">
-        <h3 class="modal-section-title">The Venue</h3>
-        <p id="modalVenueDesc" class="modal-desc"></p>
-      </div>
-
-      <!-- Sticky Footer Buy Ticket Bar -->
-      <div class="modal-footer">
-        <div class="modal-price-box">
-          <span class="modal-price-label">Price per ticket</span>
-          <span id="modalPrice" class="modal-price-value">$ 60.00</span>
+        <!-- Section: Event Story -->
+        <div class="modal-section">
+          <h3 class="modal-section-title">Event Details</h3>
+          <p id="modalDesc" class="modal-desc"></p>
         </div>
-        <button id="modalBuyBtn" class="btn-buy-ticket" onclick="startCheckoutFromModal()">
-          <span>Purchase Tickets</span>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </button>
+
+        <!-- Section: The Lineup -->
+        <div class="modal-section">
+          <h3 class="modal-section-title">The Lineup</h3>
+          <div id="modalLineupList" class="modal-lineup-list"></div>
+        </div>
+
+        <!-- Section: The Venue Context -->
+        <div class="modal-section">
+          <h3 class="modal-section-title">The Venue</h3>
+          <p id="modalVenueDesc" class="modal-desc"></p>
+        </div>
+
+        <!-- Sticky Footer Buy Ticket Bar -->
+        <div class="modal-footer">
+          <div class="modal-price-box">
+            <span class="modal-price-label">Price per ticket</span>
+            <span id="modalPrice" class="modal-price-value">$ 60.00</span>
+          </div>
+          <button id="modalBuyBtn" class="btn-buy-ticket" onclick="startCheckoutFromModal()">
+            <span>Purchase Tickets</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- E-Ticket Popup Modal (Figma 7.3.2- ETicketPopUp) -->
-  <div id="ticketModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="ticketModalTitle">
-    <div class="eticket-card">
-      <div class="eticket-header">
-        <h2 id="ticketModalTitle" class="eticket-title">E-Ticket</h2>
-        <button class="modal-close-btn" onclick="closeTicketModal()">&times;</button>
-      </div>
-
-      <div class="eticket-qr-box">
-        <!-- High-fidelity Vector QR Code -->
-        <svg class="eticket-qr-svg" viewBox="0 0 200 200" fill="currentColor">
-          <rect width="200" height="200" fill="white" />
-          <!-- QR pattern elements -->
-          <rect x="20" y="20" width="45" height="45" rx="6" fill="#3F32D3"/>
-          <rect x="26" y="26" width="33" height="33" rx="3" fill="white"/>
-          <rect x="33" y="33" width="19" height="19" fill="#3F32D3"/>
-
-          <rect x="135" y="20" width="45" height="45" rx="6" fill="#3F32D3"/>
-          <rect x="141" y="26" width="33" height="33" rx="3" fill="white"/>
-          <rect x="148" y="33" width="19" height="19" fill="#3F32D3"/>
-
-          <rect x="20" y="135" width="45" height="45" rx="6" fill="#3F32D3"/>
-          <rect x="26" y="141" width="33" height="33" rx="3" fill="white"/>
-          <rect x="33" y="148" width="19" height="19" fill="#3F32D3"/>
-
-          <!-- Decorative matrix bits -->
-          <rect x="75" y="25" width="10" height="10" fill="#1D1D1D"/>
-          <rect x="95" y="25" width="10" height="10" fill="#1D1D1D"/>
-          <rect x="115" y="25" width="10" height="10" fill="#1D1D1D"/>
-          <rect x="75" y="45" width="10" height="10" fill="#3F32D3"/>
-          <rect x="85" y="55" width="10" height="10" fill="#1D1D1D"/>
-          <rect x="105" y="45" width="10" height="10" fill="#1D1D1D"/>
-          
-          <rect x="25" y="75" width="10" height="10" fill="#1D1D1D"/>
-          <rect x="45" y="85" width="10" height="10" fill="#3F32D3"/>
-          <rect x="25" y="105" width="10" height="10" fill="#1D1D1D"/>
-
-          <rect x="75" y="75" width="50" height="50" rx="4" fill="#3F32D3"/>
-          <path d="M85 88h30M85 100h30M85 112h30" stroke="#F2F862" stroke-width="3" stroke-linecap="round"/>
-
-          <rect x="135" y="75" width="10" height="10" fill="#1D1D1D"/>
-          <rect x="155" y="85" width="10" height="10" fill="#1D1D1D"/>
-          <rect x="145" y="105" width="10" height="10" fill="#3F32D3"/>
-
-          <rect x="75" y="135" width="10" height="10" fill="#1D1D1D"/>
-          <rect x="95" y="145" width="10" height="10" fill="#1D1D1D"/>
-          <rect x="115" y="135" width="10" height="10" fill="#1D1D1D"/>
-          <rect x="85" y="165" width="10" height="10" fill="#3F32D3"/>
-          <rect x="105" y="165" width="10" height="10" fill="#1D1D1D"/>
-
-          <rect x="135" y="135" width="45" height="10" fill="#1D1D1D"/>
-          <rect x="135" y="155" width="25" height="10" fill="#1D1D1D"/>
-          <rect x="165" y="165" width="15" height="15" fill="#3F32D3"/>
-        </svg>
-      </div>
-
-      <div class="eticket-details-table">
-        <div class="eticket-row">
-          <span class="eticket-label">Event</span>
-          <span id="ticketEventTitle" class="eticket-val title-val">Trema Techno: Subsolo Urbano</span>
+    <!-- E-Ticket Popup Modal (Figma 7.3.2- ETicketPopUp) -->
+    <div id="ticketModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="ticketModalTitle">
+      <div class="eticket-card">
+        <div class="eticket-header">
+          <h2 id="ticketModalTitle" class="eticket-title">E-Ticket</h2>
+          <button class="modal-close-btn" onclick="closeTicketModal()">&times;</button>
         </div>
-        <div class="eticket-row">
-          <span class="eticket-label">Transaction ID</span>
-          <span id="ticketTransactionId" class="eticket-val mono">#WFHT100492</span>
-        </div>
-        <div class="eticket-row">
-          <span class="eticket-label">Date & Time</span>
-          <span id="ticketDateTime" class="eticket-val">11:49 15/08/2026</span>
-        </div>
-        <div class="eticket-row">
-          <span class="eticket-label">Payment</span>
-          <span id="ticketPayment" class="eticket-val">Mastercard &bull;&bull;&bull;&bull; 2304</span>
-        </div>
-        <div class="eticket-row">
-          <span class="eticket-label">Status</span>
-          <span class="eticket-val status-approved">Approved</span>
-        </div>
-      </div>
 
-      <div class="eticket-actions">
-        <button class="btn-ticket-action" onclick="window.print()">Save PDF / Print</button>
-        <button class="btn-ticket-action btn-primary-action" onclick="closeTicketModal()">Done</button>
+        <div class="eticket-qr-box">
+          <!-- High-fidelity Vector QR Code -->
+          <svg class="eticket-qr-svg" viewBox="0 0 200 200" fill="currentColor">
+            <rect width="200" height="200" fill="white" />
+            <!-- QR pattern elements -->
+            <rect x="20" y="20" width="45" height="45" rx="6" fill="#3F32D3"/>
+            <rect x="26" y="26" width="33" height="33" rx="3" fill="white"/>
+            <rect x="33" y="33" width="19" height="19" fill="#3F32D3"/>
+
+            <rect x="135" y="20" width="45" height="45" rx="6" fill="#3F32D3"/>
+            <rect x="141" y="26" width="33" height="33" rx="3" fill="white"/>
+            <rect x="148" y="33" width="19" height="19" fill="#3F32D3"/>
+
+            <rect x="20" y="135" width="45" height="45" rx="6" fill="#3F32D3"/>
+            <rect x="26" y="141" width="33" height="33" rx="3" fill="white"/>
+            <rect x="33" y="148" width="19" height="19" fill="#3F32D3"/>
+
+            <!-- Decorative matrix bits -->
+            <rect x="75" y="25" width="10" height="10" fill="#1D1D1D"/>
+            <rect x="95" y="25" width="10" height="10" fill="#1D1D1D"/>
+            <rect x="115" y="25" width="10" height="10" fill="#1D1D1D"/>
+            <rect x="75" y="45" width="10" height="10" fill="#3F32D3"/>
+            <rect x="85" y="55" width="10" height="10" fill="#1D1D1D"/>
+            <rect x="105" y="45" width="10" height="10" fill="#1D1D1D"/>
+            
+            <rect x="25" y="75" width="10" height="10" fill="#1D1D1D"/>
+            <rect x="45" y="85" width="10" height="10" fill="#3F32D3"/>
+            <rect x="25" y="105" width="10" height="10" fill="#1D1D1D"/>
+
+            <rect x="75" y="75" width="50" height="50" rx="4" fill="#3F32D3"/>
+            <path d="M85 88h30M85 100h30M85 112h30" stroke="#F2F862" stroke-width="3" stroke-linecap="round"/>
+
+            <rect x="135" y="75" width="10" height="10" fill="#1D1D1D"/>
+            <rect x="155" y="85" width="10" height="10" fill="#1D1D1D"/>
+            <rect x="145" y="105" width="10" height="10" fill="#3F32D3"/>
+
+            <rect x="75" y="135" width="10" height="10" fill="#1D1D1D"/>
+            <rect x="95" y="145" width="10" height="10" fill="#1D1D1D"/>
+            <rect x="115" y="135" width="10" height="10" fill="#1D1D1D"/>
+            <rect x="85" y="165" width="10" height="10" fill="#3F32D3"/>
+            <rect x="105" y="165" width="10" height="10" fill="#1D1D1D"/>
+
+            <rect x="135" y="135" width="45" height="10" fill="#1D1D1D"/>
+            <rect x="135" y="155" width="25" height="10" fill="#1D1D1D"/>
+            <rect x="165" y="165" width="15" height="15" fill="#3F32D3"/>
+          </svg>
+        </div>
+
+        <div class="eticket-details-table">
+          <div class="eticket-row">
+            <span class="eticket-label">Event</span>
+            <span id="ticketEventTitle" class="eticket-val title-val">Trema Techno: Subsolo Urbano</span>
+          </div>
+          <div class="eticket-row">
+            <span class="eticket-label">Transaction ID</span>
+            <span id="ticketTransactionId" class="eticket-val mono">#WFHT100492</span>
+          </div>
+          <div class="eticket-row">
+            <span class="eticket-label">Date & Time</span>
+            <span id="ticketDateTime" class="eticket-val">11:49 15/08/2026</span>
+          </div>
+          <div class="eticket-row">
+            <span class="eticket-label">Payment</span>
+            <span id="ticketPayment" class="eticket-val">Mastercard &bull;&bull;&bull;&bull; 2304</span>
+          </div>
+          <div class="eticket-row">
+            <span class="eticket-label">Status</span>
+            <span class="eticket-val status-approved">Approved</span>
+          </div>
+        </div>
+
+        <div class="eticket-actions">
+          <button class="btn-ticket-action" onclick="window.print()">Save PDF / Print</button>
+          <button class="btn-ticket-action btn-primary-action" onclick="closeTicketModal()">Done</button>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- User Profile Modal (Figma 7.1- UserProfile with Edit Photo & Profile) -->
-  <div id="profileModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="profileTitle">
-    <div class="profile-card">
-      
-      <!-- 1. View Profile Mode (Default) -->
-      <div id="profileViewMode" class="profile-subview">
-        <div class="profile-header">
-          <h2 id="profileTitle" class="profile-heading">My Profile</h2>
-          <button class="modal-close-btn" onclick="closeProfileModal()">&times;</button>
+    <!-- User Profile Modal (Figma 7.1- UserProfile with Edit Photo & Profile) -->
+    <div id="profileModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="profileTitle">
+      <div class="profile-card">
+        
+        <!-- 1. View Profile Mode (Default) -->
+        <div id="profileViewMode" class="profile-subview">
+          <div class="profile-header">
+            <h2 id="profileTitle" class="profile-heading">My Profile</h2>
+            <button class="modal-close-btn" onclick="closeProfileModal()">&times;</button>
+          </div>
+
+          <div class="profile-avatar-large">
+            <img id="profileAvatarLargeImg" src="./assets/profile-picture.png" alt="Profile Large" />
+          </div>
+
+          <h3 class="profile-user-name">John Doe</h3>
+          <p class="profile-user-email">johndoe@mail.com</p>
+          <div class="profile-badge-vip">Sonar Club VIP &bull; Brasília</div>
+
+          <div class="profile-actions-list">
+            <button class="profile-action-btn primary" onclick="closeProfileModal(); switchView('tickets');">
+              My Tickets and Events
+            </button>
+            <button class="profile-action-btn secondary" onclick="closeProfileModal(); switchView('favorites');">
+              Saved Favorites
+            </button>
+            <button class="profile-action-btn tertiary" onclick="toggleEditProfileView(true)">
+              Edit Profile
+            </button>
+          </div>
         </div>
 
-        <div class="profile-avatar-large">
-          <img id="profileAvatarLargeImg" src="./assets/profile-picture.png" alt="Profile Large" />
-        </div>
+        <!-- 2. Edit Profile Mode -->
+        <div id="profileEditMode" class="profile-subview" style="display: none;">
+          <div class="profile-header">
+            <h2 class="profile-heading">Edit Profile</h2>
+            <button class="modal-close-btn" onclick="toggleEditProfileView(false)">&times;</button>
+          </div>
 
-        <h3 class="profile-user-name">John Doe</h3>
-        <p class="profile-user-email">johndoe@mail.com</p>
-        <div class="profile-badge-vip">Sonar Club VIP &bull; Brasília</div>
+          <!-- Interactive Profile Picture Picker -->
+          <div class="edit-avatar-wrapper" onclick="triggerProfilePicUpload()" title="Click to upload profile photo">
+            <div class="edit-avatar-preview">
+              <img id="editAvatarPreviewImg" src="./assets/profile-picture.png" alt="Edit Avatar" />
+              <div class="avatar-edit-overlay">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                <span>Change</span>
+              </div>
+            </div>
+            <div class="avatar-camera-badge">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+            </div>
+            <input type="file" id="profileImageFileInput" accept="image/*" style="display: none;" onchange="handleProfilePicSelected(event)" />
+          </div>
 
-        <div class="profile-actions-list">
-          <button class="profile-action-btn primary" onclick="closeProfileModal(); switchView('tickets');">
-            My Tickets and Events
+          <button type="button" class="btn-upload-photo" onclick="triggerProfilePicUpload()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            Upload New Photo
           </button>
-          <button class="profile-action-btn secondary" onclick="closeProfileModal(); switchView('favorites');">
-            Saved Favorites
-          </button>
-          <button class="profile-action-btn tertiary" onclick="toggleEditProfileView(true)">
-            Edit Profile
-          </button>
-        </div>
-      </div>
 
-      <!-- 2. Edit Profile Mode -->
-      <div id="profileEditMode" class="profile-subview" style="display: none;">
-        <div class="profile-header">
-          <h2 class="profile-heading">Edit Profile</h2>
-          <button class="modal-close-btn" onclick="toggleEditProfileView(false)">&times;</button>
-        </div>
+          <!-- Form fields -->
+          <div class="edit-profile-fields">
+            <div class="form-group">
+              <label class="form-label" for="editProfileNameInput">Full Name</label>
+              <input type="text" id="editProfileNameInput" class="form-input" value="John Doe" placeholder="Your name" />
+            </div>
 
-        <!-- Interactive Profile Picture Picker -->
-        <div class="edit-avatar-wrapper" onclick="triggerProfilePicUpload()" title="Click to upload profile photo">
-          <div class="edit-avatar-preview">
-            <img id="editAvatarPreviewImg" src="./assets/profile-picture.png" alt="Edit Avatar" />
-            <div class="avatar-edit-overlay">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-              <span>Change</span>
+            <div class="form-group">
+              <label class="form-label" for="editProfileEmailInput">Email Address</label>
+              <input type="email" id="editProfileEmailInput" class="form-input" value="johndoe@mail.com" placeholder="Your email" />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="editProfilePhotoUrlInput">Or Photo Web URL</label>
+              <input type="url" id="editProfilePhotoUrlInput" class="form-input" placeholder="https://example.com/avatar.jpg" oninput="handlePhotoUrlInput(event)" />
             </div>
           </div>
-          <div class="avatar-camera-badge">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-          </div>
-          <input type="file" id="profileImageFileInput" accept="image/*" style="display: none;" onchange="handleProfilePicSelected(event)" />
-        </div>
 
-        <button type="button" class="btn-upload-photo" onclick="triggerProfilePicUpload()">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-          Upload New Photo
-        </button>
-
-        <!-- Form fields -->
-        <div class="edit-profile-fields">
-          <div class="form-group">
-            <label class="form-label" for="editProfileNameInput">Full Name</label>
-            <input type="text" id="editProfileNameInput" class="form-input" value="John Doe" placeholder="Your name" />
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="editProfileEmailInput">Email Address</label>
-            <input type="email" id="editProfileEmailInput" class="form-input" value="johndoe@mail.com" placeholder="Your email" />
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="editProfilePhotoUrlInput">Or Photo Web URL</label>
-            <input type="url" id="editProfilePhotoUrlInput" class="form-input" placeholder="https://example.com/avatar.jpg" oninput="handlePhotoUrlInput(event)" />
+          <div class="profile-actions-list">
+            <button class="profile-action-btn primary" onclick="saveProfileChanges()">
+              Save Changes
+            </button>
+            <button class="profile-action-btn tertiary" onclick="toggleEditProfileView(false)">
+              Cancel
+            </button>
           </div>
         </div>
 
-        <div class="profile-actions-list">
-          <button class="profile-action-btn primary" onclick="saveProfileChanges()">
-            Save Changes
-          </button>
-          <button class="profile-action-btn tertiary" onclick="toggleEditProfileView(false)">
-            Cancel
-          </button>
-        </div>
       </div>
-
     </div>
+
   </div>
 
   <!-- Toast Notification Container -->
