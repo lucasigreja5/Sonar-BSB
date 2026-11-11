@@ -296,15 +296,35 @@ function initApp() {
   }
 
   updateBadges();
+  setupNavEventListeners();
 
-  // If already logged in this session, show Home; otherwise show 1- WelcomeLogin with Houdini animation
-  if (sessionStorage.getItem("sonar_user_logged_in")) {
-    switchView("home");
-  } else {
+  // If hash is #welcome or explicitly logged out, show welcome; otherwise default to home
+  if (window.location.hash === "#welcome" || sessionStorage.getItem("sonar_user_logged_in") === "welcome") {
     switchView("welcome");
+  } else {
+    switchView("home");
   }
 
   setupKeyboardShortcuts();
+}
+
+function setupNavEventListeners() {
+  const navItems = [
+    { id: "navHomeBtn", view: "home" },
+    { id: "navSearchBtn", view: "search" },
+    { id: "navFavBtn", view: "favorites" },
+    { id: "navTicketBtn", view: "tickets" }
+  ];
+
+  navItems.forEach(({ id, view }) => {
+    const btn = document.getElementById(id);
+    if (btn) {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        switchView(view);
+      });
+    }
+  });
 }
 
 // ============================================================================
@@ -1325,7 +1345,7 @@ window.continueAsGuest = function() {
 };
 
 window.handleLogout = function() {
-  sessionStorage.removeItem("sonar_user_logged_in");
+  sessionStorage.setItem("sonar_user_logged_in", "welcome");
   closeProfileModal();
   showToast("Logged out successfully");
   switchView("welcome");
