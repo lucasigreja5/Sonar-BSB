@@ -298,11 +298,11 @@ function initApp() {
   updateBadges();
   setupNavEventListeners();
 
-  // If hash is #welcome or explicitly logged out, show welcome; otherwise default to home
-  if (window.location.hash === "#welcome" || sessionStorage.getItem("sonar_user_logged_in") === "welcome") {
-    switchView("welcome");
-  } else {
+  // If user is already logged in or explored in this session, show home; otherwise show 1- WelcomeLogin
+  if (sessionStorage.getItem("sonar_user_logged_in") === "true" || sessionStorage.getItem("sonar_user_logged_in") === "guest") {
     switchView("home");
+  } else {
+    switchView("welcome");
   }
 
   setupKeyboardShortcuts();
@@ -337,13 +337,19 @@ window.switchView = function(viewName) {
   if (viewName === "welcome") {
     if (welcomeSection) {
       welcomeSection.style.display = "flex";
-      // Re-trigger Houdini animation on view entry
+      // Re-trigger Houdini animation & blinking radar dot on view entry
       const hTexts = welcomeSection.querySelectorAll(".houdini-text");
       hTexts.forEach(el => {
         el.style.animation = "none";
         el.offsetHeight; /* trigger reflow */
         el.style.animation = "";
       });
+      const hDot = welcomeSection.querySelector(".houdini-blinking-dot");
+      if (hDot) {
+        hDot.style.animation = "none";
+        hDot.offsetHeight; /* trigger reflow */
+        hDot.style.animation = "";
+      }
     }
     if (siteHeader) siteHeader.style.display = "none";
     if (mainScrollContent) mainScrollContent.style.display = "none";
@@ -1345,7 +1351,7 @@ window.continueAsGuest = function() {
 };
 
 window.handleLogout = function() {
-  sessionStorage.setItem("sonar_user_logged_in", "welcome");
+  sessionStorage.removeItem("sonar_user_logged_in");
   closeProfileModal();
   showToast("Logged out successfully");
   switchView("welcome");

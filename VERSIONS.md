@@ -6,7 +6,26 @@ This directory contains versioned snapshots of the Sonar BSB Events web applicat
 
 ## 🏷️ Version History
 
-### Version 0.5 (Current Working Version — `v0.5`)
+### Version 0.6 (Current Working Version — `v0.6`)
+- **Release Date**: November 2026
+- **Git Tag**: `v0.6`
+- **Original User Prompt**:
+  > *"Version 0.6 Please make the following adjustments, and start adding the list of version adjustments to the readme file, including the orginal prompt and your reasoning on how it was implemented - Create a login page from the frame "1- WelcomeLogin" on the figma file, with including the houdini text and blinking dot animations"*
+- **Key Features & Changes**:
+  - **1- WelcomeLogin Dedicated Login Page**: Faithful implementation of Figma frame `1- WelcomeLogin` (node `374:537`), active as both the integrated entry screen in `index.html` and as a standalone `login.html` page.
+  - **Houdini Text Animation**: Signature upward escape/reveal animation for "Frequency" and "Found" in neon yellow `#F2F862` with cubic-bezier easing.
+  - **Multi-Layer Blinking Dot Animations**:
+    - Sonar radar ping dot next to "Found" with neon yellow core and acoustic ripple rings (`@keyframes sonarPing` and `@keyframes dotBlink`).
+    - Live frequency radar status badge with pulsating green indicator (`LIVE FREQUENCY • BRASÍLIA DF`).
+    - Form input focus blinking caret/dot indicators for active typing.
+    - Ambient floating frequency nodes twinkling across the mesh gradient.
+  - **Header Login Button**: Added a direct shortcut in the app header to quickly view or return to the login screen.
+  - **Snapshot Directory**: `versions/v0.6/source/`
+  - **ZIP Package**: `versions/v0.6/sonar-bsb-events-v0.6.zip`
+
+---
+
+### Version 0.5 (Previous Working Version — `v0.5`)
 - **Release Date**: November 2026
 - **Git Tag**: `v0.5`
 - **Key Features & Changes**:

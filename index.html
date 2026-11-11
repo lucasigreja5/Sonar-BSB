@@ -8,10 +8,16 @@
 </head>
 <body>
 
-  <!-- 1- WelcomeLogin Screen (Figma frame 374:537 & 654:5110 HoudiniText) -->
+  <!-- 1- WelcomeLogin Screen (Figma frame 374:537, 654:5110 HoudiniText & Blinking Dot Animations) -->
   <section id="welcomeSection" class="welcome-section" style="display: none;" aria-label="Welcome and Login">
     <div class="welcome-backdrop">
       <img src="./assets/welcome-gradient.svg" alt="" class="welcome-gradient-img" />
+      <div class="ambient-dots-layer" aria-hidden="true">
+        <span class="ambient-dot dot-top-left"></span>
+        <span class="ambient-dot dot-mid-right"></span>
+        <span class="ambient-dot dot-bottom-left"></span>
+        <span class="ambient-dot dot-top-right"></span>
+      </div>
     </div>
 
     <div class="welcome-content">
@@ -20,17 +26,28 @@
         <img src="./assets/sonar-logo.svg" alt="SONAR BSB" class="welcome-logo-img" />
       </div>
 
-      <!-- Houdini Text Animation (Figma 654:5110) -->
+      <!-- Live Frequency Radar Status Badge with Blinking Dot -->
+      <div class="welcome-status-badge">
+        <span class="blinking-status-dot"></span>
+        <span class="status-badge-text">LIVE FREQUENCY &bull; BRASÍLIA DF</span>
+      </div>
+
+      <!-- Houdini Text Animation (Figma 654:5110) with Signature Blinking Sonar Radar Dot -->
       <div class="houdini-text-container" aria-label="Frequency Found">
         <div class="houdini-line-wrapper top-line">
           <h1 class="houdini-text frequency-text">Frequency</h1>
         </div>
         <div class="houdini-line-wrapper bottom-line">
           <h2 class="houdini-text found-text">Found</h2>
+          <div class="houdini-blinking-dot" title="Live frequency active">
+            <span class="dot-core"></span>
+            <span class="dot-ring ring-1"></span>
+            <span class="dot-ring ring-2"></span>
+          </div>
         </div>
       </div>
 
-      <!-- Login Form (Figma 672:1636, 672:1646, 393:1050) -->
+      <!-- Login Form (Figma 672:1636, 672:1646, 393:1050) with Interactive Blinking Caret -->
       <form class="welcome-form" id="welcomeLoginForm" onsubmit="handleWelcomeLogin(event)">
         <div class="welcome-input-group">
           <input 
@@ -42,6 +59,7 @@
             required 
             autocomplete="username"
           />
+          <span class="welcome-input-indicator" title="Input active"></span>
         </div>
 
         <div class="welcome-input-group">
@@ -54,6 +72,7 @@
             required 
             autocomplete="current-password"
           />
+          <span class="welcome-input-indicator" title="Input active"></span>
         </div>
 
         <button type="submit" id="btnLoginSubmit" class="btn-login-submit">
@@ -91,6 +110,12 @@
             />
             <span class="search-kbd-shortcut">/</span>
           </div>
+
+          <!-- Login Screen Navigation Pill -->
+          <button class="header-login-btn" onclick="switchView('welcome')" title="View Welcome / Login Page">
+            <span class="blinking-status-dot mini"></span>
+            <span>Login Page</span>
+          </button>
 
           <!-- Profile Avatar Button -->
           <button id="profileAvatarBtn" class="profile-avatar-btn" title="View Profile" onclick="openProfileModal()">

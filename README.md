@@ -82,9 +82,84 @@ Extracted directly from the Figma design tokens & variables:
 
 ---
 
-## 🏷️ Version History
+## 📜 Version Adjustments & Changelog (Prompts, Reasoning & Implementation)
 
-- **`V-1.0`** (Initial Release): Complete Figma design implementation of Sonar BSB Events discovery app, including responsive web mode, 1:1 mobile frame mode, 9-event lineup, search flow, favorites, event details sheet, full checkout flow with payment selection & card popup, e-ticket wallet, and user profile management.
+This log documents each iterative release of the project, recording the exact user prompt, the engineering reasoning, and the technical implementation details.
+
+---
+
+### 🏷️ Version 0.6 (Current Release — `v0.6`)
+
+#### 💬 Original User Prompt:
+> *"Version 0.6*  
+> *Please make the following adjustments, and start adding the list of version adjustments to the readme file, including the orginal prompt and your reasoning on how it was implemented*  
+> *- Create a login page from the frame "1- WelcomeLogin" on the figma file, with including the houdini text and blinking dot animations"*
+
+#### 🧠 Reasoning & Architecture:
+1. **Login Page Experience (`1- WelcomeLogin` / Figma node `374:537`)**:
+   - The user requested a genuine login page rather than immediately landing on the events home feed.
+   - We implemented a dual-access pattern:
+     - **Integrated SPA Login Flow**: In `index.html`, when unauthenticated, the application opens directly to the full-screen `welcomeSection` representing `1- WelcomeLogin`. Submitting credentials (or continuing as guest) transitions smoothly into the app with a welcome toast.
+     - **Standalone Page (`login.html`)**: Created a dedicated `login.html` file matching Figma node `374:537` 1:1, allowing direct testing or standalone bookmarking.
+     - **Header & Profile Navigation**: Added an interactive "Login Page" pill button in the site header and a "Sign Out (Back to Login Screen)" button in the profile modal so users can easily toggle between the login screen and the event feed.
+2. **Houdini Text Animation (`654:5110`)**:
+   - Recreated the overflow-clipped upward escape/reveal animation for "Frequency" (50.4px height frame, Helvetica Neue Regular 500) and "Found" (73.44px height frame, Helvetica Neue Black 900) in neon yellow (`#F2F862`) with cubic-bezier easing (`cubic-bezier(0.16, 1, 0.3, 1)`).
+3. **Multi-Layer Blinking Dot Animations**:
+   - **Signature Sonar Radar Ping Dot**: Integrated a glowing neon yellow core (`.dot-core`) with expanding acoustic ripple rings (`.dot-ring`, `@keyframes sonarPing`) immediately beside "Found", evoking an active sonar frequency ping.
+   - **Live Frequency Status Badge**: Positioned a pill badge (`.welcome-status-badge`) with a pulsing green live radar dot (`.blinking-status-dot`) reading `LIVE FREQUENCY • BRASÍLIA DF`.
+   - **Form Input Focus Caret**: Real-time glowing green blinking indicator (`.welcome-input-indicator`) beside each input field upon active focus.
+   - **Ambient Floating Particle Grid**: Scattered ambient frequency dots (`.ambient-dot`, `@keyframes ambientBlink`) gently twinkling across the blue mesh gradient backdrop.
+
+#### 🛠️ Files Modified:
+- `index.html`: Enhanced `welcomeSection` with blinking dot elements, status badge, and added header login shortcut.
+- `styles.css`: Added keyframe animations (`@keyframes sonarPing`, `@keyframes dotBlink`, `@keyframes ambientBlink`, `@keyframes statusPulse`), input indicator styles, and header button styling.
+- `app.js`: Updated view transition logic and animation resets for the blinking dots on entry.
+- `login.html`: Standalone login page implementation.
+- `VERSIONS.md` & `README.md`: Version registry updates.
+
+---
+
+### 🏷️ Version 0.5 (`v0.5`)
+
+#### 💬 Original User Prompt:
+> *"The bottom nav bar stopped working after the latest adjustments, please make it work again like it was on the previous version. Lets start naming versions, and keeping the older versions saved on the folder, so we can revert back to previous versions if necessary. Lets make this one version 0.5, and keep adding subversions from now on until its ready to be published."*
+
+#### 🧠 Reasoning & Architecture:
+1. **Diagnosis & Root Cause Analysis**:
+   - Discovered an orphaned CSS closing brace in `styles.css` right before the `.nav-item` rules. Browser CSS parsers skipped the `.nav-item` selector block due to the syntax error.
+   - Without `position: relative; z-index: 10;`, the buttons fell behind the dock background (`.dock-bg-layer`), which lacked `pointer-events: none;` and intercepted all user clicks.
+   - In `index.html`, the container had `class="bottom-nav-container"` without `id="bottomNavContainer"`, causing `getElementById` in `app.js` to return `null`.
+2. **Technical Fixes**:
+   - Cleaned the CSS syntax error in `styles.css`.
+   - Added `pointer-events: none;` to `.dock-bg-layer` so background decoration never blocks click hits.
+   - Assigned `.nav-item` `position: relative; z-index: 10; pointer-events: auto; cursor: pointer;`.
+   - Added programmatic click listeners in `setupNavEventListeners()` inside `app.js` to guarantee responsiveness.
+3. **Version Archiving System**:
+   - Created the `versions/` folder structure storing unpacked source code and zip files for each historical milestone (`versions/v0.4/` and `versions/v0.5/`).
+   - Tagged releases in Git (`v0.4`, `v0.5`) and published `VERSIONS.md`.
+
+---
+
+### 🏷️ Version 0.4 (`v0.4`)
+
+#### 💬 Original User Prompt:
+> *- "On all pages that the event card appears, make sure that all cards have the same sizes, and that the learn more and purchase buttons inside the card are all at the same height related to the card. You can adjust fonts sizes and spacings as necessary to achieve this result*  
+> *- Inside the learn more popup, make sure that the price per tickets and purchase tickets bottom element spans the whole height of the card, leaving no empty space under it*  
+> *- Inside the shopping cart and checkout flow, remove the return buttom at the top left that would return to home*  
+> *- In all pages, try to use only the helvetica neue font, keeping the styles"*
+
+#### 🧠 Reasoning & Architecture:
+- Standardized `.event-card` to flexbox layout with uniform height (`height: 100%; min-height: 440px`), card description clamp, and `margin-top: auto` on `.event-card-actions` so all "Learn More" and "Purchase" buttons align horizontally across all cards.
+- Restructured `.event-sheet-footer` with `position: sticky; bottom: 0; padding: 20px 24px;` and background fill to eliminate dead space under the ticket CTA.
+- Removed return-to-home chevron buttons in cart and payment selection flows to streamline checkout.
+- Standardized global typography strictly to `Helvetica Neue` with consistent weights across all components.
+
+---
+
+### 🏷️ Earlier Milestones (V-1.0 Initial Foundation)
+- Initial translation of the 9-event database from Brasília DF underground electronic scene.
+- Dual-view mode (responsive web + mobile simulation).
+- Complete checkout flow, credit card popup (Figma 5.3), e-ticket modal (Figma 7.3.2), and user profile management.
 
 ---
 
