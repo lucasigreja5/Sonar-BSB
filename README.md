@@ -92,7 +92,17 @@ This log documents each iterative release of the project, recording the exact us
 
 ---
 
-### 🏷️ Version 1.3 (Current Release — `v1.3`)
+### 🏷️ Version 1.3.1 (Current Release — `v1.3.1`)
+
+- **Weekend-Focused Dynamic Dates (`Thu–Sun`)**:
+  - Updated `resolveCurrentMonthDate()` and `resolveUpcomingMonthDate()` in `app.js` using `PREFERRED_EVENT_WEEKDAYS` (`Thursday–Sunday`) and `WEEKEND_DAY_ROTATIONS` so all dynamic **This Month** and **Upcoming** (`+1/+2` months) events avoid Monday, Tuesday, and Wednesday across standard dates, month-end boundaries, year rollovers, and leap/non-leap February.
+  - Preserved **Today** events anchored strictly to the user's local open date.
+- **Native System Calendar Picker on Search (`#searchFormDate`)**:
+  - Converted the **Event Date** input on the Search screen to `<input type="date">` with a custom calendar trigger overlay (`showPicker()` on click + native `::-webkit-calendar-picker-indicator` hotspot), inline SVG calendar icon, hover/focus highlight, clear (`×`) button (`clearSearchDate()`), exact ISO date filtering (`evt.dateISO === qDate`), and preserved the mobile rule that blurs active inputs so virtual keyboards never open uninvited on entering Search.
+- **CONIC: Frequency 404 Centered Cover Placeholder**:
+  - Replaced `assets/event-conic404.png` (which previously placed text at the bottom edge) with a centered `1024×1024` Sonar BSB wireframe neon placeholder (`CONIC: FREQUENCY 404 • COVER PLACEHOLDER • ARTWORK PENDING • SCHEDULED FOR V1.3.2`). Together with the 7 graphic neon posters from `v1.3`, these 8 pending covers are queued for `gemini-3.1-flash-image` regeneration in `v1.3.2` after quota reset.
+
+### 🏷️ Version 1.3 (Previous Release — `v1.3`)
 
 - **27-Event Dynamic Catalog (+18 New Mock Events Across All 3 Categories)**:
   - **Today (`9` events)**: Added **Subterrânea: Acid Chamber**, **Esplanada Bass: Orbit 061**, **Conic: Frequency 404**, **Eixão Sonoro: Dusk Session**, **Ponto Zero: Brutalist Pulse**, and **Cerrado Mist: Sound System** alongside the 3 original Today events.

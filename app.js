@@ -5,13 +5,22 @@
  */
 
 // ============================================================================
-// Events Database & Dynamic Calendar Date Builder (Version 1.3 — 27 Events)
+// Events Database & Dynamic Calendar Date Builder (Version 1.3.1 — 27 Events)
 // Dynamically anchors Today, This Month, and Upcoming (+1/+2 months) to the
-// local calendar date when the user opens the app.
+// local calendar date when the user opens the app, prioritizing Thu–Sun
+// weekend nights (avoiding Mon–Wed) for This Month and Upcoming schedules.
 // ============================================================================
 const WEEKDAYS_EN = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const MONTHS_SHORT_EN = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
 const MONTHS_FULL_EN = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const PREFERRED_EVENT_WEEKDAYS = new Set([0, 4, 5, 6]); // Sun, Thu, Fri, Sat
+const WEEKEND_DAY_ROTATIONS = [
+  [6, 5, 0, 4], // Sat -> Fri -> Sun -> Thu
+  [5, 6, 4, 0], // Fri -> Sat -> Thu -> Sun
+  [0, 6, 5, 4], // Sun -> Sat -> Fri -> Thu
+  [4, 5, 6, 0], // Thu -> Fri -> Sat -> Sun
+  [6, 0, 5, 4]  // Sat -> Sun -> Fri -> Thu
+];
 
 function formatEventDateFields(dateObj) {
   const dayNum = dateObj.getDate();
@@ -41,32 +50,92 @@ function formatPurchaseTimestamp(dateObj, timeHHMM) {
   return `${timeHHMM} ${d}/${m}/${y}`;
 }
 
-function resolveCurrentMonthDate(baseYear, baseMonth, todayDay, index, totalCount) {
-  const lastDayOfMonth = new Date(baseYear, baseMonth + 1, 0).getDate();
-  const remainingDays = lastDayOfMonth - todayDay;
-  let day;
-
-  if (remainingDays <= 0) {
-    // Opened on the last day of the month: keep all "This Month" events within the same month
-    day = lastDayOfMonth;
-  } else if (remainingDays >= totalCount) {
-    // Distribute distinct upcoming days evenly across the rest of the current month
-    day = todayDay + 1 + Math.round((index * (remainingDays - 1)) / Math.max(1, totalCount - 1));
-  } else {
-    // Fewer remaining days than events: spread evenly across remaining days without spilling into next month
-    day = todayDay + 1 + Math.floor((index * remainingDays) / totalCount);
+function collectMonthDaysByWeekdays(year, month, startDay, endDay, allowedWeekdays) {
+  const days = [];
+  for (let d = startDay; d <= endDay; d++) {
+    const dt = new Date(year, month, d);
+    if (allowedWeekdays.has(dt.getDay())) {
+      days.push(d);
+    }
   }
-
-  return new Date(baseYear, baseMonth, Math.min(day, lastDayOfMonth));
+  return days;
 }
 
-function resolveUpcomingMonthDate(baseYear, baseMonth, monthOffset, preferredDay) {
-  // monthOffset = 1 or 2 (strictly the next 2 calendar months; Date handles Dec -> Jan rollover)
+function pickPreferredWeekdayInWindow(year, month, winStart, winEnd, slotIndex) {
+  const candidateDays = collectMonthDaysByWeekdays(year, month, winStart, winEnd, PREFERRED_EVENT_WEEKDAYS);
+  if (candidateDays.length === 0) return null;
+  const prefOrder = WEEKEND_DAY_ROTATIONS[slotIndex % WEEKEND_DAY_ROTATIONS.length];
+  for (const targetDow of prefOrder) {
+    const match = candidateDays.find(d => new Date(year, month, d).getDay() === targetDow);
+    if (match !== undefined) return match;
+  }
+  return candidateDays[0];
+}
+
+function resolveCurrentMonthDate(baseYear, baseMonth, todayDay, index, totalCount) {
+  const lastDayOfMonth = new Date(baseYear, baseMonth + 1, 0).getDate();
+  const futureWeekendDays = collectMonthDaysByWeekdays(
+    baseYear,
+    baseMonth,
+    todayDay + 1,
+    lastDayOfMonth,
+    PREFERRED_EVENT_WEEKDAYS
+  );
+
+  let chosenDay;
+  if (futureWeekendDays.length >= totalCount) {
+    const pickIdx = Math.round((index * (futureWeekendDays.length - 1)) / Math.max(1, totalCount - 1));
+    chosenDay = futureWeekendDays[pickIdx];
+  } else if (futureWeekendDays.length > 0) {
+    const pickIdx = Math.floor((index * futureWeekendDays.length) / totalCount);
+    chosenDay = futureWeekendDays[pickIdx];
+  } else {
+    // Late-month fallback: check today through end of month for Thu–Sun first
+    const onwardWeekendDays = collectMonthDaysByWeekdays(
+      baseYear,
+      baseMonth,
+      todayDay,
+      lastDayOfMonth,
+      PREFERRED_EVENT_WEEKDAYS
+    );
+    if (onwardWeekendDays.length > 0) {
+      chosenDay = onwardWeekendDays[Math.floor((index * onwardWeekendDays.length) / totalCount)];
+    } else {
+      // Opened on final Mon–Wed of month: stay inside the same month on its latest Thu–Sun weekend
+      const monthWeekendDays = collectMonthDaysByWeekdays(
+        baseYear,
+        baseMonth,
+        1,
+        lastDayOfMonth,
+        PREFERRED_EVENT_WEEKDAYS
+      );
+      const lateWeekendPool = monthWeekendDays.slice(-Math.min(4, monthWeekendDays.length));
+      chosenDay = lateWeekendPool[Math.floor((index * lateWeekendPool.length) / totalCount)] || lastDayOfMonth;
+    }
+  }
+
+  return new Date(baseYear, baseMonth, chosenDay);
+}
+
+function resolveUpcomingMonthDate(baseYear, baseMonth, monthOffset, slotIndex, slotTotal) {
+  // monthOffset = 1 or 2 (strictly next 2 calendar months; Date handles Dec -> Jan rollover)
   const firstOfTarget = new Date(baseYear, baseMonth + monthOffset, 1);
   const targetYear = firstOfTarget.getFullYear();
   const targetMonth = firstOfTarget.getMonth();
   const daysInTarget = new Date(targetYear, targetMonth + 1, 0).getDate();
-  return new Date(targetYear, targetMonth, Math.min(preferredDay, daysInTarget));
+  const safeTotal = Math.max(1, slotTotal || 1);
+  const safeIdx = Math.max(0, Math.min(safeTotal - 1, slotIndex || 0));
+
+  const winStart = Math.floor((safeIdx * daysInTarget) / safeTotal) + 1;
+  const winEnd = Math.max(winStart, Math.floor(((safeIdx + 1) * daysInTarget) / safeTotal));
+  const picked = pickPreferredWeekdayInWindow(targetYear, targetMonth, winStart, winEnd, safeIdx);
+  if (picked !== null) {
+    return new Date(targetYear, targetMonth, picked);
+  }
+
+  const allWeekends = collectMonthDaysByWeekdays(targetYear, targetMonth, 1, daysInTarget, PREFERRED_EVENT_WEEKDAYS);
+  const fallbackDay = allWeekends[Math.round((safeIdx * (allWeekends.length - 1)) / Math.max(1, safeTotal - 1))] || 1;
+  return new Date(targetYear, targetMonth, fallbackDay);
 }
 
 const RAW_EVENTS_CATALOG = [
@@ -578,7 +647,16 @@ function buildEventsData(referenceDate = new Date()) {
   const todayDay = referenceDate.getDate();
 
   const monthEventsTotal = RAW_EVENTS_CATALOG.filter(e => e.category === "month").length;
+  const upcomingTotalsByOffset = {};
+  RAW_EVENTS_CATALOG.forEach(e => {
+    if (e.category === "upcoming") {
+      const offset = (e.upcomingSlot && e.upcomingSlot.monthOffset) || 1;
+      upcomingTotalsByOffset[offset] = (upcomingTotalsByOffset[offset] || 0) + 1;
+    }
+  });
+
   let monthCursor = 0;
+  const upcomingCursors = {};
 
   return RAW_EVENTS_CATALOG.map(raw => {
     let targetDate;
@@ -588,8 +666,10 @@ function buildEventsData(referenceDate = new Date()) {
       targetDate = resolveCurrentMonthDate(baseYear, baseMonth, todayDay, monthCursor, monthEventsTotal);
       monthCursor += 1;
     } else {
-      const slot = raw.upcomingSlot || { monthOffset: 1, preferredDay: 15 };
-      targetDate = resolveUpcomingMonthDate(baseYear, baseMonth, slot.monthOffset, slot.preferredDay);
+      const offset = (raw.upcomingSlot && raw.upcomingSlot.monthOffset) || 1;
+      const slotIdx = upcomingCursors[offset] || 0;
+      upcomingCursors[offset] = slotIdx + 1;
+      targetDate = resolveUpcomingMonthDate(baseYear, baseMonth, offset, slotIdx, upcomingTotalsByOffset[offset]);
     }
 
     const formatted = formatEventDateFields(targetDate);
@@ -703,12 +783,20 @@ function initApp() {
     appContainer.className = "app-container";
   }
 
-  // Dynamically align search date hint placeholder to today's date
+  // Configure native system calendar picker trigger on Search -> Event Date
   const searchFormDate = document.getElementById("searchFormDate");
-  const todaySample = EVENTS_DATA.find(e => e.category === "today");
-  if (searchFormDate && todaySample) {
-    searchFormDate.placeholder = `e.g. ${todaySample.dateDay} ${todaySample.dateMonth}, Tonight...`;
+  if (searchFormDate) {
+    searchFormDate.addEventListener("click", () => {
+      if (typeof searchFormDate.showPicker === "function") {
+        try {
+          searchFormDate.showPicker();
+        } catch (_) {
+          // Fallback to native calendar indicator click when showPicker() is restricted
+        }
+      }
+    });
   }
+  syncSearchDateClearButton();
 
   updateBadges();
   setupNavEventListeners();
@@ -800,6 +888,8 @@ window.switchView = function(viewName) {
     if (!isMobileOrTouch) {
       const searchInput = document.getElementById("searchFormName");
       if (searchInput) searchInput.focus();
+    } else if (document.activeElement && typeof document.activeElement.blur === "function") {
+      document.activeElement.blur();
     }
   } else if (viewName === "checkout") {
     if (subHeaderNav) subHeaderNav.style.display = "block";
@@ -1036,14 +1126,18 @@ function renderEvents() {
         evt.title.toLowerCase().includes(qName) ||
         evt.genre.toLowerCase().includes(qName) ||
         evt.lineup.some(artist => artist.name.toLowerCase().includes(qName));
+      const isIsoDateQuery = /^\d{4}-\d{2}-\d{2}$/.test(qDate);
       const matchDate = !qDate ||
-        ((qDate === "today" || qDate === "tonight") && evt.category === "today") ||
-        ((qDate === "this month" || qDate === "month") && evt.category === "month") ||
-        (qDate === "upcoming" && evt.category === "upcoming") ||
-        evt.dateDay.includes(qDate) ||
-        evt.dateMonth.toLowerCase().includes(qDate) ||
-        evt.dateFormatted.toLowerCase().includes(qDate) ||
-        evt.dateShort.includes(qDate);
+        (isIsoDateQuery && evt.dateISO === qDate) ||
+        (!isIsoDateQuery && (
+          ((qDate === "today" || qDate === "tonight") && evt.category === "today") ||
+          ((qDate === "this month" || qDate === "month") && evt.category === "month") ||
+          (qDate === "upcoming" && evt.category === "upcoming") ||
+          evt.dateDay.includes(qDate) ||
+          evt.dateMonth.toLowerCase().includes(qDate) ||
+          evt.dateFormatted.toLowerCase().includes(qDate) ||
+          evt.dateShort.includes(qDate)
+        ));
       const matchLoc = !qLoc || evt.venue.toLowerCase().includes(qLoc);
       return matchName && matchDate && matchLoc;
     });
@@ -1194,6 +1288,24 @@ window.toggleFavorite = function(e, eventId) {
 // ============================================================================
 // Advanced Search Execution & Live Search (Figma 3.1.1 / 3.2.1 / 3.2.2)
 // ============================================================================
+function syncSearchDateClearButton() {
+  const dateEl = document.getElementById("searchFormDate");
+  const clearBtn = document.getElementById("clearSearchDateBtn");
+  if (clearBtn && dateEl) {
+    clearBtn.style.display = dateEl.value ? "flex" : "none";
+  }
+}
+
+window.clearSearchDate = function() {
+  const dateEl = document.getElementById("searchFormDate");
+  if (dateEl) {
+    dateEl.value = "";
+  }
+  state.searchFilters.date = "";
+  syncSearchDateClearButton();
+  renderEvents();
+};
+
 window.executeLiveSearch = function() {
   const nameEl = document.getElementById("searchFormName");
   const dateEl = document.getElementById("searchFormDate");
@@ -1205,6 +1317,7 @@ window.executeLiveSearch = function() {
   state.searchFilters.location = locEl ? locEl.value : "";
   state.searchFilters.todayOnly = todayEl ? todayEl.checked : false;
 
+  syncSearchDateClearButton();
   renderEvents();
 };
 
@@ -1231,6 +1344,7 @@ window.resetSearchFilters = function() {
   state.searchFilters = { name: "", date: "", location: "", todayOnly: false };
   state.searchQuery = "";
   if (desktopSearchInput) desktopSearchInput.value = "";
+  syncSearchDateClearButton();
   switchView("home");
 };
 

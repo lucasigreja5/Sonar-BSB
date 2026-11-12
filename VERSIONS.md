@@ -6,7 +6,18 @@ This directory contains versioned snapshots of the Sonar BSB Events web applicat
 
 ## 🏷️ Version History
 
-### Version 1.3 (Current Production Release — `v1.3`)
+### Version 1.3.1 (Current Production Release — `v1.3.1`)
+- **Date**: 2026-11-12
+- **Snapshot Directory**: `versions/v1.3.1/`
+- **Archive Zip**: `versions/v1.3.1/sonar-bsb-events-v1.3.1.zip`
+- **Handoff Documentation**: `HANDOFF_V1.3.1.md`
+- **Changes**:
+  - **Weekend-Prioritized Dynamic Dates (`app.js`)**: Scheduled all `This Month` and `Upcoming` (`+1/+2` months) dynamic event dates strictly onto `Thursday–Sunday` slots (`PREFERRED_EVENT_WEEKDAYS` + balanced `WEEKEND_DAY_ROTATIONS`), avoiding Mon–Wed even on month-end dates, year rollovers, and Feb 28/29.
+  - **System Calendar Date Input on Search (`index.html`, `styles.css`, `app.js`)**: Replaced the free-text `#searchFormDate` field with `<input type="date">` opening the native OS system calendar picker (`showPicker()` on click + native indicator hotspot), styled with an inline calendar SVG icon, clear (`×`) button, exact `YYYY-MM-DD` (`dateISO`) matching, and mobile blur guard.
+  - **Conic: Frequency 404 Placeholder Artwork (`assets/event-conic404.png`)**: Replaced the bottom-text AI render with a centered `1024×1024` wireframe cover placeholder pending `v1.3.2` (`gemini-3.1-flash-image` quota reset, alongside the 7 temporary neon graphic covers from `v1.3`).
+  - Updated `<title>` badges across `index.html` and `login.html` to `Version 1.3.1`.
+
+### Version 1.3 (Previous Production Release — `v1.3`)
 - **Date**: 2026-11-12
 - **Snapshot Directory**: `versions/v1.3/`
 - **Archive Zip**: `versions/v1.3/sonar-bsb-events-v1.3.zip`

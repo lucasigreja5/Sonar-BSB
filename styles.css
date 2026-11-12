@@ -904,6 +904,75 @@ body {
   box-shadow: 0 0 0 3px rgba(63, 50, 211, 0.12);
 }
 
+.date-input-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.form-input-date {
+  font-family: inherit;
+  cursor: pointer;
+  padding-right: 72px;
+}
+
+.form-input-date::-webkit-calendar-picker-indicator {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 42px;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.date-calendar-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  pointer-events: none;
+  z-index: 1;
+  transition: color 0.2s ease;
+}
+
+.date-input-wrapper:hover .date-calendar-icon,
+.date-input-wrapper:focus-within .date-calendar-icon {
+  color: var(--color-secondary);
+}
+
+.clear-date-btn {
+  position: absolute;
+  right: 42px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: none;
+  background: #e2e8f0;
+  color: #475569;
+  font-size: 15px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 3;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.clear-date-btn:hover {
+  background: var(--color-secondary);
+  color: #ffffff;
+}
+
 /* Toggle Switch Card (Figma 762:7417) */
 .toggle-card {
   display: flex;
