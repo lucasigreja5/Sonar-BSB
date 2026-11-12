@@ -92,7 +92,45 @@ This log documents each iterative release of the project, recording the exact us
 
 ---
 
-### 🏷️ Version 1.2.2 (Current Release — `v1.2.2`)
+### 🏷️ Version 1.2.3 (Current Release — `v1.2.3`)
+
+#### 💬 Original User Prompt:
+> *"Version 1.2.3*  
+> *Please make the following adjustments:*  
+> *- On the login screen, on the houdini text animation, reduce the spacing between "frequency" and "found"*  
+> *- On the login screen, move the Sonar BSB logo to a higher position on the screen, increasing the distance between the logo and the houdini text*  
+> *- On the app startup, have the shopping cart be empty, and generate a "empty cart" page for this situation, following the design system for the project and the other pages*  
+> *From this release onwards, theres no need to create the version zip file on the desktop and download folders"*
+
+#### 🧠 Reasoning & Architecture:
+1. **Reduced Spacing Between "FREQUENCY" and "FOUND"**:
+   - *Problem*: Previously, vertical line wrapper heights (`1.25x`) combined with positive margin (`+0.05x`) introduced ~22px of vertical dead space between the two words, weakening typographic cohesion.
+   - *Implementation*: Sized line wrappers to `1.08x` font height and set `.houdini-bottom-row` to `margin-top: calc(var(--houdini-found-size) * -0.06);`. This collapses the gap between "FREQUENCY" and "FOUND" to ~1-2px, rendering them as a tight, bold headline unit while retaining full horizontal mask clearance for 'Y' and baseline period dot alignment.
+2. **Elevated Sonar BSB Logo with Expanded Clearance**:
+   - *Problem*: The logo was vertically centered alongside the form, leaving it ~24px from the Houdini text and lower on the viewport.
+   - *Implementation*: Elevated `.welcome-logo-box` with `margin-top: clamp(-28px, -4vh, -16px);` and increased its bottom margin to `clamp(48px, 7vh, 64px);` (expanding distance to Houdini text from 24px to ~56px). Adjusted container padding to `clamp(24px, 4vh, 36px) 24px 36px;` to give the welcome view a taller, more balanced aesthetic.
+3. **Empty Shopping Cart on Startup & Dedicated Empty Cart Page**:
+   - *Requirement*: Cart must be initialized with 0 tickets on app load, hiding the counter badge, and displaying an empty cart view when opened.
+   - *Implementation*:
+     - Initialized `checkoutState` with `event: null, regularQty: 0, studentQty: 0`. Cart badge `#headerCartBadge` remains hidden (`display: none;`) on startup.
+     - Created `#emptyCartCard` styled with project design tokens: white card (`background: var(--color-white); border-radius: 28px; box-shadow: var(--shadow-card)`), a centered empty cart halo icon (`rgba(63, 50, 211, 0.07)` background with dashed border), "Your Cart is Empty" heading, descriptive copy, and a primary action button `btn-empty-cart-action` ("Explore Events &rarr;") taking users directly to the events feed.
+     - Added quick event suggestions (Trema Techno, Externa, Batrave) allowing 1-click modal discovery.
+     - Implemented dynamic view switching: if tickets reach 0 or cart is empty, `openCart()` triggers `showEmptyCartView()`; purchasing tickets via event cards triggers `showPopulatedCartView()`.
+4. **Distribution Packaging Optimization**:
+   - *Rule*: Discontinued copying ZIP archives to Desktop and Downloads; distribution ZIP files are now archived cleanly within the project repository under `versions/v1.2.3/`.
+
+#### 🛠️ Files Modified:
+- `styles.css`: Tightened Houdini text line spacing; elevated welcome logo and expanded its bottom margin; added `.empty-cart-card` and related component styles.
+- `index.html`: Updated page title to Version 1.2.3; added `#emptyCartCard` state inside `#checkoutSection`.
+- `login.html`: Updated page title to Version 1.2.3.
+- `app.js`: Initialized `checkoutState` to empty (0 tickets); created `showEmptyCartView()` and `showPopulatedCartView()`; updated `openCart()`, `startCheckout()`, `updateTicketQty()`, and payment reset logic.
+- `HANDOFF_V1.2.3.md`: Master handoff and session resume documentation for Version 1.2.3.
+- `PROJECT_HANDOFF.md`: Updated active pointer to Version 1.2.3.
+- `VERSIONS.md` & `README.md`: Version 1.2.3 changelog and registry entries.
+
+---
+
+### 🏷️ Version 1.2.2 (Previous Release — `v1.2.2`)
 
 #### 💬 Original User Prompt:
 > *"Version 1.2.2*  

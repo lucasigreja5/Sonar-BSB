@@ -245,13 +245,13 @@ const state = {
   }
 };
 
-// Checkout flow dynamic state
+// Checkout flow dynamic state (Version 1.2.3: Initialized empty on app startup)
 let checkoutState = {
-  event: EVENTS_DATA[0],
-  regularQty: 1,
+  event: null,
+  regularQty: 0,
   studentQty: 0,
-  regularPrice: EVENTS_DATA[0].price,
-  studentPrice: EVENTS_DATA[0].price * 0.5
+  regularPrice: 0,
+  studentPrice: 0
 };
 
 let lastPurchasedTicket = null;
@@ -387,7 +387,8 @@ window.switchView = function(viewName) {
       if (searchInput) searchInput.focus();
     }
   } else if (viewName === "checkout") {
-    if (subHeaderNav) subHeaderNav.style.display = "none";
+    if (subHeaderNav) subHeaderNav.style.display = "block";
+    if (backButton) backButton.style.display = "flex";
     if (searchFilterPanel) searchFilterPanel.style.display = "none";
     if (navTabsContainer) navTabsContainer.style.display = "none";
     if (eventsContainer) eventsContainer.style.display = "none";
@@ -849,24 +850,57 @@ window.startCheckoutFromModal = function() {
 
 // ============================================================================
 // Checkout Flow View (Figma 5.1.1- CheckoutFlow1.1 "Shopping Cart")
+// Version 1.2.3: Supports Empty Cart View on startup or reset & Populated Cart
 // ============================================================================
 window.openCart = function() {
-  if (!checkoutState || !checkoutState.event) {
-    startCheckout(EVENTS_DATA[0].id);
+  const totalTickets = (checkoutState && checkoutState.event) 
+    ? (checkoutState.regularQty + checkoutState.studentQty) 
+    : 0;
+
+  if (totalTickets === 0 || !checkoutState || !checkoutState.event) {
+    showEmptyCartView();
   } else {
-    updateCheckoutCalculations();
-    sectionTitleEl.textContent = "Shopping Cart";
-    sectionSubtitleEl.textContent = "Review ticket quantities and proceed to secure checkout";
-    eventCountBadge.textContent = "Checkout";
-    switchView("checkout");
+    showPopulatedCartView();
   }
+};
+
+window.showEmptyCartView = function() {
+  const emptyCartCard = document.getElementById("emptyCartCard");
+  const checkoutCard = document.getElementById("checkoutCard");
+  if (emptyCartCard) emptyCartCard.style.display = "flex";
+  if (checkoutCard) checkoutCard.style.display = "none";
+
+  if (sectionTitleEl) sectionTitleEl.textContent = "Shopping Cart";
+  if (sectionSubtitleEl) sectionSubtitleEl.textContent = "Your cart is currently empty";
+  if (eventCountBadge) eventCountBadge.textContent = "0 Items";
+
+  switchView("checkout");
+};
+
+window.showPopulatedCartView = function() {
+  const emptyCartCard = document.getElementById("emptyCartCard");
+  const checkoutCard = document.getElementById("checkoutCard");
+  if (emptyCartCard) emptyCartCard.style.display = "none";
+  if (checkoutCard) checkoutCard.style.display = "flex";
+
+  const totalTickets = (checkoutState && checkoutState.event) 
+    ? (checkoutState.regularQty + checkoutState.studentQty) 
+    : 0;
+
+  updateCheckoutCalculations();
+
+  if (sectionTitleEl) sectionTitleEl.textContent = "Shopping Cart";
+  if (sectionSubtitleEl) sectionSubtitleEl.textContent = "Review ticket quantities and proceed to secure checkout";
+  if (eventCountBadge) eventCountBadge.textContent = `${totalTickets} ${totalTickets === 1 ? 'Ticket' : 'Tickets'}`;
+
+  switchView("checkout");
 };
 
 window.startCheckout = function(eventId) {
   const evt = EVENTS_DATA.find(item => item.id === eventId) || currentEventInModal || EVENTS_DATA[0];
   if (!evt) return;
 
-  // Initialize checkout quantities
+  // Initialize checkout quantities with 1 regular ticket
   checkoutState = {
     event: evt,
     regularQty: 1,
@@ -879,52 +913,72 @@ window.startCheckout = function(eventId) {
   closeEventModal();
 
   // Populate checkout section elements
-  document.getElementById("checkoutEventTitle").textContent = evt.title;
-  document.getElementById("checkoutEventDateTime").textContent = `${evt.dateDay}/08/26 - ${evt.time}`;
-  document.getElementById("checkoutEventVenue").textContent = evt.venue;
-  document.getElementById("checkoutEventImage").src = evt.image;
+  const titleEl = document.getElementById("checkoutEventTitle");
+  const dtEl = document.getElementById("checkoutEventDateTime");
+  const venueEl = document.getElementById("checkoutEventVenue");
+  const imgEl = document.getElementById("checkoutEventImage");
+  const qtyRegEl = document.getElementById("qtyRegular");
+  const qtyStuEl = document.getElementById("qtyStudent");
+  const priceRegEl = document.getElementById("pricePerRegular");
+  const priceStuEl = document.getElementById("pricePerStudent");
 
-  document.getElementById("qtyRegular").textContent = checkoutState.regularQty;
-  document.getElementById("qtyStudent").textContent = checkoutState.studentQty;
-  document.getElementById("pricePerRegular").textContent = `${evt.priceFormatted} each`;
-  document.getElementById("pricePerStudent").textContent = `$ ${checkoutState.studentPrice.toFixed(2)} each (50% off)`;
+  if (titleEl) titleEl.textContent = evt.title;
+  if (dtEl) dtEl.textContent = `${evt.dateDay}/08/26 - ${evt.time}`;
+  if (venueEl) venueEl.textContent = evt.venue;
+  if (imgEl) imgEl.src = evt.image;
 
-  updateCheckoutCalculations();
+  if (qtyRegEl) qtyRegEl.textContent = checkoutState.regularQty;
+  if (qtyStuEl) qtyStuEl.textContent = checkoutState.studentQty;
+  if (priceRegEl) priceRegEl.textContent = `${evt.priceFormatted} each`;
+  if (priceStuEl) priceStuEl.textContent = `$ ${checkoutState.studentPrice.toFixed(2)} each (50% off)`;
 
-  // Header update for Checkout Flow
-  sectionTitleEl.textContent = "Shopping Cart";
-  sectionSubtitleEl.textContent = "Review ticket quantities and proceed to secure checkout";
-  eventCountBadge.textContent = "Checkout";
-
-  // Switch view to checkout
-  switchView("checkout");
+  showPopulatedCartView();
 };
 
 // Ticket quantity increment/decrement (+ / - buttons)
 window.updateTicketQty = function(type, delta) {
+  if (!checkoutState || !checkoutState.event) return;
+
   if (type === "regular") {
     checkoutState.regularQty = Math.max(0, checkoutState.regularQty + delta);
-    document.getElementById("qtyRegular").textContent = checkoutState.regularQty;
+    const regEl = document.getElementById("qtyRegular");
+    if (regEl) regEl.textContent = checkoutState.regularQty;
   } else if (type === "student") {
     checkoutState.studentQty = Math.max(0, checkoutState.studentQty + delta);
-    document.getElementById("qtyStudent").textContent = checkoutState.studentQty;
+    const stuEl = document.getElementById("qtyStudent");
+    if (stuEl) stuEl.textContent = checkoutState.studentQty;
   }
 
-  updateCheckoutCalculations();
+  const totalTickets = checkoutState.regularQty + checkoutState.studentQty;
+  if (totalTickets === 0) {
+    showEmptyCartView();
+  } else {
+    updateCheckoutCalculations();
+  }
 };
 
 function updateCheckoutCalculations() {
+  if (!checkoutState || !checkoutState.event) return;
+
   const regSubtotal = checkoutState.regularQty * checkoutState.regularPrice;
   const stuSubtotal = checkoutState.studentQty * checkoutState.studentPrice;
   const total = regSubtotal + stuSubtotal;
 
-  document.getElementById("subtotalRegular").textContent = `$ ${regSubtotal.toFixed(2)}`;
-  document.getElementById("subtotalStudent").textContent = `$ ${stuSubtotal.toFixed(2)}`;
-  document.getElementById("checkoutTotalPrice").textContent = `$ ${total.toFixed(2)}`;
+  const regEl = document.getElementById("subtotalRegular");
+  const stuEl = document.getElementById("subtotalStudent");
+  const totEl = document.getElementById("checkoutTotalPrice");
+  if (regEl) regEl.textContent = `$ ${regSubtotal.toFixed(2)}`;
+  if (stuEl) stuEl.textContent = `$ ${stuSubtotal.toFixed(2)}`;
+  if (totEl) totEl.textContent = `$ ${total.toFixed(2)}`;
+
+  const totalTickets = checkoutState.regularQty + checkoutState.studentQty;
+  if (eventCountBadge && state.activeView === "checkout") {
+    eventCountBadge.textContent = `${totalTickets} ${totalTickets === 1 ? 'Ticket' : 'Tickets'}`;
+  }
 
   const btnPay = document.getElementById("btnContinuePayment");
   if (btnPay) {
-    if (checkoutState.regularQty + checkoutState.studentQty === 0) {
+    if (totalTickets === 0) {
       btnPay.style.opacity = "0.5";
       btnPay.textContent = "Select at least 1 ticket";
     } else {
@@ -1015,7 +1069,8 @@ window.processFinalPayment = function() {
   state.tickets.unshift(newTicket);
   lastPurchasedTicket = newTicket;
   
-  // Reset cart quantities after payment
+  // Reset cart quantities after payment (Version 1.2.3)
+  checkoutState.event = null;
   checkoutState.regularQty = 0;
   checkoutState.studentQty = 0;
   updateBadges();

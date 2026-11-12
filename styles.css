@@ -127,14 +127,15 @@ body {
   box-sizing: border-box;
 }
 
-/* Logo (Figma 426:689) */
+/* Logo (Figma 426:689) - Positioned higher with increased distance to Houdini text (v1.2.3) */
 .welcome-logo-box {
   width: 159px;
   height: 65px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 24px;
+  margin-top: clamp(-28px, -4vh, -16px);
+  margin-bottom: clamp(48px, 7vh, 64px);
   transition: transform 0.2s ease;
 }
 
@@ -243,14 +244,14 @@ body {
   justify-content: center;
 }
 
-/* Top line: generous horizontal clearance so the 'Y' is never clipped by the mask */
+/* Top line: generous horizontal clearance so the 'Y' is never clipped, reduced height for tight line spacing (v1.2.3) */
 .houdini-line-wrapper.top-line {
   width: calc(100% + 40px);
   margin-left: -20px;
   margin-right: -20px;
   padding: 0 20px;
   box-sizing: border-box;
-  height: calc(var(--houdini-freq-size) * 1.25);
+  height: calc(var(--houdini-freq-size) * 1.08);
   overflow: hidden;
 }
 
@@ -260,13 +261,13 @@ body {
   justify-content: center;
   position: relative;
   overflow: visible;
-  margin-top: calc(var(--houdini-found-size) * 0.05);
+  margin-top: calc(var(--houdini-found-size) * -0.06);
   width: 100%;
 }
 
-/* Bottom line: masks slide-up while providing horizontal clearance for 'Found' & period dot */
+/* Bottom line: masks slide-up while providing horizontal clearance for 'Found' & period dot, reduced vertical height (v1.2.3) */
 .houdini-line-wrapper.bottom-line {
-  height: calc(var(--houdini-found-size) * 1.25);
+  height: calc(var(--houdini-found-size) * 1.08);
   margin-top: 0;
   width: calc(100% + 40px);
   margin-left: -20px;
@@ -1017,6 +1018,135 @@ input:checked + .slider:before {
   align-items: center;
   justify-content: flex-start;
   margin-bottom: -4px;
+}
+
+/* Empty Cart Card (Version 1.2.3: Design System Aligned) */
+.empty-cart-card {
+  background: var(--color-white);
+  border-radius: 28px;
+  padding: 48px 24px 40px;
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  animation: cardFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.empty-cart-icon-halo {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  background: rgba(63, 50, 211, 0.07);
+  border: 2px dashed rgba(63, 50, 211, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+  color: var(--color-secondary);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.empty-cart-card:hover .empty-cart-icon-halo {
+  transform: scale(1.08) rotate(-4deg);
+}
+
+.empty-cart-icon {
+  width: 44px;
+  height: 44px;
+  display: block;
+}
+
+.empty-cart-heading {
+  font-family: var(--font-family-primary);
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--color-secondary);
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  margin-bottom: 12px;
+}
+
+.empty-cart-subtext {
+  font-family: var(--font-family-primary);
+  font-size: 15px;
+  color: var(--color-text-muted);
+  line-height: 1.55;
+  max-width: 330px;
+  margin-bottom: 28px;
+}
+
+.btn-empty-cart-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 52px;
+  padding: 0 32px;
+  border-radius: 9999px;
+  background-color: var(--color-secondary);
+  color: #ffffff;
+  font-family: var(--font-family-primary);
+  font-size: 15px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(63, 50, 211, 0.35);
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-empty-cart-action:hover {
+  transform: scale(1.04) translateY(-2px);
+  background-color: var(--color-secondary-hover);
+  box-shadow: 0 8px 22px rgba(63, 50, 211, 0.5);
+}
+
+.empty-cart-suggestions {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px dashed rgba(100, 116, 139, 0.2);
+  width: 100%;
+  max-width: 360px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.empty-cart-suggestions-label {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+}
+
+.empty-cart-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.empty-cart-tag-pill {
+  background: rgba(63, 50, 211, 0.08);
+  color: var(--color-secondary);
+  border: 1px solid rgba(63, 50, 211, 0.15);
+  border-radius: 9999px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.empty-cart-tag-pill:hover {
+  background: var(--color-secondary);
+  color: var(--color-primary);
+  border-color: var(--color-secondary);
+  transform: translateY(-1px);
 }
 
 .checkout-card {

@@ -6,7 +6,28 @@ This directory contains versioned snapshots of the Sonar BSB Events web applicat
 
 ## 🏷️ Version History
 
-### Version 1.2.2 (Current Production Release — `v1.2.2`)
+### Version 1.2.3 (Current Production Release — `v1.2.3`)
+- **Release Date**: November 2026
+- **Git Tag**: `v1.2.3`
+- **Original User Prompt**:
+  > *"Version 1.2.3*  
+  > *Please make the following adjustments:*  
+  > *- On the login screen, on the houdini text animation, reduce the spacing between "frequency" and "found"*  
+  > *- On the login screen, move the Sonar BSB logo to a higher position on the screen, increasing the distance between the logo and the houdini text*  
+  > *- On the app startup, have the shopping cart be empty, and generate a "empty cart" page for this situation, following the design system for the project and the other pages*  
+  > *From this release onwards, theres no need to create the version zip file on the desktop and download folders"*
+- **Key Features & Changes**:
+  - **Tight Houdini Text Line Spacing**: Reduced line wrapper heights to 1.08x font size and set `.houdini-bottom-row` `margin-top: -0.06x`, tightening the vertical gap between "FREQUENCY" and "FOUND" to ~1-2px for a unified, impactful headline lockup.
+  - **Elevated Sonar BSB Logo with Expanded Margin**: Moved `.welcome-logo-box` higher with `margin-top: clamp(-28px, -4vh, -16px);` and expanded bottom margin to `clamp(48px, 7vh, 64px);` (expanding distance to Houdini text from 24px to ~56px).
+  - **Empty Cart on App Startup & Dedicated Empty Cart Page**: Cart initializes with 0 tickets and hidden badge; clicking cart icon loads a custom `#emptyCartCard` featuring empty cart icon halo, helpful copy, primary "Explore Events &rarr;" button, and trending event suggestions.
+  - **Packaging Streamline**: Distribution ZIP archive stored exclusively in-repo (`versions/v1.2.3/sonar-bsb-events-v1.2.3.zip`), eliminating external Desktop/Downloads copies per user direction.
+  - **Master Handoff Guide**: Full specifications documented in `HANDOFF_V1.2.3.md`.
+  - **Snapshot Directory**: `versions/v1.2.3/source/`
+  - **ZIP Package**: `versions/v1.2.3/sonar-bsb-events-v1.2.3.zip`
+
+---
+
+### Version 1.2.2 (Previous Production Release — `v1.2.2`)
 - **Release Date**: November 2026
 - **Git Tag**: `v1.2.2`
 - **Original User Prompt**:

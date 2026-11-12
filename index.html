@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sonar BSB &bull; Events Discovery &amp; Ticketing (Version 1.2.2)</title>
+  <title>Sonar BSB &bull; Events Discovery &amp; Ticketing (Version 1.2.3)</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -197,7 +197,33 @@
 
       <!-- Checkout Flow View (Figma 5.1.1- CheckoutFlow1.1 "Shopping Cart") -->
       <section id="checkoutSection" class="checkout-section" style="display: none;" aria-label="Checkout Flow">
-        <div class="checkout-card">
+        
+        <!-- Empty Cart State (Version 1.2.3: Design System Aligned) -->
+        <div id="emptyCartCard" class="empty-cart-card" style="display: none;">
+          <div class="empty-cart-icon-halo">
+            <svg class="empty-cart-icon" viewBox="0 0 32 32" fill="none">
+              <path d="M6 6H9.5L12.5 19H25L28 9H11" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="13.5" cy="24.5" r="2.4" fill="currentColor"/>
+              <circle cx="23.5" cy="24.5" r="2.4" fill="currentColor"/>
+            </svg>
+          </div>
+          <h2 class="empty-cart-heading">Your Cart is Empty</h2>
+          <p class="empty-cart-subtext">Looks like you haven't added any event tickets to your cart yet. Explore tonight's raves and club nights in Brasília to book your passes.</p>
+          <button type="button" class="btn-empty-cart-action" onclick="switchView('home')">
+            <span>Explore Events &rarr;</span>
+          </button>
+          <div class="empty-cart-suggestions">
+            <span class="empty-cart-suggestions-label">Popular in Brasília</span>
+            <div class="empty-cart-tags">
+              <button type="button" class="empty-cart-tag-pill" onclick="openEventModal('event-trema')">Trema Techno</button>
+              <button type="button" class="empty-cart-tag-pill" onclick="openEventModal('event-externa')">Externa</button>
+              <button type="button" class="empty-cart-tag-pill" onclick="openEventModal('event-batrave')">Batrave</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Populated Checkout Card (When items are in cart) -->
+        <div id="checkoutCard" class="checkout-card">
           <div class="checkout-header-row">
             <div class="checkout-event-details">
               <h2 id="checkoutEventTitle" class="checkout-event-title">Trema Techno: Subsolo Urbano</h2>
