@@ -6,7 +6,23 @@ This directory contains versioned snapshots of the Sonar BSB Events web applicat
 
 ## 🏷️ Version History
 
-### Version 1.2.3 (Current Production Release — `v1.2.3`)
+### Version 1.2.4 (Current Production Release — `v1.2.4`)
+- **Release Date**: November 2026
+- **Git Tag**: `v1.2.4`
+- **Original User Prompt**:
+  > *"Version 1.2.4*  
+  > *Please make the following adjustments:*  
+  > *- On the event cards, please change the add to cart button icon to a "+" icon, keeping the current color and style"*
+- **Key Features & Changes**:
+  - **Event Card Add-to-Cart Icon Updated to `+`**: Replaced the shopping-bag `<svg>` inside `.btn-purchase-direct` (`renderEvents()` in `app.js`) with a crisp stroke-based `+` `<svg>` (`width="22" height="22" viewBox="0 0 24 24"`, `stroke="currentColor"`, `stroke-width="2.5"`, `stroke-linecap="round"`, `stroke-linejoin="round"`).
+  - **Preserved Button Color & Style**: `.btn-purchase-direct` retains its exact neon yellow fill (`var(--color-primary)` / `#F2F862`), dark navy icon color (`#130f40`), `48px × 46px` sizing, `12px` border radius, `var(--shadow-btn)` elevation, and hover states without modification.
+  - **Master Handoff Guide**: Full specifications documented in `HANDOFF_V1.2.4.md`.
+  - **Snapshot Directory**: `versions/v1.2.4/source/`
+  - **ZIP Package**: `versions/v1.2.4/sonar-bsb-events-v1.2.4.zip`
+
+---
+
+### Version 1.2.3 (Previous Production Release — `v1.2.3`)
 - **Release Date**: November 2026
 - **Git Tag**: `v1.2.3`
 - **Original User Prompt**:

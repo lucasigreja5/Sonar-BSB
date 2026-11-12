@@ -92,7 +92,30 @@ This log documents each iterative release of the project, recording the exact us
 
 ---
 
-### 🏷️ Version 1.2.3 (Current Release — `v1.2.3`)
+### 🏷️ Version 1.2.4 (Current Release — `v1.2.4`)
+
+#### 💬 Original User Prompt:
+> *"Version 1.2.4*  
+> *Please make the following adjustments:*  
+> *- On the event cards, please change the add to cart button icon to a "+" icon, keeping the current color and style"*
+
+#### 🧠 Reasoning & Architecture:
+1. **Event Card Quick Add-to-Cart Button Icon (`+`)**:
+   - *Requirement*: Replace the shopping-bag glyph inside the event card quick-add button (`.btn-purchase-direct`) with a `+` icon while keeping the existing button colors, dimensions, rounded corners, and stroke style intact.
+   - *Implementation*: Updated the SVG inside `.btn-purchase-direct` in `renderEvents()` ([app.js](app.js)) to `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5V19M5 12H19"/></svg>` with `title="Add to Cart"` and `aria-label="Add to Cart"`.
+   - *Visual Consistency*: Using `stroke="currentColor"` and `stroke-width="2.5"` preserves the `#130f40` icon ink on `#F2F862` (`var(--color-primary)`) button background inside the `48px × 46px` (`border-radius: 12px`) container with matching hover elevation and glow.
+
+#### 🛠️ Files Modified:
+- `app.js`: Updated `.btn-purchase-direct` icon SVG in `renderEvents()` from shopping bag to `+` plus symbol with matching stroke attributes and accessible `title`/`aria-label`.
+- `index.html`: Updated page title to Version 1.2.4.
+- `login.html`: Updated page title to Version 1.2.4.
+- `HANDOFF_V1.2.4.md`: Master handoff documentation for Version 1.2.4.
+- `PROJECT_HANDOFF.md`: Updated active pointer to Version 1.2.4.
+- `VERSIONS.md` & `README.md`: Version 1.2.4 changelog and registry entries.
+
+---
+
+### 🏷️ Version 1.2.3 (Previous Release — `v1.2.3`)
 
 #### 💬 Original User Prompt:
 > *"Version 1.2.3*  
