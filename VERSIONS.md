@@ -6,7 +6,23 @@ This directory contains versioned snapshots of the Sonar BSB Events web applicat
 
 ## 🏷️ Version History
 
-### Version 1.2.1 (Current Production Release — `v1.2.1`)
+### Version 1.2.2 (Current Production Release — `v1.2.2`)
+- **Release Date**: November 2026
+- **Git Tag**: `v1.2.2`
+- **Original User Prompt**:
+  > *"Version 1.2.2*  
+  > *Please make the following adjustments:*  
+  > *- On the top bar, increase the shopping cart white icon size, while keeping the outside yellow ring of the selected icon the same size"*
+- **Key Features & Changes**:
+  - **Increased White Cart Icon Sizing**: Enlarged `.header-cart-icon` from 22px to 28px (`width: 28px; height: 28px;`), increasing the visual area by +61.9% and matching the prominence of the 44px profile avatar.
+  - **Identical 44px Outside Yellow Ring on Selected State**: Button dimensions remain strictly 44px by 44px (`box-sizing: border-box`). When selected (`.is-active`, `.is-selected`), the 2px yellow border ring retains an outer diameter of exactly 44px with 6px of breathing room around the centered 28px icon.
+  - **Master Handoff Guide**: Full specifications documented in `HANDOFF_V1.2.2.md`.
+  - **Snapshot Directory**: `versions/v1.2.2/source/`
+  - **ZIP Package**: `versions/v1.2.2/sonar-bsb-events-v1.2.2.zip`
+
+---
+
+### Version 1.2.1 (Previous Production Release — `v1.2.1`)
 - **Release Date**: November 2026
 - **Git Tag**: `v1.2.1`
 - **Original User Prompt**:

@@ -624,7 +624,7 @@ body {
   box-shadow: 0 4px 12px rgba(242, 248, 98, 0.35);
 }
 
-/* Header Shopping Cart Button (Version 1.2.1: White icon without yellow circle when unselected; royal blue + neon yellow with glow when selected) */
+/* Header Shopping Cart Button (Version 1.2.2: Increased white cart icon size (28px), while keeping the outside yellow ring of the selected icon the exact same 44px size) */
 .header-cart-btn {
   width: 44px;
   height: 44px;
@@ -632,6 +632,7 @@ body {
   background: transparent;
   color: #ffffff;
   border: 2px solid transparent;
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -649,9 +650,12 @@ body {
   color: #ffffff;
 }
 
-/* When the cart is selected: royal blue background, neon yellow icon & yellow border circle with glow */
+/* When the cart is selected: royal blue background, neon yellow icon & yellow border circle with glow (keeps identical 44px outer ring size) */
 .header-cart-btn.is-active,
 .header-cart-btn.is-selected {
+  width: 44px;
+  height: 44px;
+  box-sizing: border-box;
   background-color: var(--color-secondary);
   color: var(--color-primary);
   border: 2px solid var(--color-primary);
@@ -665,14 +669,10 @@ body {
 }
 
 .header-cart-icon {
-  width: 22px;
-  height: 22px;
+  width: 28px;
+  height: 28px;
   display: block;
   transition: transform 0.2s ease;
-}
-
-.header-cart-btn:hover .header-cart-icon {
-  transform: scale(1.08);
 }
 
 .header-cart-badge {

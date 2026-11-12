@@ -92,7 +92,32 @@ This log documents each iterative release of the project, recording the exact us
 
 ---
 
-### 🏷️ Version 1.2.1 (Current Release — `v1.2.1`)
+### 🏷️ Version 1.2.2 (Current Release — `v1.2.2`)
+
+#### 💬 Original User Prompt:
+> *"Version 1.2.2*  
+> *Please make the following adjustments:*  
+> *- On the top bar, increase the shopping cart white icon size, while keeping the outside yellow ring of the selected icon the same size"*
+
+#### 🧠 Reasoning & Architecture:
+1. **Increased Shopping Cart White Icon Size (28px)**:
+   - *Problem*: In Version 1.2.1, the unselected cart icon was changed to white and its surrounding yellow ring was removed. At 22px inside a 32x32 SVG coordinate box (actual SVG graphic width ~15.1px), the unselected white icon appeared small and visually understated next to the 44px circular user profile image.
+   - *Implementation*: Increased `.header-cart-icon` dimensions from 22px to **28px** (`width: 28px; height: 28px;`). This represents a +27.3% linear increase and a +61.9% increase in visual area. The rendered graphic inside now measures ~19.3px wide by 18.3px high with a crisp 2.1px stroke, creating a prominent, balanced presence against the royal blue header.
+2. **Preserving Outside Yellow Ring Dimensions (44px)**:
+   - *Requirement*: Maintain the exact outer size of the yellow ring when the shopping cart button is selected.
+   - *Implementation*: Both unselected and selected button states maintain strict `width: 44px; height: 44px; box-sizing: border-box;`. When selected (`.is-active`, `.is-selected`), the button renders a 2px solid neon yellow border (`border: 2px solid var(--color-primary)`), resulting in an outside yellow ring diameter of exactly 44px—identical to previous versions. Inside the 40px inner diameter, the 28px icon is centered with 6px of breathing room from the border, fitting seamlessly with zero layout shift or clipping.
+
+#### 🛠️ Files Modified:
+- `styles.css`: Increased `.header-cart-icon` to 28px; ensured `.header-cart-btn` and `.header-cart-btn.is-active` maintain exact 44px outer circle sizing; removed redundant child transform scaling on hover.
+- `index.html`: Updated page title to Version 1.2.2.
+- `login.html`: Updated page title to Version 1.2.2.
+- `HANDOFF_V1.2.2.md`: New production handoff documentation for Version 1.2.2.
+- `PROJECT_HANDOFF.md`: Updated to point to Version 1.2.2.
+- `VERSIONS.md` & `README.md`: Version 1.2.2 changelog and registry entries.
+
+---
+
+### 🏷️ Version 1.2.1 (Previous Release — `v1.2.1`)
 
 #### 💬 Original User Prompt:
 > *"Version 1.2.1*  
