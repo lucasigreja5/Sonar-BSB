@@ -214,11 +214,11 @@ body {
   text-transform: uppercase;
 }
 
-/* Houdini Text Animation (Figma 654:5110) - Centered & Strictly Proportional */
+/* Houdini Text Animation (Figma 654:5110) - Scaled to Fill Login Input Width on Mobile */
 .houdini-text-container {
   width: 100%;
-  max-width: 360px;
-  margin: 0 auto 36px;
+  max-width: 354px;
+  margin: 0 auto 32px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -226,10 +226,14 @@ body {
   text-align: center;
   user-select: none;
   overflow: visible;
+  box-sizing: border-box;
 
-  /* Strictly proportional 5:8 ratio matching Figma (54px : 86.4px = 0.625) */
-  --houdini-found-size: clamp(42px, 14vw, 86.4px);
-  --houdini-freq-size: calc(var(--houdini-found-size) * 0.625);
+  /* Target width matching the login text boxes below (100% of container):
+     - On mobile screens (<= 402px): calc(100vw - 48px), e.g. 327px on 375px phone
+     - On larger screens: 354px (max available width of 402px welcome container) */
+  --houdini-target-width: min(calc(100vw - 48px), 354px);
+  --houdini-freq-size: clamp(48px, calc(var(--houdini-target-width) * 0.171), 60.5px);
+  --houdini-found-size: clamp(66px, calc(var(--houdini-target-width) * 0.231), 82.5px);
 }
 
 .houdini-line-wrapper {
@@ -242,7 +246,7 @@ body {
 }
 
 .houdini-line-wrapper.top-line {
-  height: calc(var(--houdini-freq-size) * 1.15);
+  height: calc(var(--houdini-freq-size) * 1.22);
 }
 
 .houdini-bottom-row {
@@ -251,12 +255,12 @@ body {
   justify-content: center;
   position: relative;
   overflow: visible;
-  margin-top: calc(var(--houdini-found-size) * 0.04);
+  margin-top: calc(var(--houdini-found-size) * 0.05);
   width: 100%;
 }
 
 .houdini-line-wrapper.bottom-line {
-  height: calc(var(--houdini-found-size) * 1.12);
+  height: calc(var(--houdini-found-size) * 1.18);
   margin-top: 0;
   width: auto;
   display: inline-flex;
@@ -276,6 +280,7 @@ body {
   opacity: 0;
   will-change: transform, opacity;
   text-align: center;
+  white-space: nowrap;
 }
 
 .houdini-text.frequency-text {
@@ -289,7 +294,7 @@ body {
   font-family: var(--font-family-primary);
   font-size: var(--houdini-found-size);
   font-weight: 900;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.02em;
   animation: houdiniReveal 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.75s forwards;
 }
 
@@ -299,9 +304,9 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: clamp(10px, 3vw, 14px);
-  height: clamp(10px, 3vw, 14px);
-  margin-left: clamp(8px, 2.5vw, 14px);
+  width: clamp(11px, 3.2vw, 14px);
+  height: clamp(11px, 3.2vw, 14px);
+  margin-left: clamp(8px, 2.5vw, 12px);
   margin-bottom: calc(var(--houdini-found-size) * 0.08);
   overflow: visible;
   opacity: 0;
@@ -602,6 +607,71 @@ body {
   border-color: var(--color-primary);
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(242, 248, 98, 0.35);
+}
+
+/* Header Shopping Cart Button (Version 1.2: To left of profile, 44px matching size, bottom nav dock styling & colors) */
+.header-cart-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  color: #1D1D1D;
+  border: 2px solid var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  position: relative;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.header-cart-btn:hover {
+  transform: scale(1.08);
+  background-color: var(--color-secondary);
+  color: var(--color-primary);
+  box-shadow: 0 0 12px rgba(242, 248, 98, 0.6);
+}
+
+.header-cart-btn.is-active {
+  background-color: var(--color-secondary);
+  color: var(--color-primary);
+  box-shadow: 0 0 12px rgba(242, 248, 98, 0.6);
+}
+
+.header-cart-icon {
+  width: 22px;
+  height: 22px;
+  display: block;
+  transition: transform 0.2s ease;
+}
+
+.header-cart-btn:hover .header-cart-icon {
+  transform: scale(1.08);
+}
+
+.header-cart-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background-color: var(--color-primary);
+  color: #130f40;
+  font-family: var(--font-family-primary);
+  font-size: 11px;
+  font-weight: 800;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  box-sizing: border-box;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  border: 1.5px solid var(--color-secondary);
+  animation: badgePop 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .profile-avatar-btn {

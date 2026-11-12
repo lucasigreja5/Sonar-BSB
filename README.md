@@ -92,7 +92,49 @@ This log documents each iterative release of the project, recording the exact us
 
 ---
 
-### 🏷️ Version 1.1 (Current Release — `v1.1`)
+### 🏷️ Version 1.2 (Current Release — `v1.2`)
+
+#### 💬 Original User Prompt:
+> *"Version v1.2*  
+> *Please make the following adjustments:*  
+> *- On the login screen, on the mobile screen size, make the houdini text fill the same width as the login text boxes below, adjust the houdini text height if necessary*  
+> *- On the home page, after the login, turn off the "Welcome to SonarBSB" pop up*  
+> *- On the top bar, add a shopping cart button to the left of the user profile image. Use a shopping cart icon with the same style and colors as the bottom nav icons, and with the same size as the profile image"*
+
+#### 🧠 Reasoning & Architecture:
+1. **Full-Width Proportional Houdini Text on Mobile**:
+   - *Problem*: On mobile screen sizes (≤ 480px, e.g. 375px/390px/414px viewports), the login text inputs spanned the full container width (`calc(100vw - 48px)`), whereas the Houdini text reveal ("Frequency" and "Found") appeared floating in the center as a narrower block, failing to establish strong visual alignment with the form inputs beneath.
+   - *Implementation*:
+     - Dynamically bound the target container width to the exact inner width of the login inputs: `--houdini-target-width: min(calc(100vw - 48px), 354px);`.
+     - Scaled font sizes proportionally: `--houdini-freq-size: clamp(48px, calc(var(--houdini-target-width) * 0.171), 60.5px);` and `--houdini-found-size: clamp(66px, calc(var(--houdini-target-width) * 0.231), 82.5px);`.
+     - Adjusted line wrapper heights accordingly: `calc(var(--houdini-freq-size) * 1.22)` for `.top-line` and `calc(var(--houdini-found-size) * 1.18)` for `.bottom-line`, completely preventing character clipping while maintaining fluid Swiss typography alignment.
+     - Added `white-space: nowrap;` and calibrated letter spacing (`-0.015em` / `-0.02em`) so "FREQUENCY" and "FOUND" + the radar dot fill the full horizontal extent of the login inputs.
+2. **Deactivation of the Login Welcome Toast**:
+   - *Requirement*: Remove the "Welcome to SonarBSB" toast notification pop-up upon landing on the home feed after login.
+   - *Implementation*: Removed the `showToast("✓ Welcome to Sonar BSB...")` call in `handleWelcomeLogin()` inside `app.js`. The application now transitions smoothly and silently from the login screen into the curated home event feed without visual obstruction.
+3. **Top Bar Shopping Cart Button**:
+   - *Requirement*: Add a shopping cart button to the left of the user profile image, matching the profile image size (44px) and adopting the styling and colors of the bottom nav dock icons.
+   - *Implementation*:
+     - Placed `<button id="headerCartBtn" class="header-cart-btn" onclick="openCart()">` immediately before `#profileAvatarBtn` inside `.header-actions`.
+     - Standardized size to `44px x 44px` circular button (`border-radius: 50%`) with `border: 2px solid var(--color-primary)` matching the adjacent user profile avatar.
+     - Adopted the exact colors and vector styling of the bottom nav icons:
+       - Resting state: white circular surface (`#ffffff`) with `#1D1D1D` vector shopping cart icon (matching the bottom dock unselected item style).
+       - Hover & Active states (`viewName === "checkout"`): royal blue background (`var(--color-secondary)` / `#3F32D3`) with glowing neon yellow icon (`var(--color-primary)` / `#F2F862`) and ambient neon yellow shadow glow.
+     - Added an integrated cart item counter badge (`#headerCartBadge`) styled identically to `.nav-item .nav-badge` (neon yellow fill, `#130f40` bold counter text) that automatically displays the active ticket count.
+     - Connected `openCart()` to open the checkout/cart flow with live recalculation.
+
+#### 🛠️ Files Modified:
+- `styles.css`: Scaled Houdini text container target widths, proportional heights, and complete styling for `.header-cart-btn`, `.header-cart-icon`, and `.header-cart-badge`.
+- `app.js`: Removed "Welcome to Sonar BSB" toast in `handleWelcomeLogin()`, added `openCart()`, added header cart button active class toggle in `switchView()`, and added cart count badge synchronization in `updateBadges()`.
+- `index.html`: Updated title to Version 1.2, added `#headerCartBtn` to `.header-actions`.
+- `login.html`: Updated title to Version 1.2.
+- `HANDOFF_V1.2.md`: New production handoff documentation for Version 1.2.
+- `PROJECT_HANDOFF.md`: Updated to point to Version 1.2.
+- `VERSIONS.md` & `README.md`: Version 1.2 changelog and registry entries.
+
+---
+
+### 🏷️ Version 1.1 (Previous Release — `v1.1`)
 
 #### 💬 Original User Prompt:
 > *"Version 1.1*  

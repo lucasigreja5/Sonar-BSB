@@ -440,6 +440,16 @@ window.switchView = function(viewName) {
   // 3. Update Bottom Nav active indicator (Blue circle + Yellow icon)
   updateBottomNavUI(viewName);
 
+  // Version 1.2: Update Header Shopping Cart button active indicator
+  const headerCartBtn = document.getElementById("headerCartBtn");
+  if (headerCartBtn) {
+    if (viewName === "checkout" || viewName === "payment") {
+      headerCartBtn.classList.add("is-active");
+    } else {
+      headerCartBtn.classList.remove("is-active");
+    }
+  }
+
   // 4. Render main view content
   if (viewName !== "checkout" && viewName !== "payment" && viewName !== "confirmation") {
     renderEvents();
@@ -840,6 +850,18 @@ window.startCheckoutFromModal = function() {
 // ============================================================================
 // Checkout Flow View (Figma 5.1.1- CheckoutFlow1.1 "Shopping Cart")
 // ============================================================================
+window.openCart = function() {
+  if (!checkoutState || !checkoutState.event) {
+    startCheckout(EVENTS_DATA[0].id);
+  } else {
+    updateCheckoutCalculations();
+    sectionTitleEl.textContent = "Shopping Cart";
+    sectionSubtitleEl.textContent = "Review ticket quantities and proceed to secure checkout";
+    eventCountBadge.textContent = "Checkout";
+    switchView("checkout");
+  }
+};
+
 window.startCheckout = function(eventId) {
   const evt = EVENTS_DATA.find(item => item.id === eventId) || currentEventInModal || EVENTS_DATA[0];
   if (!evt) return;
@@ -910,6 +932,9 @@ function updateCheckoutCalculations() {
       btnPay.textContent = "Continue to Payment";
     }
   }
+
+  // Version 1.2: Refresh Header Shopping Cart badge
+  updateBadges();
 }
 
 // Transition from Shopping Cart to Select Payment (Figma 431:960 5.2.1- CheckoutFlow2.1)
@@ -989,6 +1014,10 @@ window.processFinalPayment = function() {
   // Add to active tickets array
   state.tickets.unshift(newTicket);
   lastPurchasedTicket = newTicket;
+  
+  // Reset cart quantities after payment
+  checkoutState.regularQty = 0;
+  checkoutState.studentQty = 0;
   updateBadges();
 
   // Populate confirmation view
@@ -1277,6 +1306,14 @@ function updateBadges() {
     ticketBadgeEl.textContent = state.tickets.length;
     ticketBadgeEl.style.display = state.tickets.length > 0 ? "block" : "none";
   }
+  // Version 1.2: Header Shopping Cart Badge
+  const headerCartBadge = document.getElementById("headerCartBadge");
+  if (headerCartBadge) {
+    const cartCount = (typeof checkoutState !== "undefined" && checkoutState && checkoutState.regularQty ? checkoutState.regularQty : 0) +
+                      (typeof checkoutState !== "undefined" && checkoutState && checkoutState.studentQty ? checkoutState.studentQty : 0);
+    headerCartBadge.textContent = cartCount;
+    headerCartBadge.style.display = cartCount > 0 ? "flex" : "none";
+  }
 }
 
 function showToast(message) {
@@ -1347,7 +1384,7 @@ window.handleWelcomeLogin = function(event) {
     nameEls.forEach(el => el.textContent = username);
   }
   sessionStorage.setItem("sonar_user_logged_in", "true");
-  showToast(`✓ Welcome to Sonar BSB, ${state.userProfile.name}!`);
+  // Version 1.2: Turn off the "Welcome to SonarBSB" popup after login
   switchView("home");
 };
 

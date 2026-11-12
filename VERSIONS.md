@@ -6,7 +6,26 @@ This directory contains versioned snapshots of the Sonar BSB Events web applicat
 
 ## 🏷️ Version History
 
-### Version 1.1 (Current Production Release — `v1.1`)
+### Version 1.2 (Current Production Release — `v1.2`)
+- **Release Date**: November 2026
+- **Git Tag**: `v1.2`
+- **Original User Prompt**:
+  > *"Version v1.2*  
+  > *Please make the following adjustments:*  
+  > *- On the login screen, on the mobile screen size, make the houdini text fill the same width as the login text boxes below, adjust the houdini text height if necessary*  
+  > *- On the home page, after the login, turn off the "Welcome to SonarBSB" pop up*  
+  > *- On the top bar, add a shopping cart button to the left of the user profile image. Use a shopping cart icon with the same style and colors as the bottom nav icons, and with the same size as the profile image"*
+- **Key Features & Changes**:
+  - **Full-Width Proportional Houdini Text on Mobile**: Bound the Houdini container to `min(calc(100vw - 48px), 354px)`, dynamically filling the exact inner width of the login text inputs below. Scaled font sizes (`clamp(48px, ... * 0.171, 60.5px)` for FREQUENCY and `clamp(66px, ... * 0.231, 82.5px)` for FOUND + dot) with calibrated line wrapper heights (`1.22x` and `1.18x`) and `white-space: nowrap;` preventing character clipping.
+  - **Deactivated Welcome Pop-Up**: Turned off the `showToast` notification upon logging in from the welcome screen, allowing an immediate, quiet entry into the home event feed.
+  - **Top Bar Shopping Cart Button**: Integrated a 44px circular shopping cart button to the left of `#profileAvatarBtn` inside `.header-actions`. Features the exact styling and color language of the bottom nav icons (white surface with `#1D1D1D` vector cart icon, transitioning on hover/checkout to royal blue with neon yellow icon and glow), accompanied by a live ticket counter badge.
+  - **Master Handoff Guide**: Full specifications documented in `HANDOFF_V1.2.md`.
+  - **Snapshot Directory**: `versions/v1.2/source/`
+  - **ZIP Package**: `versions/v1.2/sonar-bsb-events-v1.2.zip`
+
+---
+
+### Version 1.1 (Previous Production Release — `v1.1`)
 - **Release Date**: November 2026
 - **Git Tag**: `v1.1`
 - **Original User Prompt**:
