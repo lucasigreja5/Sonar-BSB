@@ -6,7 +6,26 @@ This directory contains versioned snapshots of the Sonar BSB Events web applicat
 
 ## 🏷️ Version History
 
-### Version 1.2 (Current Production Release — `v1.2`)
+### Version 1.2.1 (Current Production Release — `v1.2.1`)
+- **Release Date**: November 2026
+- **Git Tag**: `v1.2.1`
+- **Original User Prompt**:
+  > *"Version 1.2.1*  
+  > *Please make the following adjustments:*  
+  > *- For the shopping cart button, when the cart is not selected, remove the yellow circle arround the icon, and change the icon color to white. When the cart is selected, keep its style as it is right now*  
+  > *- On the login screen, for the houdini text, increase the size of the "found" text, so as it fill the same width as the textbox below it, and have it aligned to the center. Watch for the clipping mask on the frequency word, the Y is being clipped out of the frame. And align the blinking dot to work as a period for the "found""*
+- **Key Features & Changes**:
+  - **Refined Shopping Cart Button States**: When unselected, the yellow circle border is removed (`border: 2px solid transparent; background: transparent;`) and the icon renders in clean white (`#ffffff`). When selected on checkout, the royal blue fill, neon yellow icon, and glowing yellow border ring are retained.
+  - **Larger "FOUND" Text Matching Textbox Width**: Sized "FOUND" independently to `clamp(72px, calc(var(--houdini-target-width) * 0.248), 88px)` so the word itself fills the full width of the login inputs beneath it and centers seamlessly.
+  - **Unclipped 'Y' in "FREQUENCY"**: Expanded horizontal clipping boundaries on `.houdini-line-wrapper.top-line` by 20px on each side (`width: calc(100% + 40px); margin: 0 -20px; padding: 0 20px;`) and calibrated font size (`clamp(38px, calc(var(--houdini-target-width) * 0.15), 53px)`), permanently eliminating letter clipping on the 'Y'.
+  - **Typographic Baseline Period Dot**: Wrapped "FOUND" and the blinking radar dot inside `.found-text-group` with `align-items: baseline;`, positioning the pulsing neon dot directly at the typographic baseline as punctuation following the letter 'D'.
+  - **Master Handoff Guide**: Full specifications documented in `HANDOFF_V1.2.1.md`.
+  - **Snapshot Directory**: `versions/v1.2.1/source/`
+  - **ZIP Package**: `versions/v1.2.1/sonar-bsb-events-v1.2.1.zip`
+
+---
+
+### Version 1.2 (Previous Production Release — `v1.2`)
 - **Release Date**: November 2026
 - **Git Tag**: `v1.2`
 - **Original User Prompt**:

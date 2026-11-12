@@ -92,7 +92,43 @@ This log documents each iterative release of the project, recording the exact us
 
 ---
 
-### 🏷️ Version 1.2 (Current Release — `v1.2`)
+### 🏷️ Version 1.2.1 (Current Release — `v1.2.1`)
+
+#### 💬 Original User Prompt:
+> *"Version 1.2.1*  
+> *Please make the following adjustments:*  
+> *- For the shopping cart button, when the cart is not selected, remove the yellow circle arround the icon, and change the icon color to white. When the cart is selected, keep its style as it is right now*  
+> *- On the login screen, for the houdini text, increase the size of the "found" text, so as it fill the same width as the textbox below it, and have it aligned to the center. Watch for the clipping mask on the frequency word, the Y is being clipped out of the frame. And align the blinking dot to work as a period for the "found""*
+
+#### 🧠 Reasoning & Architecture:
+1. **Refined Shopping Cart Button States**:
+   - *Requirement*: When unselected, strip the yellow circle border ring and render the shopping cart icon in pure white against the royal blue header. When selected (on the cart/checkout view), retain the signature styling (royal blue fill, neon yellow icon, 2px yellow border ring, and ambient glow).
+   - *Implementation*:
+     - Unselected (`.header-cart-btn`): `background: transparent; border: 2px solid transparent; color: #ffffff; box-shadow: none;`. Hovering triggers a subtle translucent backlight (`rgba(255, 255, 255, 0.14)`).
+     - Selected (`.header-cart-btn.is-active`, `.header-cart-btn.is-selected`): `background-color: var(--color-secondary); color: var(--color-primary); border: 2px solid var(--color-primary); box-shadow: 0 0 12px rgba(242, 248, 98, 0.6);`.
+2. **Larger "FOUND" Text Filling Textbox Width & Center-Aligned**:
+   - *Problem*: In previous iterations, "Found" was sized so that the combination of [word + gap + dot] reached the container width, leaving the word itself slightly narrower than the input field beneath it.
+   - *Implementation*: Sized the word "FOUND" independently to fill the exact width of the login textbox across all screen sizes: `--houdini-found-size: clamp(72px, calc(var(--houdini-target-width) * 0.248), 88px);`. At 354px desktop width, it reaches 88px (~354px text width); on a 375px mobile screen (327px input width), it scales to 81px (~327px text width). Centered via `justify-content: center; text-align: center;`.
+3. **Clipping Mask Resolution on "FREQUENCY" (Preserving the 'Y')**:
+   - *Problem*: The top line wrapper had `overflow: hidden; width: 100%;` exactly bound to the container boundary. Because the text was centered, slight font-rendering variations or letter spacing caused the rightmost edge of the letter 'Y' to collide with the wrapper border and get clipped out of frame.
+   - *Implementation*:
+     - Expanded horizontal wrapper boundaries: `.houdini-line-wrapper.top-line` now has `width: calc(100% + 40px); margin-left: -20px; margin-right: -20px; padding: 0 20px; box-sizing: border-box; overflow: hidden;`. This provides 20px of extra breathing room on both sides while preserving vertical slide-up masking.
+     - Calibrated font size to `clamp(38px, calc(var(--houdini-target-width) * 0.15), 53px)` with `letter-spacing: 0.01em`, ensuring over 35px of total clearance so the 'Y' is never clipped.
+4. **Blinking Dot Aligned as a Typographic Period**:
+   - *Requirement*: Align the neon yellow blinking sonar dot to sit as a typographic period `.` for the word "FOUND".
+   - *Implementation*: Grouped "FOUND" and the dot within `.found-text-group` using `display: inline-flex; align-items: baseline;`. Sized the dot to `clamp(10px, 3.2vw, 13px)` with `vertical-align: 0.08em; margin-left: 6px;`. The pulsing neon dot now rests directly on the typographic baseline immediately following the letter 'D', functioning as active punctuation.
+
+#### 🛠️ Files Modified:
+- `styles.css`: Updated `.header-cart-btn` resting and active states; expanded `.houdini-line-wrapper.top-line` and `.bottom-line` mask margins; calibrated `--houdini-found-size` and `--houdini-freq-size`; added `.found-text-group` baseline period styling.
+- `index.html`: Title updated to Version 1.2.1; updated Houdini markup with `.found-text-group` period structure.
+- `login.html`: Title updated to Version 1.2.1; updated Houdini markup with `.found-text-group` period structure.
+- `HANDOFF_V1.2.1.md`: New production handoff documentation for Version 1.2.1.
+- `PROJECT_HANDOFF.md`: Updated to point to Version 1.2.1.
+- `VERSIONS.md` & `README.md`: Version 1.2.1 changelog and registry entries.
+
+---
+
+### 🏷️ Version 1.2 (Previous Release — `v1.2`)
 
 #### 💬 Original User Prompt:
 > *"Version v1.2*  

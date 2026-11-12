@@ -232,21 +232,26 @@ body {
      - On mobile screens (<= 402px): calc(100vw - 48px), e.g. 327px on 375px phone
      - On larger screens: 354px (max available width of 402px welcome container) */
   --houdini-target-width: min(calc(100vw - 48px), 354px);
-  --houdini-freq-size: clamp(48px, calc(var(--houdini-target-width) * 0.171), 60.5px);
-  --houdini-found-size: clamp(66px, calc(var(--houdini-target-width) * 0.231), 82.5px);
+  --houdini-freq-size: clamp(38px, calc(var(--houdini-target-width) * 0.15), 53px);
+  --houdini-found-size: clamp(72px, calc(var(--houdini-target-width) * 0.248), 88px);
 }
 
 .houdini-line-wrapper {
-  overflow: hidden;
   position: relative;
-  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
+/* Top line: generous horizontal clearance so the 'Y' is never clipped by the mask */
 .houdini-line-wrapper.top-line {
-  height: calc(var(--houdini-freq-size) * 1.22);
+  width: calc(100% + 40px);
+  margin-left: -20px;
+  margin-right: -20px;
+  padding: 0 20px;
+  box-sizing: border-box;
+  height: calc(var(--houdini-freq-size) * 1.25);
+  overflow: hidden;
 }
 
 .houdini-bottom-row {
@@ -259,15 +264,28 @@ body {
   width: 100%;
 }
 
+/* Bottom line: masks slide-up while providing horizontal clearance for 'Found' & period dot */
 .houdini-line-wrapper.bottom-line {
-  height: calc(var(--houdini-found-size) * 1.18);
+  height: calc(var(--houdini-found-size) * 1.25);
   margin-top: 0;
-  width: auto;
-  display: inline-flex;
+  width: calc(100% + 40px);
+  margin-left: -20px;
+  margin-right: -20px;
+  padding: 0 20px;
+  box-sizing: border-box;
+  display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
   flex-shrink: 0;
+}
+
+/* Found + Period Dot Group: centered together, with dot resting at baseline as punctuation */
+.found-text-group {
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+  position: relative;
 }
 
 .houdini-text {
@@ -287,6 +305,7 @@ body {
   font-family: var(--font-family-primary);
   font-size: var(--houdini-freq-size);
   font-weight: 500;
+  letter-spacing: 0.01em;
   animation: houdiniReveal 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
 }
 
@@ -298,20 +317,16 @@ body {
   animation: houdiniReveal 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.75s forwards;
 }
 
-/* Houdini Signature Blinking Sonar Radar Dot - Solid Core (Ripple Waves Removed) */
+/* Houdini Signature Blinking Sonar Radar Dot - Period Punctuation for "FOUND" */
 .houdini-blinking-dot {
   position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: clamp(11px, 3.2vw, 14px);
-  height: clamp(11px, 3.2vw, 14px);
-  margin-left: clamp(8px, 2.5vw, 12px);
-  margin-bottom: calc(var(--houdini-found-size) * 0.08);
-  overflow: visible;
+  display: inline-block;
+  width: clamp(10px, 3.2vw, 13px);
+  height: clamp(10px, 3.2vw, 13px);
+  margin-left: 6px;
+  vertical-align: 0.08em;
   opacity: 0;
   animation: dotFadeIn 0.4s ease 1.5s forwards;
-  vertical-align: baseline;
   flex-shrink: 0;
 }
 
@@ -609,14 +624,14 @@ body {
   box-shadow: 0 4px 12px rgba(242, 248, 98, 0.35);
 }
 
-/* Header Shopping Cart Button (Version 1.2: To left of profile, 44px matching size, bottom nav dock styling & colors) */
+/* Header Shopping Cart Button (Version 1.2.1: White icon without yellow circle when unselected; royal blue + neon yellow with glow when selected) */
 .header-cart-btn {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background-color: #ffffff;
-  color: #1D1D1D;
-  border: 2px solid var(--color-primary);
+  background: transparent;
+  color: #ffffff;
+  border: 2px solid transparent;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -624,21 +639,29 @@ body {
   padding: 0;
   position: relative;
   flex-shrink: 0;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: none;
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .header-cart-btn:hover {
   transform: scale(1.08);
+  background-color: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+}
+
+/* When the cart is selected: royal blue background, neon yellow icon & yellow border circle with glow */
+.header-cart-btn.is-active,
+.header-cart-btn.is-selected {
   background-color: var(--color-secondary);
   color: var(--color-primary);
+  border: 2px solid var(--color-primary);
   box-shadow: 0 0 12px rgba(242, 248, 98, 0.6);
 }
 
-.header-cart-btn.is-active {
-  background-color: var(--color-secondary);
-  color: var(--color-primary);
-  box-shadow: 0 0 12px rgba(242, 248, 98, 0.6);
+.header-cart-btn.is-active:hover,
+.header-cart-btn.is-selected:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 16px rgba(242, 248, 98, 0.85);
 }
 
 .header-cart-icon {
