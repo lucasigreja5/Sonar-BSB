@@ -6,7 +6,17 @@ This directory contains versioned snapshots of the Sonar BSB Events web applicat
 
 ## 🏷️ Version History
 
-### Version 1.2.4 (Current Production Release — `v1.2.4`)
+### Version 1.3 (Current Production Release — `v1.3`)
+- **Date**: 2026-11-12
+- **Snapshot Directory**: `versions/v1.3/`
+- **Archive Zip**: `versions/v1.3/sonar-bsb-events-v1.3.zip`
+- **Handoff Documentation**: `HANDOFF_V1.3.md`
+- **Changes**:
+  - Expanded catalog from 9 to **27 mock events** (9 `Today`, 9 `This Month`, 9 `Upcoming`), adding 18 Brasília electronic events with full venues, entry prices, descriptions, 2-artist lineups, genres, and `1024×1024` cover assets (11 AI-generated covers + 7 custom neon-poster graphics for `event-synthlab.png` and the 6 new Upcoming covers due to `gemini-3.1-flash-image` daily quota reset).
+  - Replaced hardcoded August 2026 event dates with `buildEventsData(referenceDate = new Date())`, anchoring Today to the user's open date, This Month strictly within the current month, and Upcoming strictly across the next 2 calendar months (`month + 1` and `month + 2`), plus dynamic Search placeholder, Search `dateShort`/`dateMonth` matching, Checkout `dd/mm/yy`, and default ticket timestamps.
+  - Updated page `<title>` badges to `Version 1.3` and `#eventCountBadge` initial fallback to `9 events`.
+
+### Version 1.2.4 (Previous Production Release — `v1.2.4`)
 - **Release Date**: November 2026
 - **Git Tag**: `v1.2.4`
 - **Original User Prompt**:

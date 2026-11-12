@@ -5,17 +5,76 @@
  */
 
 // ============================================================================
-// Events Database (Exact 9 events from Figma frames 2.1, 2.2, 2.3)
+// Events Database & Dynamic Calendar Date Builder (Version 1.3 — 27 Events)
+// Dynamically anchors Today, This Month, and Upcoming (+1/+2 months) to the
+// local calendar date when the user opens the app.
 // ============================================================================
-const EVENTS_DATA = [
-  // Frame 2.1: What's on Today
+const WEEKDAYS_EN = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+const MONTHS_SHORT_EN = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+const MONTHS_FULL_EN = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+function formatEventDateFields(dateObj) {
+  const dayNum = dateObj.getDate();
+  const monthIdx = dateObj.getMonth();
+  const year = dateObj.getFullYear();
+  const dateDay = String(dayNum).padStart(2, "0");
+  const dateMonth = MONTHS_SHORT_EN[monthIdx];
+  const weekday = WEEKDAYS_EN[dateObj.getDay()];
+  const monthFull = MONTHS_FULL_EN[monthIdx];
+  const monthNumPadded = String(monthIdx + 1).padStart(2, "0");
+  const yearShort = String(year).slice(-2);
+
+  return {
+    dateObj: new Date(year, monthIdx, dayNum),
+    dateDay,
+    dateMonth,
+    dateFormatted: `${weekday}, ${monthFull} ${dateDay}, ${year}`,
+    dateShort: `${dateDay}/${monthNumPadded}/${yearShort}`,
+    dateISO: `${year}-${monthNumPadded}-${dateDay}`
+  };
+}
+
+function formatPurchaseTimestamp(dateObj, timeHHMM) {
+  const d = String(dateObj.getDate()).padStart(2, "0");
+  const m = String(dateObj.getMonth() + 1).padStart(2, "0");
+  const y = dateObj.getFullYear();
+  return `${timeHHMM} ${d}/${m}/${y}`;
+}
+
+function resolveCurrentMonthDate(baseYear, baseMonth, todayDay, index, totalCount) {
+  const lastDayOfMonth = new Date(baseYear, baseMonth + 1, 0).getDate();
+  const remainingDays = lastDayOfMonth - todayDay;
+  let day;
+
+  if (remainingDays <= 0) {
+    // Opened on the last day of the month: keep all "This Month" events within the same month
+    day = lastDayOfMonth;
+  } else if (remainingDays >= totalCount) {
+    // Distribute distinct upcoming days evenly across the rest of the current month
+    day = todayDay + 1 + Math.round((index * (remainingDays - 1)) / Math.max(1, totalCount - 1));
+  } else {
+    // Fewer remaining days than events: spread evenly across remaining days without spilling into next month
+    day = todayDay + 1 + Math.floor((index * remainingDays) / totalCount);
+  }
+
+  return new Date(baseYear, baseMonth, Math.min(day, lastDayOfMonth));
+}
+
+function resolveUpcomingMonthDate(baseYear, baseMonth, monthOffset, preferredDay) {
+  // monthOffset = 1 or 2 (strictly the next 2 calendar months; Date handles Dec -> Jan rollover)
+  const firstOfTarget = new Date(baseYear, baseMonth + monthOffset, 1);
+  const targetYear = firstOfTarget.getFullYear();
+  const targetMonth = firstOfTarget.getMonth();
+  const daysInTarget = new Date(targetYear, targetMonth + 1, 0).getDate();
+  return new Date(targetYear, targetMonth, Math.min(preferredDay, daysInTarget));
+}
+
+const RAW_EVENTS_CATALOG = [
+  // Category: Today (9 events — 3 original + 6 added in v1.3)
   {
     id: "trema-techno",
     title: "Trema Techno: Subsolo Urbano",
     category: "today",
-    dateDay: "15",
-    dateMonth: "AUG",
-    dateFormatted: "Saturday, August 15, 2026",
     time: "22:00h",
     venue: "Galeria dos Estados, Setor Comercial Sul",
     price: 60.00,
@@ -34,9 +93,6 @@ const EVENTS_DATA = [
     id: "vapor-cybernetic",
     title: "Vapø_R: Cybernetic Cathedral",
     category: "today",
-    dateDay: "15",
-    dateMonth: "AUG",
-    dateFormatted: "Saturday, August 15, 2026",
     time: "23:00h",
     venue: "Birosca do Conic, Setor de Diversões Sul (SDS)",
     price: 80.00,
@@ -55,9 +111,6 @@ const EVENTS_DATA = [
     id: "concrete-beats",
     title: "Concrete Beats Festival",
     category: "today",
-    dateDay: "15",
-    dateMonth: "AUG",
-    dateFormatted: "Saturday, August 15, 2026",
     time: "16:00h",
     venue: "Praça das Fontes, Parque da Cidade",
     price: 160.00,
@@ -72,15 +125,120 @@ const EVENTS_DATA = [
     venueDesc: "Praça das Fontes offers vast open sky, Burle Marx landscaping, and brutalist geometric tiles inside South America's largest city park.",
     genre: "Melodic House / Deep Tech"
   },
+  {
+    id: "subterranea-acid-chamber",
+    title: "Subterrânea: Acid Chamber",
+    category: "today",
+    time: "23:30h",
+    venue: "Beco da Cultura, Setor Comercial Sul (SCS)",
+    price: 55.00,
+    priceFormatted: "$ 55.00",
+    image: "./assets/event-subterranea.png",
+    tagline: "Raw TB-303 squelches beneath SCS brutalist arches.",
+    description: "Resonant 303 basslines and unrelenting acid grooves echo through the concrete passageways of Beco da Cultura. An intimate late-night bunker experience illuminated solely by slicing emerald lasers and haze.",
+    lineup: [
+      { name: "Vortex 303", bio: "Live hardware acid performer wielding modified Roland basslines and analog overdrive pedals." },
+      { name: "Nina Kraut", bio: "Brasília-based selector blending classic Chicago acid, fast rave percussion, and warehouse hypnosis." }
+    ],
+    venueDesc: "Tucked beneath the concrete walkways of Setor Comercial Sul, Beco da Cultura hosts tight-knit DIY electronic collectives away from mainstream clubs.",
+    genre: "Acid Techno / Rave"
+  },
+  {
+    id: "esplanada-bass-orbit",
+    title: "Esplanada Bass: Orbit 061",
+    category: "today",
+    time: "21:00h",
+    venue: "Cúpula Externa, Museu Nacional da República",
+    price: 65.00,
+    priceFormatted: "$ 65.00",
+    image: "./assets/event-esplanada.png",
+    tagline: "Broken beats and sub-heavy bass under Niemeyer's dome.",
+    description: "An open-air bass-music transmission taking over the monumental white hemisphere and sweeping ramp of Museu Nacional. Expect UK garage, heavyweight breakbeat, and cyan architectural projection mapping.",
+    lineup: [
+      { name: "Gravitas", bio: "Sound designer and breakbeat producer crafting deep sub-pressure textures tailored for open-air rigs." },
+      { name: "Sônica DF", bio: "Pioneering duo fusing baile syncopation, two-step garage, and futuristic grime instrumentation." }
+    ],
+    venueDesc: "At the edge of Eixo Monumental, the sculptural white dome of Museu Nacional provides an unforgettable 360-degree acoustic amphitheater after dusk.",
+    genre: "UK Garage / Breakbeat"
+  },
+  {
+    id: "conic-frequency-404",
+    title: "Conic: Frequency 404",
+    category: "today",
+    time: "23:59h",
+    venue: "Galeria Subsolo Conic, Setor de Diversões Sul (SDS)",
+    price: 45.00,
+    priceFormatted: "$ 45.00",
+    image: "./assets/event-conic404.png",
+    tagline: "Midnight glitch electronics inside Conic's brutalist labyrinth.",
+    description: "When the upper shutters roll down, Conic's lower arcade awakens. Minimal electro, stripped-back percussive rhythms, and razor-sharp magenta laser grids frame a purist dancefloor until sunrise.",
+    lineup: [
+      { name: "Kinetika", bio: "Precision minimal DJ known for hypnotic four-deck layering and crystalline vinyl cuts." },
+      { name: "DJ Ruído", bio: "Veteran Conic resident bridging mechanical dark electro and experimental post-club electronics." }
+    ],
+    venueDesc: "Beneath the raw coffered concrete ceilings of Setor de Diversões Sul, Galeria Conic remains the beating heart of Brasília's counterculture.",
+    genre: "Minimal / Dark Electro"
+  },
+  {
+    id: "eixao-sonoro-sunset",
+    title: "Eixão Sonoro: Dusk Session",
+    category: "today",
+    time: "17:30h",
+    venue: "Passarela do Eixão Sul, Altura 208 Sul",
+    price: 40.00,
+    priceFormatted: "$ 40.00",
+    image: "./assets/event-eixao.png",
+    tagline: "Open-air asphalt grooves as Brasília's sky turns amber.",
+    description: "Celebrating Brasília's car-free boulevard heritage with warm dusty house, lush nu-disco chords, and funky cosmic grooves right as the Cerrado sun drops behind the Esplanada skyline.",
+    lineup: [
+      { name: "Solar Wave", bio: "Sun-drenched house collective bringing rotary mixers and rare Brazilian boogie cuts to outdoor streets." },
+      { name: "Pedro Alves", bio: "Local crate-digger weaving Balearic rhythms, disco edits, and uplifting piano house." }
+    ],
+    venueDesc: "Set on the wide modernist pedestrian overpass of Eixo Rodoviário Sul, offering uninterrupted horizon views across the Pilot Plan.",
+    genre: "House / Nu-Disco"
+  },
+  {
+    id: "ponto-zero-warehouse",
+    title: "Ponto Zero: Brutalist Pulse",
+    category: "today",
+    time: "22:30h",
+    venue: "Quadra 2 Bloco C, Setor Bancário Sul (SBS)",
+    price: 75.00,
+    priceFormatted: "$ 75.00",
+    image: "./assets/event-pontozero.png",
+    tagline: "High-pressure four-on-the-floor inside a granite banking vault.",
+    description: "Transforming the austere granite corridors of SBS into a crimson-lit techno monolith. Relentless 138 BPM hardgroove, mirrored floor reflections, and stark white strobes command total focus.",
+    lineup: [
+      { name: "Monobloco B", bio: "Hardgroove duo delivering high-velocity Latin percussion inside sleek industrial techno frameworks." },
+      { name: "Caio Marte", bio: "High-energy closing specialist sculpted in Berlin and Brasília warehouse marathon nights." }
+    ],
+    venueDesc: "After business hours, Setor Bancário Sul becomes a silent canyon of dark stone facades and dramatic modernist geometry.",
+    genre: "Hardgroove / Peak-Time Techno"
+  },
+  {
+    id: "cerrado-mist-dub",
+    title: "Cerrado Mist: Sound System",
+    category: "today",
+    time: "19:00h",
+    venue: "Arena Aberta Funarte, Eixo Monumental",
+    price: 50.00,
+    priceFormatted: "$ 50.00",
+    image: "./assets/event-cerradomist.png",
+    tagline: "Hand-built wooden speaker stacks echoing warm dub chords at twilight.",
+    description: "Full analog preamp warmth meets sculptural Cerrado night air. Towering custom wooden scoop bins flood Funarte's courtyard with meditative dub techno, roots steppers, and sub-bass resonance.",
+    lineup: [
+      { name: "Dub Planalto", bio: "Custom sound-system builders and dub engineers pushing tactile analog delay chains live." },
+      { name: "Lara Zed", bio: "Deep-bass selector exploring atmospheric dub techno, halftone steppers, and warm vinyl textures." }
+    ],
+    venueDesc: "Funarte's open concrete arena connects modernist colonnades with twisted native Cerrado trees along Eixo Monumental.",
+    genre: "Dub Techno / Deep Bass"
+  },
 
-  // Frame 2.2: What's Coming This Month
+  // Category: This Month (9 events — 3 original + 6 added in v1.3)
   {
     id: "externa-monolith",
     title: "Externa Collective: Monolith",
     category: "month",
-    dateDay: "19",
-    dateMonth: "AUG",
-    dateFormatted: "Wednesday, August 19, 2026",
     time: "22:00h",
     venue: "Externa Club, Setor Comercial Sul (SCS)",
     price: 70.00,
@@ -99,9 +257,6 @@ const EVENTS_DATA = [
     id: "traco-echoes",
     title: "Traço: Echoes of Oscar",
     category: "month",
-    dateDay: "20",
-    dateMonth: "AUG",
-    dateFormatted: "Thursday, August 20, 2026",
     time: "23:00h",
     venue: "Subsolo do Teatro Dulcina Conic",
     price: 50.00,
@@ -120,9 +275,6 @@ const EVENTS_DATA = [
     id: "low-club-sunset",
     title: "Low Club: Sunset Horizon",
     category: "month",
-    dateDay: "22",
-    dateMonth: "AUG",
-    dateFormatted: "Saturday, August 22, 2026",
     time: "14:00h",
     venue: "Orla do Lago Paranoá, Setor de Clubes Esportivos Sul",
     price: 120.00,
@@ -137,15 +289,121 @@ const EVENTS_DATA = [
     venueDesc: "The lakeshore of Brasília features world-renowned sunsets, cool evening breezes, and panoramic views of the modern cable-stayed bridge.",
     genre: "Deep House / Progressive"
   },
+  {
+    id: "ponte-jk-nocturne",
+    title: "Ponte JK: Waterline",
+    category: "month",
+    time: "20:00h",
+    venue: "Orla da Ponte JK, Setor de Clubes Sul",
+    price: 110.00,
+    priceFormatted: "$ 110.00",
+    image: "./assets/event-ponte-jk.png",
+    tagline: "Hypnotic arpeggios shimmering beneath Brasília's steel arches.",
+    description: "Hosted on an extended timber pier directly facing the illuminated parabolic arches of Ponte JK. Sapphire lights shimmer across Lago Paranoá as driving melodic progressive sets build under the stars.",
+    lineup: [
+      { name: "Maré Alta", bio: "Progressive house duo celebrated for sweeping synth build-ups and spatial lakeside soundscapes." },
+      { name: "Lucas Vello", bio: "Brasília melodic techno resident crafting warm sunset-to-midnight transitions." }
+    ],
+    venueDesc: "Set beside the southern pier of Ponte Juscelino Kubitschek, pairing cool lake breezes with uninterrupted reflections of the bridge's steel arcs.",
+    genre: "Melodic House / Progressive"
+  },
+  {
+    id: "mirante-digital-horizon",
+    title: "Mirante Digital: Transmission",
+    category: "month",
+    time: "18:00h",
+    venue: "Torre de TV Digital, Lago Norte",
+    price: 95.00,
+    priceFormatted: "$ 95.00",
+    image: "./assets/event-mirante-digital.png",
+    tagline: "360-degree Cerrado panorama synced to warm analog modular sets.",
+    description: "Gather at the concrete base of Oscar Niemeyer's final Brasília landmark, Flor do Cerrado, for a high-altitude sunset session combining organic textures, warm analog pads, and coral dusk vistas.",
+    lineup: [
+      { name: "Flor do Cerrado", bio: "Organic downtempo & electronica live act incorporating acoustic plucked strings and analog synths." },
+      { name: "Kronos", bio: "Atmospheric electronica selector moving effortlessly from warm breaks to celestial deep techno." }
+    ],
+    venueDesc: "Perched on the highest ridge of Colorado/Lago Norte, Torre de TV Digital commands panoramic views over Brasília's endless plateau horizon.",
+    genre: "Organic House / Electronica"
+  },
+  {
+    id: "sia-garage-protocol",
+    title: "SIA Garage: Protocol 909",
+    category: "month",
+    time: "23:00h",
+    venue: "Galpão Trecho 3, Setor de Indústrias (SIA)",
+    price: 70.00,
+    priceFormatted: "$ 70.00",
+    image: "./assets/event-sia-garage.png",
+    tagline: "Chrome hardware drums and relentless 909 claps in an industrial bay.",
+    description: "No VIP tables, no phones on the floor—just pure Detroit techno, crisp TR-909 percussion, and cold icy-cyan beams slicing through wet industrial concrete in Trecho 3.",
+    lineup: [
+      { name: "TR-Nine", bio: "Hardware techno live act built around vintage drum machines, raw distortion, and live sequencing." },
+      { name: "Duda K", bio: "Fast electro and jacking Detroit-inspired DJ tearing up Brasília's underground warehouse circuit." }
+    ],
+    venueDesc: "A converted heavy-machinery maintenance garage in Setor de Indústrias e Abastecimento featuring tall roll-up bays and raw steel trusses.",
+    genre: "Detroit Techno / Electro"
+  },
+  {
+    id: "ermida-twilight-ritual",
+    title: "Ermida: Twilight Echo",
+    category: "month",
+    time: "15:30h",
+    venue: "Anfiteatro Ermida Dom Bosco, Lago Sul",
+    price: 85.00,
+    priceFormatted: "$ 85.00",
+    image: "./assets/event-ermida-twilight.png",
+    tagline: "Sacred hillside sunset looking straight across the lake to Plano Piloto.",
+    description: "As the golden Cerrado light illuminates the stone tiers of Ermida Dom Bosco, soulful afro-house rhythms and warm organic percussions carry dancers smoothly from sunlit afternoon into starry twilight.",
+    lineup: [
+      { name: "Alvorada", bio: "Afro-house collective blending Brazilian percussive grooves with lush modern club arrangement." },
+      { name: "Thiago Neri", bio: "Open-air sunset specialist renowned for warm basslines and deep soulful vocal cuts." }
+    ],
+    venueDesc: "Resting along the southeastern shore of Lago Paranoá, Ermida Dom Bosco frames the monumental Plano Piloto skyline dead-center on the sunset horizon.",
+    genre: "Afro House / Downtempo"
+  },
+  {
+    id: "subsolo-concha-prism",
+    title: "Concha Prism: Wave Mechanics",
+    category: "month",
+    time: "21:30h",
+    venue: "Concha Acústica de Brasília, Setor de Clubes Norte (SHTN)",
+    price: 65.00,
+    priceFormatted: "$ 65.00",
+    image: "./assets/event-concha-prism.png",
+    tagline: "Prismatic projection mapping across iconic curved concrete shells.",
+    description: "Precision audiovisual engineering meets modernist heritage. Custom real-time laser wireframes hug the vaulted parabolic shell of Concha Acústica while cutting-edge IDM and hypnotic synth-techno resonate across the bay.",
+    lineup: [
+      { name: "Prisma Lab", bio: "Audio-visual duo synchronizing modular FM synthesis with real-time spatial projection mapping." },
+      { name: "Bruno Sol", bio: "Braindance and modern synth-techno DJ celebrated for kinetic, genre-bending nocturnal journeys." }
+    ],
+    venueDesc: "Designed by Oscar Niemeyer along the northern shore of Lago Paranoá, Concha Acústica's vaulted concrete shell delivers natural amphitheater clarity.",
+    genre: "IDM / Synth-Techno"
+  },
+  {
+    id: "renato-russo-synthlab",
+    title: "508 SynthLab: Modular Night",
+    category: "month",
+    time: "22:00h",
+    venue: "Espaço Cultural Renato Russo, 508 Sul",
+    price: 55.00,
+    priceFormatted: "$ 55.00",
+    image: "./assets/event-synthlab.png",
+    tagline: "Live Eurorack patch cables and analog bass sequences all night long.",
+    description: "An intimate deep-listening and high-impact dance showcase centered around patch-cable analog synthesizers, glowing voltage racks, and driving hot-pink darkwave electronics inside 508 Sul.",
+    lineup: [
+      { name: "Circuito DF", bio: "Electronic collective performing 100% improvised live sets on bespoke portable Eurorack walls." },
+      { name: "Helena Vox", bio: "Darkwave vocalist and synthwave producer weaving icy arpeggios with haunting reverberated hooks." }
+    ],
+    venueDesc: "One of Asa Sul's most storied cultural complexes, Espaço 508 Sul unites raw concrete architecture with black-box performance spaces.",
+    genre: "Modular Synth / Darkwave"
+  },
 
-  // Frame 2.3: Hot and Upcoming Events
+  // Category: Upcoming — Next 2 Months (9 events — 3 original + 6 added in v1.3)
   {
     id: "makoomba-ancestral",
     title: "Makoomba: Eletrônico Ancestral",
     category: "upcoming",
-    dateDay: "28",
-    dateMonth: "NOV",
-    dateFormatted: "Saturday, November 28, 2026",
+    upcomingSlot: { monthOffset: 1, preferredDay: 5 },
     time: "22:00h",
     venue: "Infinu Comunidade Criativa, W3 Sul",
     price: 60.00,
@@ -164,9 +422,7 @@ const EVENTS_DATA = [
     id: "hum-rooftop-overdrive",
     title: "Hum Rooftop Sessions: Overdrive",
     category: "upcoming",
-    dateDay: "04",
-    dateMonth: "DEC",
-    dateFormatted: "Friday, December 04, 2026",
+    upcomingSlot: { monthOffset: 1, preferredDay: 11 },
     time: "16:00h",
     venue: "HUM Espaço Multiuso, Setor de Indústrias Gráficas (SIG)",
     price: 100.00,
@@ -182,27 +438,198 @@ const EVENTS_DATA = [
     genre: "Electro / Acid"
   },
   {
+    id: "planalto-solar-gathering",
+    title: "Planalto Solar: Open Air",
+    category: "upcoming",
+    upcomingSlot: { monthOffset: 1, preferredDay: 17 },
+    time: "15:00h",
+    venue: "Parque Olhos d’Água, Asa Norte",
+    price: 150.00,
+    priceFormatted: "$ 150.00",
+    image: "./assets/event-planalto-solar.png",
+    tagline: "Sunlight filtering through Cerrado trees to sweeping daytime synth anthems.",
+    description: "An open-air botanical day festival shaded by tensile architectural sails and native Cerrado trees. Uplifting progressive house, indie dance, and golden-hour brass-infused electronica.",
+    lineup: [
+      { name: "Eclipse BSB", bio: "Progressive house live duo blending warm euphoric synth chords with driving daytime rhythms." },
+      { name: "Ravi", bio: "Versatile indie-dance selector curated across Brasília's sunniest daytime gatherings." }
+    ],
+    venueDesc: "Nested among spring-fed trails in Asa Norte, Parque Olhos d’Água pairs lush Cerrado shade with open park clearings.",
+    genre: "Progressive House / Indie Dance"
+  },
+  {
+    id: "mane-ring-kinetic",
+    title: "Anel Monumental: Kinetic X",
+    category: "upcoming",
+    upcomingSlot: { monthOffset: 1, preferredDay: 23 },
+    time: "22:00h",
+    venue: "Galeria Interna Arena BRB, Eixo Monumental",
+    price: 180.00,
+    priceFormatted: "$ 180.00",
+    image: "./assets/event-anel-kinetic.png",
+    tagline: "Colossal stadium concrete columns pulsing with 360-degree kinetic trusses.",
+    description: "Monumental scale inside Brasília's architectural colonnade. Suspended motorized light trusses, sweeping searchlight arrays, and heavyweight big-room techno & hypnotic trance fill the grand concrete ring.",
+    lineup: [
+      { name: "Reaktor 61", bio: "High-impact techno duo built for massive sound systems and towering stadium acoustics." },
+      { name: "Yuri Kane", bio: "Euphoric modern trance and techno architect known for soaring midnight climaxes." }
+    ],
+    venueDesc: "Surrounded by 288 towering concrete pillars along Eixo Monumental, Arena BRB's outer colonnade forms a cathedral of modern engineering.",
+    genre: "Big Room Techno / Trance"
+  },
+  {
     id: "batrave-last-dance",
     title: "Batrave: The Last Dance",
     category: "upcoming",
-    dateDay: "31",
-    dateMonth: "DEC",
-    dateFormatted: "Thursday, December 31, 2026",
+    upcomingSlot: { monthOffset: 1, preferredDay: 31 },
     time: "21:00h",
     venue: "Galpão de Oficinas, Setor Industrial",
     price: 240.00,
     priceFormatted: "$ 240.00",
     image: "./assets/event-batrave.png",
-    tagline: "The legendary New Year's underground warehouse rave.",
-    description: "Brasília's most anticipated underground New Year rave. 12 continuous hours across 3 warehouses in the Industrial Sector with international guest headliners and a massive laser installation.",
+    tagline: "The legendary grand finale underground warehouse rave.",
+    description: "Brasília's most anticipated underground mega-rave. 12 continuous hours across 3 warehouses in the Industrial Sector with international guest headliners and a massive laser installation.",
     lineup: [
       { name: "Batrave All-Stars", bio: "6-hour b2b marathon set spanning industrial, trance, and hard-groove." },
       { name: "Techno Resistance", bio: "Berlin-inspired warehouse industrial techno." }
     ],
     venueDesc: "A massive decommissioned train and bus maintenance warehouse with 15-meter ceilings and raw steel beams.",
     genre: "Warehouse Techno"
+  },
+  {
+    id: "botanico-organic-nocturne",
+    title: "Botânico: Canopy Nights",
+    category: "upcoming",
+    upcomingSlot: { monthOffset: 2, preferredDay: 4 },
+    time: "19:00h",
+    venue: "Alameda dos Ipês, Jardim Botânico DF",
+    price: 130.00,
+    priceFormatted: "$ 130.00",
+    image: "./assets/event-botanico.png",
+    tagline: "Bioluminescent visuals woven through native Cerrado canopy trails.",
+    description: "When night settles over Jardim Botânico, emerald and turquoise laser webs weave subtly through twisted Cerrado boughs for an unforgettable organic downtempo and afro-tech sanctuary.",
+    lineup: [
+      { name: "Flora Eletrônica", bio: "Audio-botanical project sampling natural Cerrado field recordings over warm organic house beats." },
+      { name: "Samira", bio: "Acclaimed deep tribal and afro-tech DJ celebrated for hypnotic, storytelling six-hour sets." }
+    ],
+    venueDesc: "Set across tranquil clearings inside Brasília's native Jardim Botânico reserve just south of Lago Sul.",
+    genre: "Organic Downtempo / Afro-Tech"
+  },
+  {
+    id: "sof-sul-heavy-machinery",
+    title: "SOF Sul: Heavy Machinery",
+    category: "upcoming",
+    upcomingSlot: { monthOffset: 2, preferredDay: 10 },
+    time: "23:30h",
+    venue: "Hangar 14, SOF Sul (Guará)",
+    price: 90.00,
+    priceFormatted: "$ 90.00",
+    image: "./assets/event-sofsul.png",
+    tagline: "Clanging steel acoustics, strobe fog banks, and relentless industrial force.",
+    description: "Purist industrial techno and body music inside a cavernous corrugated steel hangar in SOF Sul. Crimson streaks, blinding white strobe flashes, and zero compromise until noon.",
+    lineup: [
+      { name: "Ferro", bio: "Metallurgic industrial techno producer renowned for distorted modular snare cascades." },
+      { name: "Zé Phono", bio: "Relentless EBM and schranz-inflected vinyl selector from Brasília's deep south corridor." }
+    ],
+    venueDesc: "Hangar 14 is an oversized steel industrial depot in Setor de Oficinas Sul prized for immense acoustics and stark lighting contrast.",
+    genre: "Industrial Techno / EBM"
+  },
+  {
+    id: "prainha-lago-norte-dawn",
+    title: "Prainha Norte: First Light",
+    category: "upcoming",
+    upcomingSlot: { monthOffset: 2, preferredDay: 17 },
+    time: "05:00h",
+    venue: "Prainha do Lago Norte, Península Norte",
+    price: 140.00,
+    priceFormatted: "$ 140.00",
+    image: "./assets/event-prainha.png",
+    tagline: "Early-morning waterfront marathon from first pink light to midday.",
+    description: "An intimate sunrise ritual on the sandy peninsula tip of Lago Norte. Greet the pastel rose-gold dawn over glassy lake waters with featherweight microhouse, dubby minimal, and sparkling morning percussion.",
+    lineup: [
+      { name: "Horizonte 61", bio: "Sunrise minimal specialists known for delicate rolling basslines and effortless dawn pacing." },
+      { name: "Clara Mendes", bio: "Microhouse vinyl selector crafting breezy, percussive daytime sets by the water." }
+    ],
+    venueDesc: "At the tip of Península Norte, Prainha offers open sandy beaches and unbroken eastern views across Lago Paranoá.",
+    genre: "Sunrise Minimal / Microhouse"
+  },
+  {
+    id: "catetinho-analog-freq",
+    title: "Km Zero: Analog Fest",
+    category: "upcoming",
+    upcomingSlot: { monthOffset: 2, preferredDay: 24 },
+    time: "16:00h",
+    venue: "Clareira Histórica, Park Way / Catetinho",
+    price: 195.00,
+    priceFormatted: "$ 195.00",
+    image: "./assets/event-kmzero.png",
+    tagline: "Multi-stage open-air wood-and-concrete sound sanctuary south of the pilot plan.",
+    description: "Celebrating Brasília's founding pioneer spirit with an all-analog outdoor festival. A geometric timber A-frame mainstage lights up the twilight woodland clearing with warm psy-tech and melodic techno.",
+    lineup: [
+      { name: "Pulso Central", bio: "Hybrid live trio combining analog tape echoes, bass synths, and driving psy-tech grooves." },
+      { name: "Bianca Lima", bio: "Headline melodic techno DJ acclaimed for emotional festival closings across the Central Plateau." }
+    ],
+    venueDesc: "Set beside native gallery forest trails in Park Way near the historic Catetinho wooden landmark.",
+    genre: "Psy-Tech / Melodic Techno"
   }
 ];
+
+function buildEventsData(referenceDate = new Date()) {
+  const baseYear = referenceDate.getFullYear();
+  const baseMonth = referenceDate.getMonth();
+  const todayDay = referenceDate.getDate();
+
+  const monthEventsTotal = RAW_EVENTS_CATALOG.filter(e => e.category === "month").length;
+  let monthCursor = 0;
+
+  return RAW_EVENTS_CATALOG.map(raw => {
+    let targetDate;
+    if (raw.category === "today") {
+      targetDate = new Date(baseYear, baseMonth, todayDay);
+    } else if (raw.category === "month") {
+      targetDate = resolveCurrentMonthDate(baseYear, baseMonth, todayDay, monthCursor, monthEventsTotal);
+      monthCursor += 1;
+    } else {
+      const slot = raw.upcomingSlot || { monthOffset: 1, preferredDay: 15 };
+      targetDate = resolveUpcomingMonthDate(baseYear, baseMonth, slot.monthOffset, slot.preferredDay);
+    }
+
+    const formatted = formatEventDateFields(targetDate);
+    return {
+      ...raw,
+      ...formatted
+    };
+  });
+}
+
+const APP_OPEN_DATE = new Date();
+const EVENTS_DATA = buildEventsData(APP_OPEN_DATE);
+
+function createDefaultTickets(referenceDate, events) {
+  const vaporEvt = events.find(e => e.id === "vapor-cybernetic") || events[1] || events[0];
+  const externaEvt = events.find(e => e.id === "externa-monolith") || events[3] || events[0];
+  const todayDate = new Date(referenceDate.getFullYear(), referenceDate.getMonth(), referenceDate.getDate());
+  const yesterdayDate = new Date(referenceDate.getFullYear(), referenceDate.getMonth(), referenceDate.getDate() - 1);
+
+  return [
+    {
+      ...vaporEvt,
+      ticketId: "#WFHT100492",
+      purchasedAt: formatPurchaseTimestamp(todayDate, "11:49"),
+      paymentMethod: "Mastercard •••• 2304",
+      status: "Approved",
+      regularQty: 1,
+      studentQty: 0
+    },
+    {
+      ...externaEvt,
+      ticketId: "#WFHT209148",
+      purchasedAt: formatPurchaseTimestamp(yesterdayDate, "19:30"),
+      paymentMethod: "Apple Pay •••• 8812",
+      status: "Approved",
+      regularQty: 1,
+      studentQty: 1
+    }
+  ];
+}
 
 // ============================================================================
 // Application State
@@ -211,26 +638,7 @@ const state = {
   activeTab: "today",       // 'today' | 'month' | 'upcoming'
   activeView: "welcome",    // 'welcome' | 'home' | 'search' | 'favorites' | 'tickets' | 'checkout' | 'confirmation'
   favorites: new Set(["trema-techno", "vapor-cybernetic"]), // Default pre-saved
-  tickets: [
-    {
-      ...EVENTS_DATA[1],    // Vapø_R (matches Figma node 783:10833)
-      ticketId: "#WFHT100492",
-      purchasedAt: "11:49 15/08/2026",
-      paymentMethod: "Mastercard •••• 2304",
-      status: "Approved",
-      regularQty: 1,
-      studentQty: 0
-    },
-    {
-      ...EVENTS_DATA[3],    // Externa Collective (matches Figma node 783:10844)
-      ticketId: "#WFHT209148",
-      purchasedAt: "19:30 14/08/2026",
-      paymentMethod: "Apple Pay •••• 8812",
-      status: "Approved",
-      regularQty: 1,
-      studentQty: 1
-    }
-  ],
+  tickets: createDefaultTickets(APP_OPEN_DATE, EVENTS_DATA),
   searchQuery: "",
   searchFilters: {
     name: "",
@@ -293,6 +701,13 @@ const addPaymentModal = document.getElementById("addPaymentModal");
 function initApp() {
   if (appContainer) {
     appContainer.className = "app-container";
+  }
+
+  // Dynamically align search date hint placeholder to today's date
+  const searchFormDate = document.getElementById("searchFormDate");
+  const todaySample = EVENTS_DATA.find(e => e.category === "today");
+  if (searchFormDate && todaySample) {
+    searchFormDate.placeholder = `e.g. ${todaySample.dateDay} ${todaySample.dateMonth}, Tonight...`;
   }
 
   updateBadges();
@@ -617,8 +1032,18 @@ function renderEvents() {
     // Filter matching criteria
     list = EVENTS_DATA.filter(evt => {
       if (onlyToday && evt.category !== "today") return false;
-      const matchName = !qName || evt.title.toLowerCase().includes(qName) || evt.genre.toLowerCase().includes(qName);
-      const matchDate = !qDate || evt.dateDay.includes(qDate) || evt.dateMonth.toLowerCase().includes(qDate) || evt.dateFormatted.toLowerCase().includes(qDate);
+      const matchName = !qName ||
+        evt.title.toLowerCase().includes(qName) ||
+        evt.genre.toLowerCase().includes(qName) ||
+        evt.lineup.some(artist => artist.name.toLowerCase().includes(qName));
+      const matchDate = !qDate ||
+        ((qDate === "today" || qDate === "tonight") && evt.category === "today") ||
+        ((qDate === "this month" || qDate === "month") && evt.category === "month") ||
+        (qDate === "upcoming" && evt.category === "upcoming") ||
+        evt.dateDay.includes(qDate) ||
+        evt.dateMonth.toLowerCase().includes(qDate) ||
+        evt.dateFormatted.toLowerCase().includes(qDate) ||
+        evt.dateShort.includes(qDate);
       const matchLoc = !qLoc || evt.venue.toLowerCase().includes(qLoc);
       return matchName && matchDate && matchLoc;
     });
@@ -644,7 +1069,10 @@ function renderEvents() {
       evt.title.toLowerCase().includes(q) ||
       evt.venue.toLowerCase().includes(q) ||
       evt.genre.toLowerCase().includes(q) ||
-      evt.dateFormatted.toLowerCase().includes(q)
+      evt.dateFormatted.toLowerCase().includes(q) ||
+      evt.dateMonth.toLowerCase().includes(q) ||
+      evt.dateShort.includes(q) ||
+      evt.lineup.some(artist => artist.name.toLowerCase().includes(q))
     );
 
     // Deduplicate
@@ -672,7 +1100,7 @@ function renderEvents() {
       sectionSubtitleEl.textContent = "Top raves, club nights, and lakeside sessions";
     } else {
       sectionTitleEl.textContent = "Hot and Upcoming Events";
-      sectionSubtitleEl.textContent = "Major festivals, ancestral showcases, and New Year warehouse raves";
+      sectionSubtitleEl.textContent = "Major festivals, ancestral showcases, and warehouse raves over the next two months";
     }
     eventCountBadge.textContent = `${list.length} events`;
   }
@@ -923,7 +1351,7 @@ window.startCheckout = function(eventId) {
   const priceStuEl = document.getElementById("pricePerStudent");
 
   if (titleEl) titleEl.textContent = evt.title;
-  if (dtEl) dtEl.textContent = `${evt.dateDay}/08/26 - ${evt.time}`;
+  if (dtEl) dtEl.textContent = `${evt.dateShort} - ${evt.time}`;
   if (venueEl) venueEl.textContent = evt.venue;
   if (imgEl) imgEl.src = evt.image;
 

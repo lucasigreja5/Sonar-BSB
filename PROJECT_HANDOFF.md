@@ -2,16 +2,16 @@
 
 > **To resume this project in Antigravity on macOS or another machine:**
 > 1. Open the project folder `sonar-bsb-events` in Antigravity.
-> 2. In a new conversation, type `@HANDOFF_V1.2.4.md` or `@PROJECT_HANDOFF.md` to restore complete context.
+> 2. In a new conversation, type `@HANDOFF_V1.3.md` or `@PROJECT_HANDOFF.md` to restore complete context.
 
 ---
 
 ## 📌 Project Overview
 - **Product**: Sonar BSB — Events Discovery & Ticketing Web Application
 - **Figma Design**: [Sonar-BSB-EventsApp-v1 (Node 365:525)](https://www.figma.com/design/i3bqFIafJrUlUqn2NMUwIl/Sonar-BSB-EventsApp-v1?node-id=365-525)
-- **Current Version**: `v1.2.4` (Production Release)
+- **Current Version**: `v1.3` (Production Release)
 - **Tech Stack**: Vanilla HTML5, modern CSS3 (Custom Properties, Grid & Flexbox), vanilla ES6+ JavaScript. Completely zero external runtime dependencies.
-- **Detailed Handoff**: See [HANDOFF_V1.2.4.md](HANDOFF_V1.2.4.md) for complete specifications, data schemas, and design tokens.
+- **Detailed Handoff**: See [HANDOFF_V1.3.md](HANDOFF_V1.3.md) for complete specifications, data schemas, and design tokens.
 
 ---
 
@@ -38,19 +38,37 @@
 - Natively fluid from mobile up to desktop (1280px).
 - Screens wider than 1280px are framed by `#1D1D1D` 90% grey bars with deep ambient shadow.
 
-### 3. Complete 9-Event Brasília Lineup
-- **Today**:
-  1. `Trema Techno: Subsolo Urbano` (15 AUG • Galeria dos Estados • $60.00)
-  2. `Vapø_R: Cybernetic Cathedral` (15 AUG • Birosca do Conic • $80.00)
-  3. `Concrete Beats Festival` (15 AUG • Praça das Fontes, Parque da Cidade • $160.00)
-- **This Month**:
-  4. `Externa Collective: Monolith` (19 AUG • Externa Club, SCS • $70.00)
-  5. `Traço: Echoes of Oscar` (20 AUG • Subsolo Dulcina • $50.00)
-  6. `Low Club: Sunset Horizon` (22 AUG • Orla do Lago • $120.00)
-- **Upcoming**:
-  7. `Makoomba: Eletrônico Ancestral` (28 NOV • Infinu • $60.00)
-  8. `Hum Rooftop Sessions: Overdrive` (04 DEC • HUM • $100.00)
-  9. `Batrave: The Last Dance` (31 DEC • Galpão Setor Industrial • $240.00)
+### 3. Complete 27-Event Dynamic Brasília Lineup
+- **Today (`9` events — dynamically anchored to user open date)**:
+  1. `Trema Techno: Subsolo Urbano` (Galeria dos Estados • `$60.00`)
+  2. `Vapø_R: Cybernetic Cathedral` (Birosca do Conic • `$80.00`)
+  3. `Concrete Beats Festival` (Praça das Fontes, Parque da Cidade • `$160.00`)
+  4. `Subterrânea: Acid Chamber` (Beco da Cultura, SCS • `$55.00`)
+  5. `Esplanada Bass: Orbit 061` (Cúpula Externa, Museu Nacional • `$65.00`)
+  6. `Conic: Frequency 404` (Galeria Subsolo Conic • `$45.00`)
+  7. `Eixão Sonoro: Dusk Session` (Passarela do Eixão Sul, 208 Sul • `$40.00`)
+  8. `Ponto Zero: Brutalist Pulse` (Quadra 2 Bloco C, SBS • `$75.00`)
+  9. `Cerrado Mist: Sound System` (Arena Aberta Funarte • `$50.00`)
+- **This Month (`9` events — dynamically inside current calendar month)**:
+  10. `Externa Collective: Monolith` (Externa Club, SCS • `$70.00`)
+  11. `Traço: Echoes of Oscar` (Subsolo do Teatro Dulcina Conic • `$50.00`)
+  12. `Low Club: Sunset Horizon` (Orla do Lago Paranoá • `$120.00`)
+  13. `Ponte JK: Waterline` (Orla da Ponte JK • `$110.00`)
+  14. `Mirante Digital: Transmission` (Torre de TV Digital, Lago Norte • `$95.00`)
+  15. `SIA Garage: Protocol 909` (Galpão Trecho 3, SIA • `$70.00`)
+  16. `Ermida: Twilight Echo` (Anfiteatro Ermida Dom Bosco, Lago Sul • `$85.00`)
+  17. `Concha Prism: Wave Mechanics` (Concha Acústica, SHTN • `$65.00`)
+  18. `508 SynthLab: Modular Night` (Espaço Cultural Renato Russo, 508 Sul • `$55.00`)
+- **Upcoming (`9` events — dynamically across next 2 calendar months)**:
+  19. `Makoomba: Eletrônico Ancestral` (Infinu, W3 Sul • `$60.00`)
+  20. `Hum Rooftop Sessions: Overdrive` (HUM Espaço Multiuso, SIG • `$100.00`)
+  21. `Planalto Solar: Open Air` (Parque Olhos d’Água, Asa Norte • `$150.00`)
+  22. `Anel Monumental: Kinetic X` (Galeria Interna Arena BRB • `$180.00`)
+  23. `Batrave: The Last Dance` (Galpão de Oficinas, Setor Industrial • `$240.00`)
+  24. `Botânico: Canopy Nights` (Alameda dos Ipês, Jardim Botânico DF • `$130.00`)
+  25. `SOF Sul: Heavy Machinery` (Hangar 14, SOF Sul • `$90.00`)
+  26. `Prainha Norte: First Light` (Prainha do Lago Norte • `$140.00`)
+  27. `Km Zero: Analog Fest` (Clareira Histórica, Park Way / Catetinho • `$195.00`)
 
 ### 4. Bottom Navigation Dock
 - Sticky floating dock with elevated active circular indicator (`#3F32D3` circle with `#F2F862` icon).
@@ -79,7 +97,6 @@ open index.html
 # Or start a local server:
 # python3 -m http.server 8080
 
-# Push to your GitHub repository
-git remote add origin https://github.com/<your-username>/<your-repo-name>.git
+# Push to GitHub repository
 git push -u origin main --tags
 ```

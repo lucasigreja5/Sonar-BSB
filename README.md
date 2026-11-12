@@ -92,7 +92,19 @@ This log documents each iterative release of the project, recording the exact us
 
 ---
 
-### 🏷️ Version 1.2.4 (Current Release — `v1.2.4`)
+### 🏷️ Version 1.3 (Current Release — `v1.3`)
+
+- **27-Event Dynamic Catalog (+18 New Mock Events Across All 3 Categories)**:
+  - **Today (`9` events)**: Added **Subterrânea: Acid Chamber**, **Esplanada Bass: Orbit 061**, **Conic: Frequency 404**, **Eixão Sonoro: Dusk Session**, **Ponto Zero: Brutalist Pulse**, and **Cerrado Mist: Sound System** alongside the 3 original Today events.
+  - **This Month (`9` events)**: Added **Ponte JK: Waterline**, **Mirante Digital: Transmission**, **SIA Garage: Protocol 909**, **Ermida: Twilight Echo**, **Concha Prism: Wave Mechanics**, and **508 SynthLab: Modular Night** alongside the 3 original This Month events.
+  - **Upcoming (`9` events)**: Added **Planalto Solar: Open Air**, **Anel Monumental: Kinetic X**, **Botânico: Canopy Nights**, **SOF Sul: Heavy Machinery**, **Prainha Norte: First Light**, and **Km Zero: Analog Fest** alongside the 3 original Upcoming events.
+  - Each new event includes complete metadata (name, date & time, Brasília venue/location, entry price, event details, 2-artist lineup bios, genre, and a `1024×1024` cover artwork in `./assets/`). Note: 11 new covers were generated via AI (`gemini-3.1-flash-image`), and 7 covers (`508 SynthLab` + the 6 new Upcoming covers) use temporary matching neon-poster graphics after image generation quota exhaustion.
+- **Dynamic App-Open Date Anchoring (`buildEventsData()`)**:
+  - **Today** events always match the user's exact local date when opening the app.
+  - **This Month** events dynamically stay within the user's current calendar month and year.
+  - **Upcoming** events dynamically target the next 2 calendar months (`month + 1` and `month + 2`), handling year rollovers and short/leap February day clamping, while updating `#searchFormDate` placeholder, checkout `dd/mm/yy` timestamps, and default e-ticket dates dynamically.
+
+### 🏷️ Version 1.2.4 (Previous Release — `v1.2.4`)
 
 #### 💬 Original User Prompt:
 > *"Version 1.2.4*  
