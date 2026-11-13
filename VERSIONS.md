@@ -6,7 +6,18 @@ This directory contains versioned snapshots of the Sonar BSB Events web applicat
 
 ## 🏷️ Version History
 
-### Version 1.4 (Current Production Release — `v1.4`)
+### Version 1.4.1 (Current Production Release — `v1.4.1`)
+- **Date**: 2026-11-13
+- **Snapshot Directory**: `versions/v1.4.1/`
+- **Archive Zip**: `versions/v1.4.1/sonar-bsb-events-v1.4.1.zip`
+- **Handoff Documentation**: `handoffs/HANDOFF_V1.4.1.md`
+- **Changes**:
+  - **Top Search Bar Close Button (`index.html`, `styles.css`, `app.js`)**: Added `#desktopSearchCloseBtn` + `exitTopSearchBar()` inside `#desktopSearchBar` so clicking it clears the query, collapses the search pill, and closes search results.
+  - **`NEWFavoriteButton` Component (Figma `226:1043`, `app.js`, `styles.css`)**: Replaced the favorite buttons on Event Cards (`.card-fav-btn`) and Favorites Cards (`.fav-card-remove-btn`) with the `32×32` `NEWFavoriteButton` (`Default` `#C0C0C0`/`#888888`, `Hover` `#505050`/`#888888`, `Active` `#F2F862`/`#3F32D3`).
+  - **Taller Favorites & Tickets Cards (`styles.css`)**: Increased `.fav-card-horizontal` and `.ticket-card-horizontal` (`min-height: 200px`) and image boxes `.fav-card-thumb` / `.ticket-card-thumb` (`168×168` desktop, `144×152` on `<= 480px` mobile) for legible poster text.
+  - Updated `<title>` badges across `index.html` and `login.html` to `Version 1.4.1`.
+
+### Version 1.4 (Previous Production Release — `v1.4`)
 - **Date**: 2026-11-13
 - **Snapshot Directory**: `versions/v1.4/`
 - **Archive Zip**: `versions/v1.4/sonar-bsb-events-v1.4.zip`

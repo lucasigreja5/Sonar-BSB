@@ -92,7 +92,21 @@ This log documents each iterative release of the project, recording the exact us
 
 ---
 
-### 🏷️ Version 1.4 (Current Release — `v1.4`)
+### 🏷️ Version 1.4.1 (Current Release — `v1.4.1`)
+
+#### 💬 Original User Prompt:
+> *"Version 1.4.1*  
+> *Please make the following adjustments:*  
+> *- On the top search bar, add a close button for the user to exit the search function and close the search results*  
+> *- Change the favorites buttons on the event cards and favorites cards to the component NEWFavoriteButton from this figma file (`z52M2Cn7oC78mUUtVEb1sZ`, node `226:1043`)*  
+> *- On the My Favorites and My Tickets and Events pages, increase the height of both the favorites card and tickets cards, to increase the legibility of the text inside the images boxes"*
+
+#### 🛠️ Implementation Summary:
+- **Top Search Bar Close Button (`index.html`, `styles.css`, `app.js`)**: Added `#desktopSearchCloseBtn` and `exitTopSearchBar(e)` inside `#desktopSearchBar` to clear the search query, blur focus, collapse the bar back to `44px × 44px`, and exit active search results.
+- **`NEWFavoriteButton` (Figma `226:1043`)**: Rendered `renderFavoriteButtonSVG(isActive)` across both Event Cards (`.card-fav-btn`) and Favorites Cards (`.fav-card-remove-btn`), matching `State=Default` (`#C0C0C0`/`#888888`), `State=Hover` (`#505050`/`#888888`), and `State=Active` (`#F2F862`/`#3F32D3`).
+- **Taller Favorites & Tickets Cards (`styles.css`)**: Increased `.fav-card-horizontal` and `.ticket-card-horizontal` (`min-height: 200px` desktop, `180px` mobile `<= 480px`) and enlarged `.fav-card-thumb` / `.ticket-card-thumb` from `124×110` to `168×168` (`144×152` mobile) so event cover poster typography is large and legible.
+
+### 🏷️ Version 1.4 (Previous Release — `v1.4`)
 
 #### 💬 Original User Prompt:
 > *"Version 1.4*  
@@ -539,9 +553,9 @@ sonar-bsb-events/
 ├── .github/workflows/
 │   └── static.yml             # GitHub Pages workflow (deploys runtime files only)
 ├── assets/                    # Active runtime UI icons, welcome graphics, avatar & 27 event covers
-├── handoffs/                  # Historical HANDOFF_V1.0–V1.4 docs & CONVERSATION_HISTORY.md
+├── handoffs/                  # Historical HANDOFF_V1.0–V1.4.1 docs & CONVERSATION_HISTORY.md
 │   └── design-refs/           # Saved Figma reference screenshots (not deployed to Pages)
-├── versions/                  # Release archives (sonar-bsb-events-v*.zip for v0.4–v1.4)
+├── versions/                  # Release archives (sonar-bsb-events-v*.zip for v0.4–v1.4.1)
 ├── index.html                 # Main application shell & interactive views
 ├── login.html                 # Standalone 1-WelcomeLogin entry screen
 ├── styles.css                 # Responsive stylesheet & design system tokens

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sonar BSB &bull; Events Discovery &amp; Ticketing (Version 1.4)</title>
+  <title>Sonar BSB &bull; Events Discovery &amp; Ticketing (Version 1.4.1)</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -101,6 +101,19 @@
               aria-label="Search events, artists, venues"
               autocomplete="off"
             />
+            <button
+              type="button"
+              id="desktopSearchCloseBtn"
+              class="desktop-search-close-btn"
+              title="Close search"
+              aria-label="Exit search and close search results"
+              onmousedown="event.preventDefault()"
+              onclick="exitTopSearchBar(event)"
+            >
+              <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M3.5 3.5L12.5 12.5M12.5 3.5L3.5 12.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+              </svg>
+            </button>
           </div>
 
           <!-- Shopping Cart Button (Version 1.4: Figma Cart Button 30:177 filled icon) -->

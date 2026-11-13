@@ -584,7 +584,8 @@ body {
 .desktop-search-bar.is-open,
 .desktop-search-bar:focus-within {
   width: min(354px, calc(100vw - 220px));
-  padding: 0 16px 0 10px;
+  padding: 0 10px 0 10px;
+  gap: 12px;
   background-color: var(--color-secondary);
   color: var(--color-primary);
   border: 2px solid var(--color-primary);
@@ -601,8 +602,8 @@ body {
   .desktop-search-bar.is-open,
   .desktop-search-bar:focus-within {
     width: min(354px, calc(100vw - 268px));
-    padding: 0 12px 0 8px;
-    gap: 10px;
+    padding: 0 8px 0 8px;
+    gap: 8px;
   }
 }
 
@@ -610,6 +611,8 @@ body {
   .desktop-search-bar.is-open,
   .desktop-search-bar:focus-within {
     width: 354px;
+    padding: 0 10px 0 10px;
+    gap: 12px;
   }
 }
 
@@ -651,6 +654,45 @@ body {
   color: currentColor;
   flex-shrink: 0;
   transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.desktop-search-close-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(242, 248, 98, 0.14);
+  border: none;
+  color: var(--color-primary);
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+}
+
+.desktop-search-close-btn svg {
+  width: 13px;
+  height: 13px;
+  display: block;
+}
+
+.desktop-search-bar.is-open .desktop-search-close-btn,
+.desktop-search-bar:focus-within .desktop-search-close-btn {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.desktop-search-close-btn:hover {
+  background: rgba(242, 248, 98, 0.28);
+  transform: scale(1.1);
+}
+
+.desktop-search-close-btn:active {
+  transform: scale(0.92);
 }
 
 /* Header Login / Welcome Screen Pill Button */
@@ -2269,10 +2311,48 @@ input:checked + .slider:before {
 }
 
 .card-fav-btn img,
-.card-fav-btn svg {
+.card-fav-btn svg,
+.fav-card-remove-btn svg {
   width: 32px;
   height: 32px;
   display: block;
+}
+
+/* Figma NEWFavoriteButton (226:1043) States */
+.card-fav-btn .fav-btn-circle,
+.fav-card-remove-btn .fav-btn-circle,
+.card-fav-btn .fav-btn-heart,
+.fav-card-remove-btn .fav-btn-heart {
+  transition: fill 0.2s ease;
+}
+
+/* Figma 226:1044 State=Default */
+.card-fav-btn:not(.is-active) .fav-btn-circle {
+  fill: #C0C0C0;
+}
+
+.card-fav-btn:not(.is-active) .fav-btn-heart {
+  fill: #888888;
+}
+
+/* Figma 226:1047 State=Hover */
+.card-fav-btn:not(.is-active):hover .fav-btn-circle {
+  fill: #505050;
+}
+
+.card-fav-btn:not(.is-active):hover .fav-btn-heart {
+  fill: #888888;
+}
+
+/* Figma 226:1050 State=Active */
+.card-fav-btn.is-active .fav-btn-circle,
+.fav-card-remove-btn .fav-btn-circle {
+  fill: var(--color-primary);
+}
+
+.card-fav-btn.is-active .fav-btn-heart,
+.fav-card-remove-btn .fav-btn-heart {
+  fill: var(--color-secondary);
 }
 
 /* Event Title - Larger with up to 2 lines */
@@ -2432,15 +2512,17 @@ input:checked + .slider:before {
 .fav-card-horizontal,
 .ticket-card-horizontal {
   background: var(--color-white);
-  border-radius: 18px;
-  padding: 12px;
+  border-radius: 22px;
+  padding: 16px;
+  min-height: 200px;
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 18px;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.08);
   position: relative;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 .fav-card-horizontal:hover,
@@ -2451,9 +2533,9 @@ input:checked + .slider:before {
 
 .fav-card-thumb,
 .ticket-card-thumb {
-  width: 124px;
-  height: 110px;
-  border-radius: 14px;
+  width: 168px;
+  height: 168px;
+  border-radius: 16px;
   overflow: hidden;
   flex-shrink: 0;
   position: relative;
@@ -2465,43 +2547,65 @@ input:checked + .slider:before {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
 }
 
 .fav-card-info,
 .ticket-card-info {
   flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
+}
+
+.fav-card-info {
+  padding-right: 36px;
 }
 
 .fav-card-title,
 .ticket-card-title {
   color: var(--color-secondary);
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 800;
   text-transform: uppercase;
-  line-height: 1.2;
+  line-height: 1.25;
 }
 
 .fav-card-date,
 .ticket-card-date {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   color: var(--color-text-secondary);
 }
 
 .fav-card-venue,
 .ticket-card-venue {
-  font-size: 12px;
+  font-size: 13px;
+  line-height: 1.35;
   color: var(--color-text-muted);
 }
 
 .fav-card-price {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 800;
   color: var(--color-secondary);
-  margin-top: 2px;
+  margin-top: 4px;
+}
+
+@media (max-width: 480px) {
+  .fav-card-horizontal,
+  .ticket-card-horizontal {
+    padding: 14px;
+    gap: 14px;
+    min-height: 180px;
+  }
+
+  .fav-card-thumb,
+  .ticket-card-thumb {
+    width: 144px;
+    height: 152px;
+  }
 }
 
 .btn-view-eticket {
@@ -2534,13 +2638,15 @@ input:checked + .slider:before {
   right: 14px;
   width: 32px;
   height: 32px;
+  border-radius: 50%;
+  padding: 0;
   background: none;
   border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .fav-card-remove-btn:hover {

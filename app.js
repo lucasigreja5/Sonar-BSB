@@ -1021,6 +1021,17 @@ window.selectTab = function(tabName) {
 // Event Rendering Controller
 // (Home Grid, Search Deduplicated List, Favorites List, My Tickets & Events)
 // ============================================================================
+function renderFavoriteButtonSVG(isActive) {
+  const circleFill = isActive ? "#F2F862" : "#C0C0C0";
+  const heartFill = isActive ? "#3F32D3" : "#888888";
+  return `
+    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" class="new-fav-svg" aria-hidden="true">
+      <circle class="fav-btn-circle" cx="16" cy="16" r="16" fill="${circleFill}"/>
+      <path class="fav-btn-heart" d="M15.4436 8.16682L15.9583 8.73264L16.5147 8.16776C18.0682 6.62827 20.2198 5.9276 22.3343 6.28548C25.5292 6.82678 27.871 9.63795 27.871 12.9338V13.2073C27.871 15.1641 27.0734 17.036 25.6637 18.3704L17.2845 26.3248C16.9367 26.6549 16.4776 26.8388 16 26.8388C15.5224 26.8388 15.0633 26.6549 14.7155 26.3248L6.33584 18.3704C4.92802 17.036 4.12905 15.1641 4.12905 13.2073V12.9338C4.12905 9.63795 6.47171 6.82678 9.66574 6.28548C11.7385 5.9276 13.9319 6.62827 15.4436 8.16682C15.4436 8.16729 15.4018 8.16682 15.4436 8.16682ZM15.9583 11.9342L13.8716 9.72753C12.8653 8.74584 11.4371 8.27999 10.0321 8.51763C7.9106 8.87739 6.35485 10.746 6.35485 12.9338V13.2073C6.35485 14.537 6.89786 15.8101 7.85449 16.7154L16 24.4482L24.1474 16.7154C25.1026 15.8101 25.6452 14.537 25.6452 13.2073V12.9338C25.6452 10.746 24.0871 8.87739 21.968 8.51763C20.5629 8.27999 19.1347 8.74584 18.1284 9.72753L15.9583 11.9342Z" fill="${heartFill}"/>
+    </svg>
+  `;
+}
+
 function renderEvents() {
   if (!eventsContainer) return;
 
@@ -1098,11 +1109,8 @@ function renderEvents() {
           <p class="fav-card-venue">${evt.venue}</p>
           <span class="fav-card-price">${evt.priceFormatted}</span>
         </div>
-        <button class="fav-card-remove-btn" onclick="toggleFavorite(event, '${evt.id}')" title="Remove from favorites">
-          <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
-            <circle cx="16" cy="16" r="16" fill="#ffe4e6"/>
-            <path d="M16 25.5l-1.45-1.32C9.4 19.54 6 16.46 6 12.69 6 9.61 8.41 7.2 11.48 7.2c1.74 0 3.41.81 4.52 2.09C17.11 8.01 18.78 7.2 20.52 7.2 23.59 7.2 26 9.61 26 12.69c0 3.77-3.4 6.85-8.55 11.49L16 25.5z" fill="#e11d48"/>
-          </svg>
+        <button class="fav-card-remove-btn is-active" onclick="toggleFavorite(event, '${evt.id}')" title="Remove from favorites" aria-label="Remove from favorites">
+          ${renderFavoriteButtonSVG(true)}
         </button>
       </article>
     `).join("");
@@ -1239,16 +1247,9 @@ function renderEvents() {
             <span class="date-month">${evt.dateMonth}</span>
           </div>
 
-          <!-- Favorite Button (Figma Heart) -->
-          <button class="card-fav-btn ${isFav ? 'is-active' : ''}" onclick="toggleFavorite(event, '${evt.id}')" aria-label="Favorite event">
-            ${isFav ? `
-              <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-                <circle cx="16" cy="16" r="16" fill="#ffe4e6"/>
-                <path d="M16 25.5l-1.45-1.32C9.4 19.54 6 16.46 6 12.69 6 9.61 8.41 7.2 11.48 7.2c1.74 0 3.41.81 4.52 2.09C17.11 8.01 18.78 7.2 20.52 7.2 23.59 7.2 26 9.61 26 12.69c0 3.77-3.4 6.85-8.55 11.49L16 25.5z" fill="#e11d48"/>
-              </svg>
-            ` : `
-              <img src="./assets/favorite-button.svg" alt="Favorite" width="32" height="32" />
-            `}
+          <!-- Favorite Button (Figma NEWFavoriteButton 226:1043) -->
+          <button class="card-fav-btn ${isFav ? 'is-active' : ''}" onclick="toggleFavorite(event, '${evt.id}')" aria-label="Favorite event" aria-pressed="${isFav}">
+            ${renderFavoriteButtonSVG(isFav)}
           </button>
         </div>
 
@@ -2013,9 +2014,21 @@ window.closeTopSearchBar = function(clearValue = false) {
     if (desktopSearchInput) desktopSearchInput.value = "";
   }
   desktopSearchBar.classList.remove("is-open");
-  if (desktopSearchInput && document.activeElement === desktopSearchInput) {
-    desktopSearchInput.blur();
+  if (document.activeElement && desktopSearchBar.contains(document.activeElement) && typeof document.activeElement.blur === "function") {
+    document.activeElement.blur();
   }
+};
+
+window.exitTopSearchBar = function(e) {
+  if (e) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+  closeTopSearchBar(true);
+  if (state.activeView === "search") {
+    state.searchSubmitted = false;
+  }
+  renderEvents();
 };
 
 function setupKeyboardShortcuts() {
