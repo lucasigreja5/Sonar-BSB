@@ -2,16 +2,16 @@
 
 > **To resume this project in Antigravity on macOS or another machine:**
 > 1. Open the project folder `sonar-bsb-events` in Antigravity.
-> 2. In a new conversation, type `@handoffs/HANDOFF_V1.4.2.md` or `@PROJECT_HANDOFF.md` to restore complete context.
+> 2. In a new conversation, type `@handoffs/HANDOFF_V1.4.3.md` or `@PROJECT_HANDOFF.md` to restore complete context.
 
 ---
 
 ## 📌 Project Overview
 - **Product**: Sonar BSB — Events Discovery & Ticketing Web Application
 - **Figma Design**: [Sonar-BSB-EventsApp-v1 (Node 365:525)](https://www.figma.com/design/i3bqFIafJrUlUqn2NMUwIl/Sonar-BSB-EventsApp-v1?node-id=365-525)
-- **Current Version**: `v1.4.2` (Production Release)
+- **Current Version**: `v1.4.3` (Production Release)
 - **Tech Stack**: Vanilla HTML5, modern CSS3 (Custom Properties, Grid & Flexbox), vanilla ES6+ JavaScript. Completely zero external runtime dependencies.
-- **Detailed Handoff**: See [handoffs/HANDOFF_V1.4.2.md](handoffs/HANDOFF_V1.4.2.md) for complete specifications, data schemas, and design tokens.
+- **Detailed Handoff**: See [handoffs/HANDOFF_V1.4.3.md](handoffs/HANDOFF_V1.4.3.md) for complete specifications, data schemas, and design tokens.
 
 ---
 

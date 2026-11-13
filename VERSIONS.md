@@ -6,7 +6,17 @@ This directory contains versioned snapshots of the Sonar BSB Events web applicat
 
 ## 🏷️ Version History
 
-### Version 1.4.2 (Current Production Release — `v1.4.2`)
+### Version 1.4.3 (Current Production Release — `v1.4.3`)
+- **Date**: 2026-11-13
+- **Snapshot Directory**: `versions/v1.4.3/`
+- **Archive Zip**: `versions/v1.4.3/sonar-bsb-events-v1.4.3.zip`
+- **Handoff Documentation**: `handoffs/HANDOFF_V1.4.3.md`
+- **Changes**:
+  - **Favorites Card "Learn More" Hover Color (`styles.css`)**: Changed `.btn-fav-learn-more:hover` text color to `#ffffff` on `#3225B8`.
+  - **Event Cards Popup Top Banner Proportions (`styles.css`, `app.js`)**: Fixed `.modal-sheet` Flexbox compression by adding `flex-shrink: 0;` on `.modal-image-wrapper` and `.modal-drag-handle`, set `aspect-ratio: 341 / 185; height: auto; border-radius: 16px;` matching `.card-image-box`, elevated `.modal-close-btn` (`z-index: 10`), and updated `openEventModal()` to sync live card proportions, set `#modalImage.alt`, and reset `.modal-sheet.scrollTop = 0`.
+  - Updated `<title>` badges across `index.html` and `login.html` to `Version 1.4.3`.
+
+### Version 1.4.2 (Previous Production Release — `v1.4.2`)
 - **Date**: 2026-11-13
 - **Snapshot Directory**: `versions/v1.4.2/`
 - **Archive Zip**: `versions/v1.4.2/sonar-bsb-events-v1.4.2.zip`

@@ -92,7 +92,19 @@ This log documents each iterative release of the project, recording the exact us
 
 ---
 
-### 🏷️ Version 1.4.2 (Current Release — `v1.4.2`)
+### 🏷️ Version 1.4.3 (Current Release — `v1.4.3`)
+
+#### 💬 Original User Prompt:
+> *"Version 1.4.3*  
+> *Make the following adjustments:*  
+> *- On the favorites card, the learn more button, on the hover state change the text color to white*  
+> *- On the event cards popup, add the event image at the top of the popup, with the same proportions as in the event card"*
+
+#### 🛠️ Implementation Summary:
+- **Favorites Card "Learn More" White Hover (`styles.css`)**: Updated `.btn-fav-learn-more:hover` text color from `var(--color-primary)` to `#ffffff`.
+- **Event Cards Popup Top Event Image & Proportions (`styles.css`, `app.js`)**: Fixed `.modal-sheet` Flexbox height collapse by adding `flex-shrink: 0;` to `.modal-image-wrapper` and `.modal-drag-handle`, matching `.card-image-box` proportions (`aspect-ratio: 341 / 185`, `border-radius: 16px`), layering `.modal-close-btn` (`z-index: 10`), and syncing live card proportions & scroll reset in `openEventModal(eventId)`.
+
+### 🏷️ Version 1.4.2 (Previous Release — `v1.4.2`)
 
 #### 💬 Original User Prompt:
 > *"Version 1.4.2*  
@@ -565,9 +577,9 @@ sonar-bsb-events/
 ├── .github/workflows/
 │   └── static.yml             # GitHub Pages workflow (deploys runtime files only)
 ├── assets/                    # Active runtime UI icons, welcome graphics, avatar & 27 event covers
-├── handoffs/                  # Historical HANDOFF_V1.0–V1.4.2 docs & CONVERSATION_HISTORY.md
+├── handoffs/                  # Historical HANDOFF_V1.0–V1.4.3 docs & CONVERSATION_HISTORY.md
 │   └── design-refs/           # Saved Figma reference screenshots (not deployed to Pages)
-├── versions/                  # Release archives (sonar-bsb-events-v*.zip for v0.4–v1.4.2)
+├── versions/                  # Release archives (sonar-bsb-events-v*.zip for v0.4–v1.4.3)
 ├── index.html                 # Main application shell & interactive views
 ├── login.html                 # Standalone 1-WelcomeLogin entry screen
 ├── styles.css                 # Responsive stylesheet & design system tokens

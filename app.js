@@ -1416,7 +1416,23 @@ window.openEventModal = function(eventId) {
   if (!evt) return;
 
   currentEventInModal = evt;
-  document.getElementById("modalImage").src = evt.image;
+  const modalImg = document.getElementById("modalImage");
+  if (modalImg) {
+    modalImg.src = evt.image;
+    modalImg.alt = evt.title;
+  }
+
+  const modalImgWrapper = document.querySelector("#eventModal .modal-image-wrapper");
+  if (modalImgWrapper) {
+    const cardImgBox = document.querySelector(".card-image-box");
+    const rect = cardImgBox ? cardImgBox.getBoundingClientRect() : null;
+    if (rect && rect.width > 0 && rect.height > 0) {
+      modalImgWrapper.style.aspectRatio = `${Math.round(rect.width)} / ${Math.round(rect.height)}`;
+    } else {
+      modalImgWrapper.style.removeProperty("aspect-ratio");
+    }
+  }
+
   document.getElementById("modalDateTag").textContent = `${evt.dateDay} ${evt.dateMonth}`;
   document.getElementById("modalGenre").textContent = evt.genre;
   document.getElementById("modalTitle").textContent = evt.title;
@@ -1440,6 +1456,8 @@ window.openEventModal = function(eventId) {
   if (eventModal) {
     eventModal.style.removeProperty("display");
     eventModal.classList.add("open");
+    const sheet = eventModal.querySelector(".modal-sheet");
+    if (sheet) sheet.scrollTop = 0;
   }
 };
 
