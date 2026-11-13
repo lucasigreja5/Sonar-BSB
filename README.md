@@ -92,7 +92,23 @@ This log documents each iterative release of the project, recording the exact us
 
 ---
 
-### 🏷️ Version 1.3.2 (Current Release — `v1.3.2`)
+### 🏷️ Version 1.4 (Current Release — `v1.4`)
+
+#### 💬 Original User Prompt:
+> *"Version 1.4*  
+> *Please make the following adjustments:*  
+> *- On the search screen, only show the search results after the user inputs data on the text boxes and click the "find events near me" button. Keep the results empty until then.*  
+> *- Fix a bug where after the uses closes a popup by clicking outside of it instead of the close button, no other popups open until the page is refreshed.*  
+> *- For the search bar on the top bar of the page, use the same style and animation as the Search Bar component of this figma file (`z52M2Cn7oC78mUUtVEb1sZ`, node `28:230`), but using the same color scheme as the cart button already on the page*  
+> *- For the cart button, change the icon on the page for the one in the Cart Button component of the same figma file (`z52M2Cn7oC78mUUtVEb1sZ`, node `30:177`)"*
+
+#### 🛠️ Implementation Summary:
+- **Search Screen Deferred Results (`app.js`, `index.html`)**: Introduced `state.searchSubmitted` (`false` by default) so Search results (`#sectionHeaderBlock` & `#eventsContainer`) remain empty until at least one text/date box (`#searchFormName`, `#searchFormDate`, `#searchFormLocation`) has input and **"Find Events Near Me"** (`#btnFindEvents`) is clicked.
+- **Modal Outside-Click Fix (`app.js`, `styles.css`)**: Replaced `modal.style.display = "none"` in the backdrop click listener with calls to the proper modal close handlers (`closeEventModal()`, `closeTicketModal()`, `closeProfileModal()`, `closeAddPaymentModal()`), cleared lingering inline `display` overrides when opening modals, and added `display: flex;` to `.modal-overlay.open`.
+- **Top-Bar Search Bar Style & Animation (Figma `28:230`)**: Styled `#desktopSearchBar` as a `44px × 44px` circular toggle expanding smoothly into a `354px` pill (`min(354px, calc(100vw - 268px))` on mobile `<768px`) with uppercase `"SEARCH"` placeholder and Figma `SearchIcon`, using the `#headerCartBtn` color scheme (transparent/white resting, `#3F32D3` background and `#F2F862` icon, text, border & glow when open).
+- **Top-Bar Cart Button Filled Icon (Figma `30:177`)**: Updated `#headerCartBtn` (and `#emptyCartCard` empty state) to the filled shopping cart vector (`viewBox="11.25 11.25 23.75 23.75"`).
+
+### 🏷️ Version 1.3.2 (Previous Release — `v1.3.2`)
 
 - **Complete AI Cover Gallery (All 8 Missing / Placeholder Covers Generated via `gemini-3.1-flash-image`)**:
   - Replaced the `v1.3.1` wireframe placeholder and the 7 temporary neon graphic posters with photorealistic `1024×1024` Brasília architectural & stage photography featuring vertically centered double-line neon typography matching the original 9 posters:
@@ -523,9 +539,9 @@ sonar-bsb-events/
 ├── .github/workflows/
 │   └── static.yml             # GitHub Pages workflow (deploys runtime files only)
 ├── assets/                    # Active runtime UI icons, welcome graphics, avatar & 27 event covers
-├── handoffs/                  # Historical HANDOFF_V1.0–V1.3.2 docs & CONVERSATION_HISTORY.md
+├── handoffs/                  # Historical HANDOFF_V1.0–V1.4 docs & CONVERSATION_HISTORY.md
 │   └── design-refs/           # Saved Figma reference screenshots (not deployed to Pages)
-├── versions/                  # Release archives (sonar-bsb-events-v*.zip for v0.4–v1.3.2)
+├── versions/                  # Release archives (sonar-bsb-events-v*.zip for v0.4–v1.4)
 ├── index.html                 # Main application shell & interactive views
 ├── login.html                 # Standalone 1-WelcomeLogin entry screen
 ├── styles.css                 # Responsive stylesheet & design system tokens

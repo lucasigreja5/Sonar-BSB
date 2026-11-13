@@ -6,7 +6,19 @@ This directory contains versioned snapshots of the Sonar BSB Events web applicat
 
 ## 🏷️ Version History
 
-### Version 1.3.2 (Current Production Release — `v1.3.2`)
+### Version 1.4 (Current Production Release — `v1.4`)
+- **Date**: 2026-11-13
+- **Snapshot Directory**: `versions/v1.4/`
+- **Archive Zip**: `versions/v1.4/sonar-bsb-events-v1.4.zip`
+- **Handoff Documentation**: `handoffs/HANDOFF_V1.4.md`
+- **Changes**:
+  - **Search Screen Deferred Results (`index.html`, `app.js`)**: Kept Search results (`#sectionHeaderBlock` & `#eventsContainer`) completely empty on navigation and while typing/toggling until text-box input is provided and **"Find Events Near Me"** (`#btnFindEvents`) is clicked (`state.searchSubmitted`).
+  - **Modal Backdrop Outside-Click Bug Fix (`app.js`, `styles.css`)**: Prevented backdrop clicks from leaving inline `display: none` on `.modal-overlay` popups (`#eventModal`, `#ticketModal`, `#profileModal`), updated Escape/backdrop handlers to call dedicated close helpers, cleared inline `display` overrides on open, and set `.modal-overlay.open { display: flex; }`.
+  - **Top-Bar Expandable Search Bar (Figma `28:230`, `index.html`, `styles.css`, `app.js`)**: Styled `#desktopSearchBar` as a `44px × 44px` circular toggle expanding smoothly into a `354px` pill (`min(354px, calc(100vw - 268px))` on mobile) with uppercase bold `"SEARCH"` placeholder, Figma `SearchIcon` SVG, outside-click/Escape collapse, and the header cart button color scheme (`#3F32D3` background, `#F2F862` text/icon/border & glow).
+  - **Top-Bar Cart Button Filled Icon (Figma `30:177`, `index.html`, `styles.css`)**: Replaced `#headerCartBtn` and `#emptyCartCard` cart icons with the filled shopping cart vector from Figma node `30:177`.
+  - Updated `<title>` badges across `index.html` and `login.html` to `Version 1.4`.
+
+### Version 1.3.2 (Previous Production Release — `v1.3.2`)
 - **Date**: 2026-11-13
 - **Snapshot Directory**: `versions/v1.3.2/`
 - **Archive Zip**: `versions/v1.3.2/sonar-bsb-events-v1.3.2.zip`

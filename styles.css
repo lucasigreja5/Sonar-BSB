@@ -543,61 +543,114 @@ body {
   gap: 16px;
 }
 
-/* Desktop Search Bar */
+/* Top-Bar Search Bar (Version 1.4: Figma 28:230 Closed->Open Animation + Cart Button Color Scheme) */
 .desktop-search-bar {
-  display: none;
+  display: flex;
   position: relative;
   align-items: center;
+  justify-content: flex-start;
+  gap: 19px;
+  width: 44px;
+  height: 44px;
+  padding: 0 8px;
+  box-sizing: border-box;
+  border-radius: 9999px;
+  background-color: transparent;
+  border: 2px solid transparent;
+  color: #ffffff;
+  overflow: hidden;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition:
+    width 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    padding 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.desktop-search-bar:hover:not(.is-open):not(:focus-within) {
+  transform: scale(1.08);
+  background-color: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+}
+
+.desktop-search-bar:active:not(.is-open):not(:focus-within) {
+  transform: scale(0.94);
+}
+
+.desktop-search-bar.is-open,
+.desktop-search-bar:focus-within {
+  width: min(354px, calc(100vw - 220px));
+  padding: 0 16px 0 10px;
+  background-color: var(--color-secondary);
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+  box-shadow: 0 0 12px rgba(242, 248, 98, 0.6);
+  cursor: text;
+  transform: none;
+}
+
+@media (max-width: 767px) {
+  .header-actions {
+    gap: 10px;
+  }
+
+  .desktop-search-bar.is-open,
+  .desktop-search-bar:focus-within {
+    width: min(354px, calc(100vw - 268px));
+    padding: 0 12px 0 8px;
+    gap: 10px;
+  }
 }
 
 @media (min-width: 768px) {
-  .desktop-search-bar {
-    display: flex;
+  .desktop-search-bar.is-open,
+  .desktop-search-bar:focus-within {
+    width: 354px;
   }
 }
 
 .desktop-search-input {
-  background: rgba(255, 255, 255, 0.16);
-  border: 1.5px solid rgba(255, 255, 255, 0.25);
-  border-radius: 9999px;
-  padding: 9px 38px 9px 40px;
-  color: #ffffff;
-  font-size: 14px;
-  width: 280px;
+  background: transparent;
+  border: none;
   outline: none;
-  transition: all 0.25s ease;
+  color: var(--color-primary);
+  font-family: var(--font-family-primary);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
+  padding: 0;
+  width: 100%;
+  min-width: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.desktop-search-bar.is-open .desktop-search-input,
+.desktop-search-bar:focus-within .desktop-search-input {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .desktop-search-input::placeholder {
-  color: rgba(255, 255, 255, 0.7);
-}
-
-.desktop-search-input:focus {
-  background: rgba(255, 255, 255, 0.25);
-  border-color: var(--color-primary);
-  width: 340px;
-  box-shadow: 0 0 12px rgba(242, 248, 98, 0.35);
+  color: var(--color-primary);
+  opacity: 0.9;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
 }
 
 .desktop-search-icon {
-  position: absolute;
-  left: 14px;
   pointer-events: none;
-  width: 16px;
-  height: 16px;
-  stroke: #ffffff;
-}
-
-.search-kbd-shortcut {
-  position: absolute;
-  right: 12px;
-  background: rgba(255, 255, 255, 0.2);
-  color: #ffffff;
-  font-size: 11px;
-  font-weight: 700;
-  padding: 2px 6px;
-  border-radius: 4px;
-  pointer-events: none;
+  width: 24px;
+  height: 24px;
+  color: currentColor;
+  flex-shrink: 0;
+  transition: color 0.2s ease, transform 0.2s ease;
 }
 
 /* Header Login / Welcome Screen Pill Button */
@@ -670,8 +723,8 @@ body {
 }
 
 .header-cart-icon {
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
   display: block;
   transition: transform 0.2s ease;
 }
@@ -2667,6 +2720,7 @@ input:checked + .slider:before {
 }
 
 .modal-overlay.open {
+  display: flex;
   opacity: 1;
   pointer-events: auto;
 }

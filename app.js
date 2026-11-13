@@ -720,6 +720,7 @@ const state = {
   favorites: new Set(["trema-techno", "vapor-cybernetic"]), // Default pre-saved
   tickets: createDefaultTickets(APP_OPEN_DATE, EVENTS_DATA),
   searchQuery: "",
+  searchSubmitted: false,
   searchFilters: {
     name: "",
     date: "",
@@ -760,6 +761,7 @@ const navTabsContainer = document.getElementById("navTabsContainer");
 const subHeaderNav = document.getElementById("subHeaderNav");
 const backButton = document.getElementById("backButton");
 const searchFilterPanel = document.getElementById("searchFilterPanel");
+const desktopSearchBar = document.getElementById("desktopSearchBar");
 const desktopSearchInput = document.getElementById("desktopSearchInput");
 const favBadgeEl = document.getElementById("favBadge");
 const ticketBadgeEl = document.getElementById("ticketBadge");
@@ -880,8 +882,8 @@ window.switchView = function(viewName) {
     if (backButton) backButton.style.display = "flex";
     if (searchFilterPanel) searchFilterPanel.style.display = "block";
     if (navTabsContainer) navTabsContainer.style.display = "none";
-    if (sectionHeaderBlock) sectionHeaderBlock.style.display = "flex";
-    if (eventsContainer) eventsContainer.style.display = "grid";
+    if (sectionHeaderBlock) sectionHeaderBlock.style.display = state.searchSubmitted ? "flex" : "none";
+    if (eventsContainer) eventsContainer.style.display = state.searchSubmitted ? "grid" : "none";
     // Version 1.1: On mobile/touch screen sizes, do NOT auto-focus so the virtual touch
     // keyboard only opens when the user explicitly interacts with/taps one of the input text boxes.
     const isMobileOrTouch = window.innerWidth <= 768 || ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
@@ -1114,6 +1116,16 @@ function renderEvents() {
   let list = [];
 
   if (state.activeView === "search") {
+    if (!state.searchSubmitted) {
+      if (sectionHeaderBlock) sectionHeaderBlock.style.display = "none";
+      if (eventCountBadge) eventCountBadge.textContent = "0 events";
+      eventsContainer.innerHTML = "";
+      eventsContainer.style.display = "none";
+      return;
+    }
+    if (sectionHeaderBlock) sectionHeaderBlock.style.display = "flex";
+    eventsContainer.style.display = "grid";
+
     const qName = state.searchFilters.name.toLowerCase().trim();
     const qDate = state.searchFilters.date.toLowerCase().trim();
     const qLoc = state.searchFilters.location.toLowerCase().trim();
@@ -1297,32 +1309,67 @@ function syncSearchDateClearButton() {
 }
 
 window.clearSearchDate = function() {
+  const nameEl = document.getElementById("searchFormName");
   const dateEl = document.getElementById("searchFormDate");
+  const locEl = document.getElementById("searchFormLocation");
   if (dateEl) {
     dateEl.value = "";
   }
   state.searchFilters.date = "";
   syncSearchDateClearButton();
-  renderEvents();
+
+  const qName = nameEl ? nameEl.value.trim() : "";
+  const qLoc = locEl ? locEl.value.trim() : "";
+  if (!qName && !qLoc && state.searchSubmitted) {
+    state.searchSubmitted = false;
+    renderEvents();
+  }
 };
 
 window.executeLiveSearch = function() {
   const nameEl = document.getElementById("searchFormName");
   const dateEl = document.getElementById("searchFormDate");
   const locEl = document.getElementById("searchFormLocation");
-  const todayEl = document.getElementById("toggleTodayOnly");
-
-  state.searchFilters.name = nameEl ? nameEl.value : "";
-  state.searchFilters.date = dateEl ? dateEl.value : "";
-  state.searchFilters.location = locEl ? locEl.value : "";
-  state.searchFilters.todayOnly = todayEl ? todayEl.checked : false;
 
   syncSearchDateClearButton();
-  renderEvents();
+
+  const qName = nameEl ? nameEl.value.trim() : "";
+  const qDate = dateEl ? dateEl.value.trim() : "";
+  const qLoc = locEl ? locEl.value.trim() : "";
+  if (!qName && !qDate && !qLoc && state.searchSubmitted) {
+    state.searchSubmitted = false;
+    renderEvents();
+  }
 };
 
 window.executeAdvancedSearch = function() {
-  executeLiveSearch();
+  const nameEl = document.getElementById("searchFormName");
+  const dateEl = document.getElementById("searchFormDate");
+  const locEl = document.getElementById("searchFormLocation");
+  const todayEl = document.getElementById("toggleTodayOnly");
+
+  const qName = nameEl ? nameEl.value.trim() : "";
+  const qDate = dateEl ? dateEl.value.trim() : "";
+  const qLoc = locEl ? locEl.value.trim() : "";
+  const tOnly = todayEl ? todayEl.checked : false;
+  const hasTextBoxInput = Boolean(qName || qDate || qLoc);
+
+  syncSearchDateClearButton();
+
+  if (!hasTextBoxInput) {
+    state.searchSubmitted = false;
+    renderEvents();
+    showToast("Please enter an event name, date, or location to search.");
+    return;
+  }
+
+  state.searchFilters.name = qName;
+  state.searchFilters.date = qDate;
+  state.searchFilters.location = qLoc;
+  state.searchFilters.todayOnly = tOnly;
+  state.searchSubmitted = true;
+
+  renderEvents();
   showToast("Filters applied!");
   const headerBlock = document.getElementById("sectionHeaderBlock");
   if (headerBlock) {
@@ -1342,10 +1389,19 @@ window.resetSearchFilters = function() {
   if (todayEl) todayEl.checked = false;
 
   state.searchFilters = { name: "", date: "", location: "", todayOnly: false };
+  state.searchSubmitted = false;
   state.searchQuery = "";
   if (desktopSearchInput) desktopSearchInput.value = "";
+  if (typeof window.closeTopSearchBar === "function") {
+    window.closeTopSearchBar(true);
+  }
   syncSearchDateClearButton();
-  switchView("home");
+
+  if (state.activeView === "search") {
+    renderEvents();
+  } else {
+    switchView("home");
+  }
 };
 
 // ============================================================================
@@ -1377,7 +1433,10 @@ window.openEventModal = function(eventId) {
     </div>
   `).join("");
 
-  eventModal.classList.add("open");
+  if (eventModal) {
+    eventModal.style.removeProperty("display");
+    eventModal.classList.add("open");
+  }
 };
 
 window.closeEventModal = function() {
@@ -1761,11 +1820,14 @@ function showTicketPopup(ticket) {
   document.getElementById("ticketDateTime").textContent = ticket.purchasedAt;
   document.getElementById("ticketPayment").textContent = ticket.paymentMethod;
 
-  ticketModal.classList.add("open");
+  if (ticketModal) {
+    ticketModal.style.removeProperty("display");
+    ticketModal.classList.add("open");
+  }
 }
 
 window.closeTicketModal = function() {
-  ticketModal.classList.remove("open");
+  if (ticketModal) ticketModal.classList.remove("open");
 };
 
 window.openTicketWallet = function() {
@@ -1798,11 +1860,14 @@ let tempProfileAvatar = null;
 
 window.openProfileModal = function() {
   toggleEditProfileView(false);
-  profileModal.classList.add("open");
+  if (profileModal) {
+    profileModal.style.removeProperty("display");
+    profileModal.classList.add("open");
+  }
 };
 
 window.closeProfileModal = function() {
-  profileModal.classList.remove("open");
+  if (profileModal) profileModal.classList.remove("open");
 };
 
 window.toggleEditProfileView = function(showEdit) {
@@ -1930,41 +1995,96 @@ function showToast(message) {
 }
 
 // ============================================================================
-// Keyboard Shortcuts & Interactions
+// Top-Bar Search Bar & Keyboard Shortcuts (Version 1.4: Figma 28:230 & Backdrop Fix)
 // ============================================================================
+window.openTopSearchBar = function(e) {
+  if (e) e.stopPropagation();
+  if (!desktopSearchBar) return;
+  desktopSearchBar.classList.add("is-open");
+  if (desktopSearchInput && document.activeElement !== desktopSearchInput) {
+    desktopSearchInput.focus();
+  }
+};
+
+window.closeTopSearchBar = function(clearValue = false) {
+  if (!desktopSearchBar) return;
+  if (clearValue) {
+    state.searchQuery = "";
+    if (desktopSearchInput) desktopSearchInput.value = "";
+  }
+  desktopSearchBar.classList.remove("is-open");
+  if (desktopSearchInput && document.activeElement === desktopSearchInput) {
+    desktopSearchInput.blur();
+  }
+};
+
 function setupKeyboardShortcuts() {
-  // Desktop Search Input
+  // Top-Bar Expandable Search Input
   if (desktopSearchInput) {
+    desktopSearchInput.addEventListener("focus", () => {
+      if (desktopSearchBar) desktopSearchBar.classList.add("is-open");
+    });
+
+    desktopSearchInput.addEventListener("blur", () => {
+      if (desktopSearchBar && desktopSearchInput.value.trim() === "") {
+        desktopSearchBar.classList.remove("is-open");
+      }
+    });
+
     desktopSearchInput.addEventListener("input", (e) => {
       state.searchQuery = e.target.value;
-      renderEvents();
+      if (state.searchQuery.trim() !== "" && state.activeView !== "home") {
+        switchView("home");
+      } else {
+        renderEvents();
+      }
     });
   }
 
-  // Key shortcut '/' focuses search, 'Escape' closes modals
-  window.addEventListener("keydown", (e) => {
-    if (e.key === "/" && document.activeElement !== desktopSearchInput) {
-      e.preventDefault();
-      if (desktopSearchInput) desktopSearchInput.focus();
-    }
-    if (e.key === "Escape") {
-      closeEventModal();
-      closeTicketModal();
-      closeProfileModal();
-      closeAddPaymentModal();
+  // Collapse top search bar when clicking outside while empty
+  document.addEventListener("click", (e) => {
+    if (desktopSearchBar && desktopSearchBar.classList.contains("is-open") && !desktopSearchBar.contains(e.target)) {
+      if (!desktopSearchInput || desktopSearchInput.value.trim() === "") {
+        closeTopSearchBar(false);
+      }
     }
   });
 
-  // Modal Backdrop Click
-  [eventModal, ticketModal, profileModal, addPaymentModal].forEach(modal => {
-    if (modal) {
-      modal.addEventListener("click", (e) => {
-        if (e.target === modal) {
-          modal.classList.remove("open");
-          modal.style.display = "none";
-        }
-      });
+  // Key shortcut '/' focuses search, 'Escape' closes modals or search bar
+  window.addEventListener("keydown", (e) => {
+    const activeTag = document.activeElement ? document.activeElement.tagName : "";
+    const isInputFocused = activeTag === "INPUT" || activeTag === "TEXTAREA";
+
+    if (e.key === "/" && !isInputFocused) {
+      e.preventDefault();
+      openTopSearchBar();
     }
+
+    if (e.key === "Escape") {
+      if (eventModal && eventModal.classList.contains("open")) closeEventModal();
+      if (ticketModal && ticketModal.classList.contains("open")) closeTicketModal();
+      if (profileModal && profileModal.classList.contains("open")) closeProfileModal();
+      if (addPaymentModal && (addPaymentModal.classList.contains("open") || addPaymentModal.style.display === "flex")) {
+        closeAddPaymentModal();
+      }
+      if (desktopSearchBar && desktopSearchBar.classList.contains("is-open")) {
+        closeTopSearchBar(true);
+        renderEvents();
+      }
+    }
+  });
+
+  // Modal Backdrop Click (call proper close handlers without setting display: none on .modal-overlay)
+  [eventModal, ticketModal, profileModal, addPaymentModal].forEach(modal => {
+    if (!modal) return;
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        if (modal === eventModal) closeEventModal();
+        else if (modal === ticketModal) closeTicketModal();
+        else if (modal === profileModal) closeProfileModal();
+        else if (modal === addPaymentModal) closeAddPaymentModal();
+      }
+    });
   });
 }
 
