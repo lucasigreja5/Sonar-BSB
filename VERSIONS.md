@@ -6,7 +6,17 @@ This directory contains versioned snapshots of the Sonar BSB Events web applicat
 
 ## 🏷️ Version History
 
-### Version 1.4.1 (Current Production Release — `v1.4.1`)
+### Version 1.4.2 (Current Production Release — `v1.4.2`)
+- **Date**: 2026-11-13
+- **Snapshot Directory**: `versions/v1.4.2/`
+- **Archive Zip**: `versions/v1.4.2/sonar-bsb-events-v1.4.2.zip`
+- **Handoff Documentation**: `handoffs/HANDOFF_V1.4.2.md`
+- **Changes**:
+  - **Favorites Cards "Learn More" Button & Relocated Smaller Price (`app.js`, `styles.css`)**: Relocated `.fav-card-price` into `.fav-card-meta-row` next to `.fav-card-date` with a smaller `13px` font size, and added `.btn-fav-learn-more` (`Learn More`) at the bottom of `.fav-card-info` matching the event cards' royal-blue action button.
+  - **Design-System Feedback Popups (`app.js`, `styles.css`, Figma `Snackbar` `3:177` / `3:178`)**: Redesigned `showToast()` and `.toast` with a royal-blue gradient surface (`#3F32D3` -> `#2E23A6`), neon-yellow (`#F2F862`) border & circular `.toast-icon-badge` vector icon, `#FAFCC6` message typography, and an interactive `"OK"` pill dismiss button (`.toast-dismiss-btn`).
+  - Updated `<title>` badges across `index.html` and `login.html` to `Version 1.4.2`.
+
+### Version 1.4.1 (Previous Production Release — `v1.4.1`)
 - **Date**: 2026-11-13
 - **Snapshot Directory**: `versions/v1.4.1/`
 - **Archive Zip**: `versions/v1.4.1/sonar-bsb-events-v1.4.1.zip`

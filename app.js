@@ -1105,9 +1105,12 @@ function renderEvents() {
         </div>
         <div class="fav-card-info">
           <h2 class="fav-card-title">${evt.title}</h2>
-          <p class="fav-card-date">${evt.dateFormatted} &bull; ${evt.time}</p>
+          <div class="fav-card-meta-row">
+            <p class="fav-card-date">${evt.dateFormatted} &bull; ${evt.time}</p>
+            <span class="fav-card-price">${evt.priceFormatted}</span>
+          </div>
           <p class="fav-card-venue">${evt.venue}</p>
-          <span class="fav-card-price">${evt.priceFormatted}</span>
+          <button type="button" class="btn-learn-more btn-fav-learn-more" onclick="event.stopPropagation(); openEventModal('${evt.id}')">Learn More</button>
         </div>
         <button class="fav-card-remove-btn is-active" onclick="toggleFavorite(event, '${evt.id}')" title="Remove from favorites" aria-label="Remove from favorites">
           ${renderFavoriteButtonSVG(true)}
@@ -1979,20 +1982,72 @@ function updateBadges() {
   }
 }
 
+function getToastIconSVG(rawMessage) {
+  const lower = rawMessage.toLowerCase();
+  if (lower.includes("removed") || lower.includes("logged out")) {
+    return `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
+  }
+  if (lower.includes("favorite") || rawMessage.includes("❤️")) {
+    return `<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>`;
+  }
+  if (lower.includes("payment") || lower.includes("ticket")) {
+    return `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`;
+  }
+  if (lower.includes("please ") || lower.includes("enter")) {
+    return `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`;
+  }
+  return `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>`;
+}
+
 function showToast(message) {
   const container = document.getElementById("toastContainer");
   if (!container) return;
+
+  const rawText = String(message ?? "").trim();
+  const cleanText = rawText
+    .replace(/^[✓🎉⚡✨❤️💔\s]+|[🎉⚡✨❤️💔\s]+$/gu, "")
+    .trim() || rawText;
+
   const toast = document.createElement("div");
   toast.className = "toast";
-  toast.innerHTML = `<span>⚡</span><span>${message}</span>`;
+  toast.setAttribute("role", "status");
+  toast.setAttribute("aria-live", "polite");
+
+  const iconBadge = document.createElement("span");
+  iconBadge.className = "toast-icon-badge";
+  iconBadge.innerHTML = getToastIconSVG(rawText);
+
+  const msgSpan = document.createElement("span");
+  msgSpan.className = "toast-message";
+  msgSpan.textContent = cleanText;
+
+  const dismissBtn = document.createElement("button");
+  dismissBtn.type = "button";
+  dismissBtn.className = "toast-dismiss-btn";
+  dismissBtn.setAttribute("aria-label", "Dismiss notification");
+  dismissBtn.textContent = "OK";
+
+  toast.appendChild(iconBadge);
+  toast.appendChild(msgSpan);
+  toast.appendChild(dismissBtn);
   container.appendChild(toast);
 
-  setTimeout(() => {
-    toast.style.opacity = "0";
-    toast.style.transform = "translateY(-10px)";
-    toast.style.transition = "all 0.3s ease";
-    setTimeout(() => toast.remove(), 300);
-  }, 2600);
+  let dismissed = false;
+  let timerId = null;
+  const dismissToast = () => {
+    if (dismissed) return;
+    dismissed = true;
+    if (timerId) clearTimeout(timerId);
+    toast.classList.add("is-hiding");
+    setTimeout(() => toast.remove(), 240);
+  };
+
+  dismissBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    dismissToast();
+  });
+
+  timerId = setTimeout(dismissToast, 3200);
 }
 
 // ============================================================================

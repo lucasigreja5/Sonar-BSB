@@ -92,7 +92,19 @@ This log documents each iterative release of the project, recording the exact us
 
 ---
 
-### 🏷️ Version 1.4.1 (Current Release — `v1.4.1`)
+### 🏷️ Version 1.4.2 (Current Release — `v1.4.2`)
+
+#### 💬 Original User Prompt:
+> *"Version 1.4.2*  
+> *Make the following adjustments:*  
+> *- On the favorites cards at the favorites pages, replace the price value with a "learn more" button like in the event cards. Relocate the price inside the favorites card with a smaller font size*  
+> *- For the feedback popups, try to change them to a design in a similar style to the overall design system of the page. You can take inspiration in the components from this figma file (`z52M2Cn7oC78mUUtVEb1sZ`, node `0:1`)"*
+
+#### 🛠️ Implementation Summary:
+- **Favorites Card "Learn More" & Relocated Price (`app.js`, `styles.css`)**: Relocated `.fav-card-price` into `.fav-card-meta-row` beside `.fav-card-date` at a smaller `13px` font size (`rgba(63, 50, 211, 0.1)` pill badge), and added `.btn-fav-learn-more` (`Learn More`) at the bottom of `.fav-card-info` to match event cards.
+- **Design-System Feedback Popups (`app.js`, `styles.css`)**: Redesigned `showToast(message)` and `.toast` using the Sonar BSB brand tokens and Figma `Snackbar` (`3:177` / `3:178`) structure (`#3F32D3` -> `#2E23A6` gradient, `#F2F862` border & `.toast-icon-badge` contextual SVG icon, `#FAFCC6` text, and an interactive `"OK"` pill dismiss button `.toast-dismiss-btn`).
+
+### 🏷️ Version 1.4.1 (Previous Release — `v1.4.1`)
 
 #### 💬 Original User Prompt:
 > *"Version 1.4.1*  
@@ -553,9 +565,9 @@ sonar-bsb-events/
 ├── .github/workflows/
 │   └── static.yml             # GitHub Pages workflow (deploys runtime files only)
 ├── assets/                    # Active runtime UI icons, welcome graphics, avatar & 27 event covers
-├── handoffs/                  # Historical HANDOFF_V1.0–V1.4.1 docs & CONVERSATION_HISTORY.md
+├── handoffs/                  # Historical HANDOFF_V1.0–V1.4.2 docs & CONVERSATION_HISTORY.md
 │   └── design-refs/           # Saved Figma reference screenshots (not deployed to Pages)
-├── versions/                  # Release archives (sonar-bsb-events-v*.zip for v0.4–v1.4.1)
+├── versions/                  # Release archives (sonar-bsb-events-v*.zip for v0.4–v1.4.2)
 ├── index.html                 # Main application shell & interactive views
 ├── login.html                 # Standalone 1-WelcomeLogin entry screen
 ├── styles.css                 # Responsive stylesheet & design system tokens
