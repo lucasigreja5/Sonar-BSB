@@ -92,7 +92,21 @@ This log documents each iterative release of the project, recording the exact us
 
 ---
 
-### 🏷️ Version 1.3.1 (Current Release — `v1.3.1`)
+### 🏷️ Version 1.3.2 (Current Release — `v1.3.2`)
+
+- **Complete AI Cover Gallery (All 8 Missing / Placeholder Covers Generated via `gemini-3.1-flash-image`)**:
+  - Replaced the `v1.3.1` wireframe placeholder and the 7 temporary neon graphic posters with photorealistic `1024×1024` Brasília architectural & stage photography featuring vertically centered double-line neon typography matching the original 9 posters:
+    - **Conic: Frequency 404** (`./assets/event-conic404.png`) — Centered typography inside Galeria Conic brutalist coffered corridor.
+    - **508 SynthLab: Modular Night** (`./assets/event-synthlab.png`) — Live Eurorack modular rigs at Espaço Cultural Renato Russo (508 Sul).
+    - **Planalto Solar: Open Air** (`./assets/event-planalto-solar.png`) — Golden-hour daytime canopy gathering at Parque Olhos d’Água, Asa Norte.
+    - **Anel Monumental: Kinetic X** (`./assets/event-anel-kinetic.png`) — Colonnade gallery laser rig inside Arena BRB, Eixo Monumental.
+    - **Botânico: Canopy Nights** (`./assets/event-botanico.png`) — Nocturnal Cerrado gallery forest gathering in Jardim Botânico DF.
+    - **SOF Sul: Heavy Machinery** (`./assets/event-sofsul.png`) — Cavernous steel Hangar 14 industrial rave in SOF Sul.
+    - **Prainha Norte: First Light** (`./assets/event-prainha.png`) — Pastel rose-gold dawn session at Prainha do Lago Norte.
+    - **Km Zero: Analog Fest** (`./assets/event-kmzero.png`) — Timber A-frame mainstage in a twilight woodland clearing near Catetinho / Park Way.
+  - All **27/27 events** across **Today**, **This Month**, and **Upcoming** now have full photorealistic `1024×1024` AI cover artwork.
+
+### 🏷️ Version 1.3.1 (Previous Release — `v1.3.1`)
 
 - **Weekend-Focused Dynamic Dates (`Thu–Sun`)**:
   - Updated `resolveCurrentMonthDate()` and `resolveUpcomingMonthDate()` in `app.js` using `PREFERRED_EVENT_WEEKDAYS` (`Thursday–Sunday`) and `WEEKEND_DAY_ROTATIONS` so all dynamic **This Month** and **Upcoming** (`+1/+2` months) events avoid Monday, Tuesday, and Wednesday across standard dates, month-end boundaries, year rollovers, and leap/non-leap February.

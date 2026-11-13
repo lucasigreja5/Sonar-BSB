@@ -6,7 +6,16 @@ This directory contains versioned snapshots of the Sonar BSB Events web applicat
 
 ## 🏷️ Version History
 
-### Version 1.3.1 (Current Production Release — `v1.3.1`)
+### Version 1.3.2 (Current Production Release — `v1.3.2`)
+- **Date**: 2026-11-13
+- **Snapshot Directory**: `versions/v1.3.2/`
+- **Archive Zip**: `versions/v1.3.2/sonar-bsb-events-v1.3.2.zip`
+- **Handoff Documentation**: `HANDOFF_V1.3.2.md`
+- **Changes**:
+  - Generated the 8 remaining photorealistic `1024×1024` cover posters using the `gemini-3.1-flash-image` image generator model in the exact Sonar BSB double-outline neon style with centered vertical typography: `event-conic404.png`, `event-synthlab.png`, `event-planalto-solar.png`, `event-anel-kinetic.png`, `event-botanico.png`, `event-sofsul.png`, `event-prainha.png`, and `event-kmzero.png`.
+  - Updated page `<title>` tags in `index.html` and `login.html` to `Version 1.3.2`, completing the full 27-event photorealistic cover gallery.
+
+### Version 1.3.1 (Previous Production Release — `v1.3.1`)
 - **Date**: 2026-11-12
 - **Snapshot Directory**: `versions/v1.3.1/`
 - **Archive Zip**: `versions/v1.3.1/sonar-bsb-events-v1.3.1.zip`

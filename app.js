@@ -5,7 +5,7 @@
  */
 
 // ============================================================================
-// Events Database & Dynamic Calendar Date Builder (Version 1.3.1 — 27 Events)
+// Events Database & Dynamic Calendar Date Builder (Version 1.3.2 — 27 Events)
 // Dynamically anchors Today, This Month, and Upcoming (+1/+2 months) to the
 // local calendar date when the user opens the app, prioritizing Thu–Sun
 // weekend nights (avoiding Mon–Wed) for This Month and Upcoming schedules.
