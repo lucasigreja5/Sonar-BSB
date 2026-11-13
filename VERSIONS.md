@@ -10,7 +10,7 @@ This directory contains versioned snapshots of the Sonar BSB Events web applicat
 - **Date**: 2026-11-13
 - **Snapshot Directory**: `versions/v1.3.2/`
 - **Archive Zip**: `versions/v1.3.2/sonar-bsb-events-v1.3.2.zip`
-- **Handoff Documentation**: `HANDOFF_V1.3.2.md`
+- **Handoff Documentation**: `handoffs/HANDOFF_V1.3.2.md`
 - **Changes**:
   - Generated the 8 remaining photorealistic `1024×1024` cover posters using the `gemini-3.1-flash-image` image generator model in the exact Sonar BSB double-outline neon style with centered vertical typography: `event-conic404.png`, `event-synthlab.png`, `event-planalto-solar.png`, `event-anel-kinetic.png`, `event-botanico.png`, `event-sofsul.png`, `event-prainha.png`, and `event-kmzero.png`.
   - Updated page `<title>` tags in `index.html` and `login.html` to `Version 1.3.2`, completing the full 27-event photorealistic cover gallery.
@@ -19,7 +19,7 @@ This directory contains versioned snapshots of the Sonar BSB Events web applicat
 - **Date**: 2026-11-12
 - **Snapshot Directory**: `versions/v1.3.1/`
 - **Archive Zip**: `versions/v1.3.1/sonar-bsb-events-v1.3.1.zip`
-- **Handoff Documentation**: `HANDOFF_V1.3.1.md`
+- **Handoff Documentation**: `handoffs/HANDOFF_V1.3.1.md`
 - **Changes**:
   - **Weekend-Prioritized Dynamic Dates (`app.js`)**: Scheduled all `This Month` and `Upcoming` (`+1/+2` months) dynamic event dates strictly onto `Thursday–Sunday` slots (`PREFERRED_EVENT_WEEKDAYS` + balanced `WEEKEND_DAY_ROTATIONS`), avoiding Mon–Wed even on month-end dates, year rollovers, and Feb 28/29.
   - **System Calendar Date Input on Search (`index.html`, `styles.css`, `app.js`)**: Replaced the free-text `#searchFormDate` field with `<input type="date">` opening the native OS system calendar picker (`showPicker()` on click + native indicator hotspot), styled with an inline calendar SVG icon, clear (`×`) button, exact `YYYY-MM-DD` (`dateISO`) matching, and mobile blur guard.
@@ -30,7 +30,7 @@ This directory contains versioned snapshots of the Sonar BSB Events web applicat
 - **Date**: 2026-11-12
 - **Snapshot Directory**: `versions/v1.3/`
 - **Archive Zip**: `versions/v1.3/sonar-bsb-events-v1.3.zip`
-- **Handoff Documentation**: `HANDOFF_V1.3.md`
+- **Handoff Documentation**: `handoffs/HANDOFF_V1.3.md`
 - **Changes**:
   - Expanded catalog from 9 to **27 mock events** (9 `Today`, 9 `This Month`, 9 `Upcoming`), adding 18 Brasília electronic events with full venues, entry prices, descriptions, 2-artist lineups, genres, and `1024×1024` cover assets (11 AI-generated covers + 7 custom neon-poster graphics for `event-synthlab.png` and the 6 new Upcoming covers due to `gemini-3.1-flash-image` daily quota reset).
   - Replaced hardcoded August 2026 event dates with `buildEventsData(referenceDate = new Date())`, anchoring Today to the user's open date, This Month strictly within the current month, and Upcoming strictly across the next 2 calendar months (`month + 1` and `month + 2`), plus dynamic Search placeholder, Search `dateShort`/`dateMonth` matching, Checkout `dd/mm/yy`, and default ticket timestamps.
@@ -46,8 +46,8 @@ This directory contains versioned snapshots of the Sonar BSB Events web applicat
 - **Key Features & Changes**:
   - **Event Card Add-to-Cart Icon Updated to `+`**: Replaced the shopping-bag `<svg>` inside `.btn-purchase-direct` (`renderEvents()` in `app.js`) with a crisp stroke-based `+` `<svg>` (`width="22" height="22" viewBox="0 0 24 24"`, `stroke="currentColor"`, `stroke-width="2.5"`, `stroke-linecap="round"`, `stroke-linejoin="round"`).
   - **Preserved Button Color & Style**: `.btn-purchase-direct` retains its exact neon yellow fill (`var(--color-primary)` / `#F2F862`), dark navy icon color (`#130f40`), `48px × 46px` sizing, `12px` border radius, `var(--shadow-btn)` elevation, and hover states without modification.
-  - **Master Handoff Guide**: Full specifications documented in `HANDOFF_V1.2.4.md`.
-  - **Snapshot Directory**: `versions/v1.2.4/source/`
+  - **Master Handoff Guide**: Full specifications documented in `handoffs/HANDOFF_V1.2.4.md`.
+  - **Snapshot Directory**: `versions/v1.2.4/`
   - **ZIP Package**: `versions/v1.2.4/sonar-bsb-events-v1.2.4.zip`
 
 ---
@@ -67,8 +67,8 @@ This directory contains versioned snapshots of the Sonar BSB Events web applicat
   - **Elevated Sonar BSB Logo with Expanded Margin**: Moved `.welcome-logo-box` higher with `margin-top: clamp(-28px, -4vh, -16px);` and expanded bottom margin to `clamp(48px, 7vh, 64px);` (expanding distance to Houdini text from 24px to ~56px).
   - **Empty Cart on App Startup & Dedicated Empty Cart Page**: Cart initializes with 0 tickets and hidden badge; clicking cart icon loads a custom `#emptyCartCard` featuring empty cart icon halo, helpful copy, primary "Explore Events &rarr;" button, and trending event suggestions.
   - **Packaging Streamline**: Distribution ZIP archive stored exclusively in-repo (`versions/v1.2.3/sonar-bsb-events-v1.2.3.zip`), eliminating external Desktop/Downloads copies per user direction.
-  - **Master Handoff Guide**: Full specifications documented in `HANDOFF_V1.2.3.md`.
-  - **Snapshot Directory**: `versions/v1.2.3/source/`
+  - **Master Handoff Guide**: Full specifications documented in `handoffs/HANDOFF_V1.2.3.md`.
+  - **Snapshot Directory**: `versions/v1.2.3/`
   - **ZIP Package**: `versions/v1.2.3/sonar-bsb-events-v1.2.3.zip`
 
 ---
@@ -83,8 +83,8 @@ This directory contains versioned snapshots of the Sonar BSB Events web applicat
 - **Key Features & Changes**:
   - **Increased White Cart Icon Sizing**: Enlarged `.header-cart-icon` from 22px to 28px (`width: 28px; height: 28px;`), increasing the visual area by +61.9% and matching the prominence of the 44px profile avatar.
   - **Identical 44px Outside Yellow Ring on Selected State**: Button dimensions remain strictly 44px by 44px (`box-sizing: border-box`). When selected (`.is-active`, `.is-selected`), the 2px yellow border ring retains an outer diameter of exactly 44px with 6px of breathing room around the centered 28px icon.
-  - **Master Handoff Guide**: Full specifications documented in `HANDOFF_V1.2.2.md`.
-  - **Snapshot Directory**: `versions/v1.2.2/source/`
+  - **Master Handoff Guide**: Full specifications documented in `handoffs/HANDOFF_V1.2.2.md`.
+  - **Snapshot Directory**: `versions/v1.2.2/`
   - **ZIP Package**: `versions/v1.2.2/sonar-bsb-events-v1.2.2.zip`
 
 ---
@@ -102,8 +102,8 @@ This directory contains versioned snapshots of the Sonar BSB Events web applicat
   - **Larger "FOUND" Text Matching Textbox Width**: Sized "FOUND" independently to `clamp(72px, calc(var(--houdini-target-width) * 0.248), 88px)` so the word itself fills the full width of the login inputs beneath it and centers seamlessly.
   - **Unclipped 'Y' in "FREQUENCY"**: Expanded horizontal clipping boundaries on `.houdini-line-wrapper.top-line` by 20px on each side (`width: calc(100% + 40px); margin: 0 -20px; padding: 0 20px;`) and calibrated font size (`clamp(38px, calc(var(--houdini-target-width) * 0.15), 53px)`), permanently eliminating letter clipping on the 'Y'.
   - **Typographic Baseline Period Dot**: Wrapped "FOUND" and the blinking radar dot inside `.found-text-group` with `align-items: baseline;`, positioning the pulsing neon dot directly at the typographic baseline as punctuation following the letter 'D'.
-  - **Master Handoff Guide**: Full specifications documented in `HANDOFF_V1.2.1.md`.
-  - **Snapshot Directory**: `versions/v1.2.1/source/`
+  - **Master Handoff Guide**: Full specifications documented in `handoffs/HANDOFF_V1.2.1.md`.
+  - **Snapshot Directory**: `versions/v1.2.1/`
   - **ZIP Package**: `versions/v1.2.1/sonar-bsb-events-v1.2.1.zip`
 
 ---
@@ -121,8 +121,8 @@ This directory contains versioned snapshots of the Sonar BSB Events web applicat
   - **Full-Width Proportional Houdini Text on Mobile**: Bound the Houdini container to `min(calc(100vw - 48px), 354px)`, dynamically filling the exact inner width of the login text inputs below. Scaled font sizes (`clamp(48px, ... * 0.171, 60.5px)` for FREQUENCY and `clamp(66px, ... * 0.231, 82.5px)` for FOUND + dot) with calibrated line wrapper heights (`1.22x` and `1.18x`) and `white-space: nowrap;` preventing character clipping.
   - **Deactivated Welcome Pop-Up**: Turned off the `showToast` notification upon logging in from the welcome screen, allowing an immediate, quiet entry into the home event feed.
   - **Top Bar Shopping Cart Button**: Integrated a 44px circular shopping cart button to the left of `#profileAvatarBtn` inside `.header-actions`. Features the exact styling and color language of the bottom nav icons (white surface with `#1D1D1D` vector cart icon, transitioning on hover/checkout to royal blue with neon yellow icon and glow), accompanied by a live ticket counter badge.
-  - **Master Handoff Guide**: Full specifications documented in `HANDOFF_V1.2.md`.
-  - **Snapshot Directory**: `versions/v1.2/source/`
+  - **Master Handoff Guide**: Full specifications documented in `handoffs/HANDOFF_V1.2.md`.
+  - **Snapshot Directory**: `versions/v1.2/`
   - **ZIP Package**: `versions/v1.2/sonar-bsb-events-v1.2.zip`
 
 ---
@@ -140,8 +140,8 @@ This directory contains versioned snapshots of the Sonar BSB Events web applicat
   - **Centered & Proportional Houdini Text on Mobile**: Mathematically bound the 5:8 ratio (54px / 86.4px = 0.625) using CSS custom properties with dynamic `clamp(42px, 14vw, 86.4px)` scaling and proportional wrapper heights. Fully centered horizontally across all mobile screens with zero clipping or text squishing.
   - **Touchscreen Keyboard Only on Direct Interaction**: Suppressed auto-focus on `#searchFormName` for touch and mobile devices in `switchView("search")`. The virtual keyboard now opens only when the user explicitly taps or interacts with one of the search inputs.
   - **Enlarged Event Card Typography & Uniform Alignment**: Increased card title to 19px (multi-line up to 2 lines), event time to 14px bold, venue location to 13.5px (multi-line up to 2 lines), and ticket price to 24px bold. Card height scaled to 450px with `margin-top: auto` on `.card-actions` ensuring all "Learn More" and direct purchase buttons remain locked to the exact same baseline across all cards.
-  - **Master Handoff Guide**: Full specifications documented in `HANDOFF_V1.1.md`.
-  - **Snapshot Directory**: `versions/v1.1/source/`
+  - **Master Handoff Guide**: Full specifications documented in `handoffs/HANDOFF_V1.1.md`.
+  - **Snapshot Directory**: `versions/v1.1/`
   - **ZIP Package**: `versions/v1.1/sonar-bsb-events-v1.1.zip`
 
 ---
@@ -157,8 +157,8 @@ This directory contains versioned snapshots of the Sonar BSB Events web applicat
   - **1- WelcomeLogin Aesthetic**: Houdini text reveal with 0.5s pause, solid neon yellow glowing dot core (`#F2F862`) without ripple waves, completely unclipped in `.houdini-bottom-row`.
   - **90% Grey Side Bars (#1D1D1D)**: Soft modernist cinema pillarbox framing on displays wider than 1280px.
   - **Bottom Dock Stroke Centering**: 1pt center stroke on Favorites and 0.75pt center stroke on Tickets icons, matching fill color across both active and resting states.
-  - **Master Handoff Guide**: Full specifications documented in `HANDOFF_V1.0.md`.
-  - **Snapshot Directory**: `versions/v1.0/source/`
+  - **Master Handoff Guide**: Full specifications documented in `handoffs/HANDOFF_V1.0.md`.
+  - **Snapshot Directory**: `versions/v1.0/`
   - **ZIP Package**: `versions/v1.0/sonar-bsb-events-v1.0.zip`
 
 ---
@@ -173,7 +173,7 @@ This directory contains versioned snapshots of the Sonar BSB Events web applicat
   - **Solid Blinking Dot**: Removed the expanding acoustic ripple rings (`.dot-ring`) from the blinking dot next to "Found", maintaining the glowing neon yellow heartbeat core.
   - **90% Grey Side Bars (#1D1D1D)**: Replaced pitch-black bars on wide displays with refined 90% charcoal grey (`#1D1D1D`), matching the design system's primary dark token.
   - **Bottom Nav Icon Center Strokes**: Added 1pt center stroke to the Favorites icon and 0.75pt center stroke to the Tickets icon, perfectly matching fill color across both unselected (`#1D1D1D`) and selected (`#F2F862`) states.
-  - **Snapshot Directory**: `versions/v0.6.2/source/`
+  - **Snapshot Directory**: `versions/v0.6.2/`
   - **ZIP Package**: `versions/v0.6.2/sonar-bsb-events-v0.6.2.zip`
 
 ---
@@ -189,7 +189,7 @@ This directory contains versioned snapshots of the Sonar BSB Events web applicat
   - **Cleaner Login Artboard**: Removed the status badge and ambient floating yellow dots from the login mesh background.
   - **Header Nav Cleaned**: Removed the header login button; returning to login is now strictly through the profile "Sign Out" flow.
   - **Cinema Black Side Bars**: Added `background-color: #000000` to body and deep framing shadows to the 1280px `.app-container`, displaying sleek black bars on wide viewports as during the dual-view switcher era.
-  - **Snapshot Directory**: `versions/v0.6.1/source/`
+  - **Snapshot Directory**: `versions/v0.6.1/`
   - **ZIP Package**: `versions/v0.6.1/sonar-bsb-events-v0.6.1.zip`
 
 ---
@@ -208,7 +208,7 @@ This directory contains versioned snapshots of the Sonar BSB Events web applicat
     - Form input focus blinking caret/dot indicators for active typing.
     - Ambient floating frequency nodes twinkling across the mesh gradient.
   - **Header Login Button**: Added a direct shortcut in the app header to quickly view or return to the login screen.
-  - **Snapshot Directory**: `versions/v0.6/source/`
+  - **Snapshot Directory**: `versions/v0.6/`
   - **ZIP Package**: `versions/v0.6/sonar-bsb-events-v0.6.zip`
 
 ---
@@ -237,17 +237,17 @@ This directory contains versioned snapshots of the Sonar BSB Events web applicat
   - Global typography standardized strictly to Helvetica Neue.
   - Contained Dual-View Preview Switcher (Fluid Responsive Web vs 1:1 Mobile Canvas).
   - Location pill ("Brasília, DF • Plano Piloto") in subheader.
-  - **Snapshot Directory**: `versions/v0.4/source/`
+  - **Snapshot Directory**: `versions/v0.4/`
   - **ZIP Package**: `versions/v0.4/sonar-bsb-events-v0.4.zip`
 
 ---
 
 ## 🔄 How to Revert or Switch Between Versions
 
-### Option 1: Using the Versioned Folders (No Git Required)
-Each version has a complete standalone copy:
-- **To run Version 0.5**: Open `index.html` at the project root.
-- **To run Version 0.4**: Open `versions/v0.4/source/index.html`.
+### Option 1: Using the Versioned Archives (No Git Required)
+Each historical version (`v0.4`–`v1.3.2`) is archived as a standalone `.zip` file under `versions/<tag>/` (duplicate unpacked `source/` directories were removed during repository cleanup):
+- **To run the current version (`v1.3.2`)**: Open `index.html` at the project root.
+- **To run any archived version (e.g., `v0.4`)**: Extract `versions/v0.4/sonar-bsb-events-v0.4.zip` and open the extracted `index.html`.
 
 ### Option 2: Using Git Tags
 You can quickly check out any version using git commands in this directory:
@@ -258,6 +258,6 @@ git tag -l
 # Switch to Version 0.4
 git checkout v0.4
 
-# Switch back to Version 0.5 (main branch)
+# Switch back to the latest release (main branch)
 git checkout main
 ```

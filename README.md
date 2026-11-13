@@ -145,7 +145,7 @@ This log documents each iterative release of the project, recording the exact us
 - `app.js`: Updated `.btn-purchase-direct` icon SVG in `renderEvents()` from shopping bag to `+` plus symbol with matching stroke attributes and accessible `title`/`aria-label`.
 - `index.html`: Updated page title to Version 1.2.4.
 - `login.html`: Updated page title to Version 1.2.4.
-- `HANDOFF_V1.2.4.md`: Master handoff documentation for Version 1.2.4.
+- `handoffs/HANDOFF_V1.2.4.md`: Master handoff documentation for Version 1.2.4.
 - `PROJECT_HANDOFF.md`: Updated active pointer to Version 1.2.4.
 - `VERSIONS.md` & `README.md`: Version 1.2.4 changelog and registry entries.
 
@@ -183,7 +183,7 @@ This log documents each iterative release of the project, recording the exact us
 - `index.html`: Updated page title to Version 1.2.3; added `#emptyCartCard` state inside `#checkoutSection`.
 - `login.html`: Updated page title to Version 1.2.3.
 - `app.js`: Initialized `checkoutState` to empty (0 tickets); created `showEmptyCartView()` and `showPopulatedCartView()`; updated `openCart()`, `startCheckout()`, `updateTicketQty()`, and payment reset logic.
-- `HANDOFF_V1.2.3.md`: Master handoff and session resume documentation for Version 1.2.3.
+- `handoffs/HANDOFF_V1.2.3.md`: Master handoff and session resume documentation for Version 1.2.3.
 - `PROJECT_HANDOFF.md`: Updated active pointer to Version 1.2.3.
 - `VERSIONS.md` & `README.md`: Version 1.2.3 changelog and registry entries.
 
@@ -208,7 +208,7 @@ This log documents each iterative release of the project, recording the exact us
 - `styles.css`: Increased `.header-cart-icon` to 28px; ensured `.header-cart-btn` and `.header-cart-btn.is-active` maintain exact 44px outer circle sizing; removed redundant child transform scaling on hover.
 - `index.html`: Updated page title to Version 1.2.2.
 - `login.html`: Updated page title to Version 1.2.2.
-- `HANDOFF_V1.2.2.md`: New production handoff documentation for Version 1.2.2.
+- `handoffs/HANDOFF_V1.2.2.md`: New production handoff documentation for Version 1.2.2.
 - `PROJECT_HANDOFF.md`: Updated to point to Version 1.2.2.
 - `VERSIONS.md` & `README.md`: Version 1.2.2 changelog and registry entries.
 
@@ -244,7 +244,7 @@ This log documents each iterative release of the project, recording the exact us
 - `styles.css`: Updated `.header-cart-btn` resting and active states; expanded `.houdini-line-wrapper.top-line` and `.bottom-line` mask margins; calibrated `--houdini-found-size` and `--houdini-freq-size`; added `.found-text-group` baseline period styling.
 - `index.html`: Title updated to Version 1.2.1; updated Houdini markup with `.found-text-group` period structure.
 - `login.html`: Title updated to Version 1.2.1; updated Houdini markup with `.found-text-group` period structure.
-- `HANDOFF_V1.2.1.md`: New production handoff documentation for Version 1.2.1.
+- `handoffs/HANDOFF_V1.2.1.md`: New production handoff documentation for Version 1.2.1.
 - `PROJECT_HANDOFF.md`: Updated to point to Version 1.2.1.
 - `VERSIONS.md` & `README.md`: Version 1.2.1 changelog and registry entries.
 
@@ -286,7 +286,7 @@ This log documents each iterative release of the project, recording the exact us
 - `app.js`: Removed "Welcome to Sonar BSB" toast in `handleWelcomeLogin()`, added `openCart()`, added header cart button active class toggle in `switchView()`, and added cart count badge synchronization in `updateBadges()`.
 - `index.html`: Updated title to Version 1.2, added `#headerCartBtn` to `.header-actions`.
 - `login.html`: Updated title to Version 1.2.
-- `HANDOFF_V1.2.md`: New production handoff documentation for Version 1.2.
+- `handoffs/HANDOFF_V1.2.md`: New production handoff documentation for Version 1.2.
 - `PROJECT_HANDOFF.md`: Updated to point to Version 1.2.
 - `VERSIONS.md` & `README.md`: Version 1.2 changelog and registry entries.
 
@@ -333,7 +333,7 @@ This log documents each iterative release of the project, recording the exact us
 - `app.js`: Touchscreen/mobile detection in `switchView("search")` to prevent virtual keyboard auto-popup.
 - `index.html`: Updated page title to Version 1.1.
 - `login.html`: Updated page title to Version 1.1.
-- `HANDOFF_V1.1.md`: New production handoff documentation for Version 1.1.
+- `handoffs/HANDOFF_V1.1.md`: New production handoff documentation for Version 1.1.
 - `PROJECT_HANDOFF.md`: Updated to point to Version 1.1.
 - `VERSIONS.md` & `README.md`: Version 1.1 changelog and registry entries.
 
@@ -351,8 +351,8 @@ This log documents each iterative release of the project, recording the exact us
    - Audited the checkout flow, credit card addition modal (Figma 5.3), e-ticket wallet modal (Figma 7.3.2), and profile editor for flawless interaction with zero runtime exceptions.
 2. **Standalone Login Redirect Synchronization**:
    - Diagnosed and resolved edge-case navigation: when submitting login or guest exploration from `login.html`, a session redirect token (`sonar_redirect_from_login`) ensures `index.html` lands directly on the home feed without getting caught in the initial login view loop.
-3. **Master Handoff Documentation (`HANDOFF_V1.0.md`)**:
-   - Created the dedicated production handoff document `HANDOFF_V1.0.md` detailing the complete architecture, data schemas, design tokens, asset inventory, and instructions for running or deploying on macOS, Windows, and Linux.
+3. **Master Handoff Documentation (`handoffs/HANDOFF_V1.0.md`)**:
+   - Created the dedicated production handoff document `handoffs/HANDOFF_V1.0.md` detailing the complete architecture, data schemas, design tokens, asset inventory, and instructions for running or deploying on macOS, Windows, and Linux.
 4. **Production Packaging**:
    - Archived a clean snapshot in `versions/v1.0/`, tagged `v1.0` in Git, and generated standalone distribution archives (`sonar-bsb-events-v1.0.zip`) on Desktop, Downloads, and scratch root.
 
@@ -360,7 +360,7 @@ This log documents each iterative release of the project, recording the exact us
 - `app.js`: Added login redirect synchronization.
 - `login.html`: Added redirect token and updated version tag to Version 1.0.
 - `index.html`: Updated page title to Version 1.0.
-- `HANDOFF_V1.0.md`: New master production handoff documentation.
+- `handoffs/HANDOFF_V1.0.md`: New master production handoff documentation.
 - `PROJECT_HANDOFF.md`: Updated with Version 1.0 references.
 - `VERSIONS.md` & `README.md`: Version 1.0 changelog and registry entries.
 
@@ -520,24 +520,19 @@ This log documents each iterative release of the project, recording the exact us
 
 ```
 sonar-bsb-events/
-├── assets/
-│   ├── logo-icon.svg          # Stylized Brasília Cathedral / Soundwave icon
-│   ├── back-button.svg        # Circular back button
-│   ├── favorite-button.svg    # Favorite heart toggle button
-│   ├── event-trema.png        # Event 1 photo banner
-│   ├── event-vapor.png        # Event 2 photo banner
-│   ├── event-concrete.png     # Event 3 photo banner
-│   ├── profile-picture.png    # User profile avatar
-│   ├── nav-home.svg           # Elevated dock home icon
-│   ├── nav-search.svg         # Dock search icon
-│   ├── nav-favorites.svg      # Dock favorites icon
-│   ├── nav-ticket.svg         # Dock ticket icon
-│   ├── nav-ellipse.svg        # Elevated dock circle asset
-│   └── nav-rectangle.svg      # Dock background asset
-├── index.html                 # Clean semantic HTML5 markup
+├── .github/workflows/
+│   └── static.yml             # GitHub Pages workflow (deploys runtime files only)
+├── assets/                    # Active runtime UI icons, welcome graphics, avatar & 27 event covers
+├── handoffs/                  # Historical HANDOFF_V1.0–V1.3.2 docs & CONVERSATION_HISTORY.md
+│   └── design-refs/           # Saved Figma reference screenshots (not deployed to Pages)
+├── versions/                  # Release archives (sonar-bsb-events-v*.zip for v0.4–v1.3.2)
+├── index.html                 # Main application shell & interactive views
+├── login.html                 # Standalone 1-WelcomeLogin entry screen
 ├── styles.css                 # Responsive stylesheet & design system tokens
 ├── app.js                     # Interactive application logic & state management
-└── README.md                  # Documentation & usage guide
+├── PROJECT_HANDOFF.md         # Quick-start handoff pointer & resume guide
+├── VERSIONS.md                # Version registry & archive index
+└── README.md                  # Documentation, changelog & usage guide
 ```
 
 ---

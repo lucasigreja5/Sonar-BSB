@@ -9,3 +9,6 @@ desktop.ini
 
 # Local logs
 *.log
+
+# GitHub Pages build staging
+_site/
