@@ -6,7 +6,17 @@ This directory contains versioned snapshots of the Sonar BSB Events web applicat
 
 ## 🏷️ Version History
 
-### Version 1.4.3 (Current Production Release — `v1.4.3`)
+### Version 1.4.4 (Current Production Release — `v1.4.4`)
+- **Date**: 2026-11-13
+- **Snapshot Directory**: `versions/v1.4.4/`
+- **Archive Zip**: `versions/v1.4.4/sonar-bsb-events-v1.4.4.zip`
+- **Handoff Documentation**: `handoffs/HANDOFF_V1.4.4.md`
+- **Changes**:
+  - **User Profile Username & Full Name Fields + Username Login (`index.html`, `login.html`, `app.js`, `styles.css`)**: Added distinct `username: "Johndoe"` and `name: "John Doe"` fields in `state.userProfile` and `#profileModal` (both View and Edit modes), and updated login (`#loginUsername`, `handleWelcomeLogin`, `handleLoginSubmit`) to use the username without overwriting Full Name.
+  - **Borderless System Popups with Shorter Show Time & Outside-Click Dismiss (`styles.css`, `app.js`)**: Removed the yellow outline on `.toast` (`border: none`), reduced auto-dismiss duration by `1.5s` (`3200ms` -> `1700ms`), and added deferred document outside-click dismissal in `showToast()`.
+  - Updated `<title>` badges across `index.html` and `login.html` to `Version 1.4.4`.
+
+### Version 1.4.3 (Previous Production Release — `v1.4.3`)
 - **Date**: 2026-11-13
 - **Snapshot Directory**: `versions/v1.4.3/`
 - **Archive Zip**: `versions/v1.4.3/sonar-bsb-events-v1.4.3.zip`

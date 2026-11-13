@@ -729,6 +729,7 @@ const state = {
   },
   userProfile: {
     name: "John Doe",
+    username: "Johndoe",
     email: "johndoe@mail.com",
     avatar: "./assets/profile-picture.png"
   }
@@ -806,8 +807,14 @@ function initApp() {
   // Version 1.0: If arriving from standalone login.html, land directly on home; otherwise start on welcome
   if (sessionStorage.getItem("sonar_redirect_from_login") === "true") {
     sessionStorage.removeItem("sonar_redirect_from_login");
+    const loggedUsername = sessionStorage.getItem("sonar_username");
+    if (loggedUsername && loggedUsername.trim()) {
+      state.userProfile.username = loggedUsername.trim();
+    }
+    syncProfileUI();
     switchView("home");
   } else {
+    syncProfileUI();
     // When opening the app, always start with the login screen as the first screen
     switchView("welcome");
   }
@@ -1880,7 +1887,28 @@ window.handleBackAction = function() {
 // ============================================================================
 let tempProfileAvatar = null;
 
+function syncProfileUI() {
+  const headerAvatarImg = document.querySelector("#profileAvatarBtn img");
+  if (headerAvatarImg) headerAvatarImg.src = state.userProfile.avatar;
+
+  const viewAvatarImg = document.getElementById("profileAvatarLargeImg");
+  if (viewAvatarImg) viewAvatarImg.src = state.userProfile.avatar;
+
+  const nameEls = document.querySelectorAll(".profile-user-name");
+  nameEls.forEach(el => el.textContent = state.userProfile.name);
+
+  const viewUsernameEl = document.getElementById("profileViewUsername");
+  if (viewUsernameEl) viewUsernameEl.textContent = state.userProfile.username;
+
+  const emailEls = document.querySelectorAll(".profile-user-email");
+  emailEls.forEach(el => el.textContent = state.userProfile.email);
+
+  const loginUsernameInput = document.getElementById("loginUsername");
+  if (loginUsernameInput) loginUsernameInput.value = state.userProfile.username;
+}
+
 window.openProfileModal = function() {
+  syncProfileUI();
   toggleEditProfileView(false);
   if (profileModal) {
     profileModal.style.removeProperty("display");
@@ -1902,11 +1930,13 @@ window.toggleEditProfileView = function(showEdit) {
     editMode.style.display = "flex";
     tempProfileAvatar = state.userProfile.avatar;
 
+    const usernameInput = document.getElementById("editProfileUsernameInput");
     const nameInput = document.getElementById("editProfileNameInput");
     const emailInput = document.getElementById("editProfileEmailInput");
     const previewImg = document.getElementById("editAvatarPreviewImg");
     const urlInput = document.getElementById("editProfilePhotoUrlInput");
 
+    if (usernameInput) usernameInput.value = state.userProfile.username;
     if (nameInput) nameInput.value = state.userProfile.name;
     if (emailInput) emailInput.value = state.userProfile.email;
     if (previewImg) previewImg.src = state.userProfile.avatar;
@@ -1948,9 +1978,13 @@ window.handlePhotoUrlInput = function(e) {
 };
 
 window.saveProfileChanges = function() {
+  const usernameInput = document.getElementById("editProfileUsernameInput");
   const nameInput = document.getElementById("editProfileNameInput");
   const emailInput = document.getElementById("editProfileEmailInput");
 
+  if (usernameInput && usernameInput.value.trim()) {
+    state.userProfile.username = usernameInput.value.trim();
+  }
   if (nameInput && nameInput.value.trim()) {
     state.userProfile.name = nameInput.value.trim();
   }
@@ -1961,19 +1995,7 @@ window.saveProfileChanges = function() {
     state.userProfile.avatar = tempProfileAvatar;
   }
 
-  // Update DOM elements across page
-  const headerAvatarImg = document.querySelector("#profileAvatarBtn img");
-  if (headerAvatarImg) headerAvatarImg.src = state.userProfile.avatar;
-
-  const viewAvatarImg = document.getElementById("profileAvatarLargeImg");
-  if (viewAvatarImg) viewAvatarImg.src = state.userProfile.avatar;
-
-  const nameEls = document.querySelectorAll(".profile-user-name");
-  nameEls.forEach(el => el.textContent = state.userProfile.name);
-
-  const emailEls = document.querySelectorAll(".profile-user-email");
-  emailEls.forEach(el => el.textContent = state.userProfile.email);
-
+  syncProfileUI();
   toggleEditProfileView(false);
   showToast("Profile & photo updated successfully! ✨");
 };
@@ -2052,10 +2074,20 @@ function showToast(message) {
 
   let dismissed = false;
   let timerId = null;
+  let attachTimerId = null;
+
+  const onOutsideClick = (e) => {
+    if (!toast.contains(e.target)) {
+      dismissToast();
+    }
+  };
+
   const dismissToast = () => {
     if (dismissed) return;
     dismissed = true;
     if (timerId) clearTimeout(timerId);
+    if (attachTimerId) clearTimeout(attachTimerId);
+    document.removeEventListener("click", onOutsideClick, true);
     toast.classList.add("is-hiding");
     setTimeout(() => toast.remove(), 240);
   };
@@ -2065,7 +2097,13 @@ function showToast(message) {
     dismissToast();
   });
 
-  timerId = setTimeout(dismissToast, 3200);
+  attachTimerId = setTimeout(() => {
+    if (!dismissed) {
+      document.addEventListener("click", onOutsideClick, true);
+    }
+  }, 0);
+
+  timerId = setTimeout(dismissToast, 1700);
 }
 
 // ============================================================================
@@ -2180,13 +2218,11 @@ function setupKeyboardShortcuts() {
 window.handleWelcomeLogin = function(event) {
   if (event) event.preventDefault();
   const usernameInput = document.getElementById("loginUsername");
-  const username = usernameInput ? usernameInput.value.trim() : "John Doe";
-  if (username) {
-    state.userProfile.name = username;
-    const nameEls = document.querySelectorAll(".profile-user-name");
-    nameEls.forEach(el => el.textContent = username);
-  }
+  const username = usernameInput ? usernameInput.value.trim() : "Johndoe";
+  state.userProfile.username = username || "Johndoe";
+  syncProfileUI();
   sessionStorage.setItem("sonar_user_logged_in", "true");
+  sessionStorage.setItem("sonar_username", state.userProfile.username);
   // Version 1.2: Turn off the "Welcome to SonarBSB" popup after login
   switchView("home");
 };

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login &bull; Sonar BSB Events (Version 1.4.3)</title>
+  <title>Login &bull; Sonar BSB Events (Version 1.4.4)</title>
   <link rel="stylesheet" href="styles.css" />
   <style>
     /* Standalone Login Page Tweaks */
@@ -68,7 +68,7 @@
               id="loginUsername" 
               class="welcome-input" 
               placeholder="Username" 
-              value="johndoe" 
+              value="Johndoe" 
               required 
               autocomplete="username"
             />
@@ -104,9 +104,9 @@
     function handleLoginSubmit(e) {
       if (e) e.preventDefault();
       const usernameInput = document.getElementById("loginUsername");
-      const username = usernameInput ? usernameInput.value.trim() : "John Doe";
+      const username = usernameInput ? usernameInput.value.trim() : "Johndoe";
       sessionStorage.setItem("sonar_user_logged_in", "true");
-      sessionStorage.setItem("sonar_username", username || "John Doe");
+      sessionStorage.setItem("sonar_username", username || "Johndoe");
       sessionStorage.setItem("sonar_redirect_from_login", "true");
       window.location.href = "index.html";
     }

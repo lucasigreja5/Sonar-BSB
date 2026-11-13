@@ -92,7 +92,20 @@ This log documents each iterative release of the project, recording the exact us
 
 ---
 
-### 🏷️ Version 1.4.3 (Current Release — `v1.4.3`)
+### 🏷️ Version 1.4.4 (Current Release — `v1.4.4`)
+
+#### 💬 Original User Prompt:
+> *"Version 1.4.4*  
+> *Please make the following changes:*  
+> *- On the user profile pop up, have a username field and a full name field. Make the default full name John Doe and the username Johndoe. Use the username as login.*  
+> *- For the system popups, remove the yellow outline of the popups.*  
+> *- For the system popups, reduce the show time by 1.5s. Also make it that by clicking else where on the screen dismisses the pop up"*
+
+#### 🛠️ Implementation Summary:
+- **User Profile Username & Full Name + Username Login (`index.html`, `login.html`, `app.js`, `styles.css`)**: Added separate Username (`Johndoe`) and Full Name (`John Doe`) fields to `#profileModal` (View & Edit modes) and `state.userProfile`, synced them across UI & session state via `syncProfileUI()`, and configured login to authenticate via username (`Johndoe`) without overwriting Full Name.
+- **System Popups Styling & Behavior (`styles.css`, `app.js`)**: Removed `.toast` yellow border (`border: none`), shortened auto-dismiss from `3.2s` to `1.7s` (`-1.5s`), and added deferred capture outside-click dismissal with full timer/listener cleanup.
+
+### 🏷️ Version 1.4.3 (Previous Release — `v1.4.3`)
 
 #### 💬 Original User Prompt:
 > *"Version 1.4.3*  
@@ -577,9 +590,9 @@ sonar-bsb-events/
 ├── .github/workflows/
 │   └── static.yml             # GitHub Pages workflow (deploys runtime files only)
 ├── assets/                    # Active runtime UI icons, welcome graphics, avatar & 27 event covers
-├── handoffs/                  # Historical HANDOFF_V1.0–V1.4.3 docs & CONVERSATION_HISTORY.md
+├── handoffs/                  # Historical HANDOFF_V1.0–V1.4.4 docs & CONVERSATION_HISTORY.md
 │   └── design-refs/           # Saved Figma reference screenshots (not deployed to Pages)
-├── versions/                  # Release archives (sonar-bsb-events-v*.zip for v0.4–v1.4.3)
+├── versions/                  # Release archives (sonar-bsb-events-v*.zip for v0.4–v1.4.4)
 ├── index.html                 # Main application shell & interactive views
 ├── login.html                 # Standalone 1-WelcomeLogin entry screen
 ├── styles.css                 # Responsive stylesheet & design system tokens

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sonar BSB &bull; Events Discovery &amp; Ticketing (Version 1.4.3)</title>
+  <title>Sonar BSB &bull; Events Discovery &amp; Ticketing (Version 1.4.4)</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -45,7 +45,7 @@
             id="loginUsername" 
             class="welcome-input" 
             placeholder="Username" 
-            value="johndoe" 
+            value="Johndoe" 
             required 
             autocomplete="username"
           />
@@ -770,6 +770,7 @@
           </div>
 
           <h3 class="profile-user-name">John Doe</h3>
+          <p class="profile-user-username">@<span id="profileViewUsername">Johndoe</span></p>
           <p class="profile-user-email">johndoe@mail.com</p>
           <div class="profile-badge-vip">Sonar Club VIP &bull; Brasília</div>
 
@@ -819,8 +820,13 @@
           <!-- Form fields -->
           <div class="edit-profile-fields">
             <div class="form-group">
+              <label class="form-label" for="editProfileUsernameInput">Username</label>
+              <input type="text" id="editProfileUsernameInput" class="form-input" value="Johndoe" placeholder="Your username" />
+            </div>
+
+            <div class="form-group">
               <label class="form-label" for="editProfileNameInput">Full Name</label>
-              <input type="text" id="editProfileNameInput" class="form-input" value="John Doe" placeholder="Your name" />
+              <input type="text" id="editProfileNameInput" class="form-input" value="John Doe" placeholder="Your full name" />
             </div>
 
             <div class="form-group">
