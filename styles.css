@@ -3879,13 +3879,121 @@ input:checked + .slider:before {
 }
 
 :root[data-theme="dark"] .add-card-close-btn {
+  color: #c7d2fe;
+}
+
+:root[data-theme="dark"] .add-card-close-btn svg circle,
+:root[data-theme="dark"] .add-card-close-btn svg path {
+  stroke: #c7d2fe;
+}
+
+:root[data-theme="dark"] .back-btn img,
+:root[data-theme="dark"] .btn-back-round img {
+  filter: brightness(0) invert(1);
+}
+
+/* Select Payment Method & Order Summary (Dark Mode) */
+:root[data-theme="dark"] .payment-card {
+  background: var(--color-white);
+  color: var(--color-text-main);
+  border-color: var(--color-border-light);
+}
+
+:root[data-theme="dark"] .payment-mode-item {
+  background: #252536;
+  border-color: #363850;
+}
+
+:root[data-theme="dark"] .payment-mode-item.is-selected {
+  background: rgba(99, 102, 241, 0.16);
+  border: 2px solid #818cf8;
+  box-shadow: 0px 4px 14px rgba(99, 102, 241, 0.25);
+}
+
+:root[data-theme="dark"] .payment-mode-title {
+  color: #f1f5f9;
+}
+
+:root[data-theme="dark"] .payment-mode-details,
+:root[data-theme="dark"] .summary-line-row,
+:root[data-theme="dark"] .summary-line-val {
   color: #cbd5e1;
+}
+
+:root[data-theme="dark"] .payment-mode-checkbox {
+  border-color: #94a3b8;
+}
+
+:root[data-theme="dark"] .payment-mode-item.is-selected .payment-mode-checkbox {
+  border-color: var(--color-primary);
+}
+
+:root[data-theme="dark"] .payment-mode-item.is-selected .checkbox-indicator {
+  background-color: var(--color-primary);
+}
+
+:root[data-theme="dark"] .order-summary-heading,
+:root[data-theme="dark"] .summary-event-title,
+:root[data-theme="dark"] .summary-total-label {
+  color: #c7d2fe;
+}
+
+:root[data-theme="dark"] .summary-total-val {
+  color: var(--color-primary);
+}
+
+:root[data-theme="dark"] .payment-divider,
+:root[data-theme="dark"] .summary-total-line {
+  border-color: #2e3047;
+}
+
+/* Purchase Successful / Confirmation View (Dark Mode) */
+:root[data-theme="dark"] .confirmation-heading {
+  color: #c7d2fe;
+}
+
+:root[data-theme="dark"] .confirmation-desc,
+:root[data-theme="dark"] .conf-val {
+  color: #f1f5f9;
+}
+
+:root[data-theme="dark"] .confirmation-summary-table {
+  background: #252536;
+  border: 1px solid #363850;
+}
+
+:root[data-theme="dark"] .conf-label {
+  color: #94a3b8;
+}
+
+:root[data-theme="dark"] .conf-val.mono {
+  color: #c7d2fe;
+}
+
+:root[data-theme="dark"] .conf-val.status-approved {
+  background: rgba(16, 185, 129, 0.18);
+  color: #34d399;
+}
+
+:root[data-theme="dark"] .btn-conf-action.secondary {
+  background: rgba(99, 102, 241, 0.22);
+  color: #e0e7ff;
+}
+
+:root[data-theme="dark"] .btn-conf-action.tertiary {
+  background: #252536;
+  color: #cbd5e1;
+  border: 1px solid #363850;
 }
 
 :root[data-theme="dark"] .modal-footer,
 :root[data-theme="dark"] .modal-info-item.full-width,
 :root[data-theme="dark"] .checkout-divider {
   border-color: #2e3047;
+}
+
+:root[data-theme="dark"] .modal-close-btn {
+  border: 1px solid #363850;
 }
 
 :root[data-theme="dark"] .modal-close-btn:hover {
