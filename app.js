@@ -847,6 +847,35 @@ function setupNavEventListeners() {
 window.switchView = function(viewName) {
   state.activeView = viewName;
 
+  // Version 1.4.5: Leaving Search (or clicking Home/Favorites/Tickets/etc.) clears active top-bar search text
+  // and returns Home to its original default state.
+  if (viewName !== "search") {
+    const hadTopSearch = state.searchQuery.trim() !== "" ||
+      (desktopSearchInput && desktopSearchInput.value !== "") ||
+      (desktopSearchBar && desktopSearchBar.classList.contains("is-open"));
+    if (hadTopSearch) {
+      if (typeof window.closeTopSearchBar === "function") {
+        window.closeTopSearchBar(true);
+      } else {
+        state.searchQuery = "";
+        if (desktopSearchInput) desktopSearchInput.value = "";
+      }
+      state.searchSubmitted = false;
+      state.searchFilters.name = "";
+      const searchFormNameEl = document.getElementById("searchFormName");
+      if (searchFormNameEl) searchFormNameEl.value = "";
+
+      if (viewName === "home") {
+        state.activeTab = "today";
+        if (navTabsContainer) {
+          navTabsContainer.querySelectorAll(".nav-tab-btn").forEach(btn => {
+            btn.classList.toggle("active", btn.dataset.tab === "today");
+          });
+        }
+      }
+    }
+  }
+
   // 1. Handle Welcome Screen View (Figma 1- WelcomeLogin)
   if (viewName === "welcome") {
     if (welcomeSection) {

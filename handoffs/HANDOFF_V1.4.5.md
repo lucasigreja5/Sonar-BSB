@@ -16,6 +16,7 @@
    - Updated `switchView("search")` to show `#sectionHeaderBlock` and `#eventsContainer` whenever `state.searchQuery.trim() !== ""` (or `state.searchSubmitted` is true) and to preserve focus on `#desktopSearchInput` when the user is actively typing there.
    - Updated `renderEvents()` (`state.activeView === "search"`) to filter `EVENTS_DATA` by `state.searchQuery` and display matching results directly on the Search page.
    - Added a `keydown` handler on `#desktopSearchInput` for `"Enter"` (`e.preventDefault(); closeTopSearchBar(false);`) so pressing Enter/Return blurs and hides the text input and collapses the top search bar back to `44px × 44px`, syncs the trimmed query into `#searchFormName` (`state.searchFilters.name`), smooth-scrolls to `#sectionHeaderBlock` (`scroll-margin-top: 84px`), and triggers a `.search-results-pulse` highlight animation on `#sectionHeaderBlock` (`styles.css`).
+   - Updated `switchView(viewName)` so navigating to any non-search view (Home, Favorites, Tickets, etc.) clears `state.searchQuery`, `#desktopSearchInput`, `#searchFormName`, and collapses `#desktopSearchBar` (`closeTopSearchBar(true)`), and resets Home back to its original default `"today"` tab state (`What’s on Today`, 9 events).
 
 3. **Version Bump & Archive**
    - Updated page `<title>` tags in `index.html` and `login.html` to `(Version 1.4.5)`.
