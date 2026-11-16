@@ -13,7 +13,7 @@ This directory contains versioned snapshots of the Sonar BSB Events web applicat
 - **Handoff Documentation**: `handoffs/HANDOFF_V1.4.5.md`
 - **Changes**:
   - **Top Bar Search Bar Placeholder Removal (`index.html`)**: Removed `"SEARCH"` placeholder text inside `#desktopSearchInput` (`placeholder=""`) in `#desktopSearchBar` so the expanded animated pill displays cleanly with the search icon and close button without pre-filled placeholder text.
-  - **Top Search Bar Routing to Search Page & Enter/Return Collapse (`app.js`)**: Typing in `#desktopSearchInput` switches the active view to `"search"`, moves the bottom navigation `.is-selected` indicator to `#navSearchBtn`, preserves typing focus on `#desktopSearchInput`, renders matching query results on the Search page, and pressing `Enter`/`Return` closes both the text input and the top search bar (`closeTopSearchBar(false)`).
+  - **Top Search Bar Routing to Search Page & Enter/Return Feedback (`app.js`, `styles.css`)**: Typing in `#desktopSearchInput` switches the active view to `"search"`, moves the bottom navigation `.is-selected` indicator to `#navSearchBtn`, preserves typing focus on `#desktopSearchInput`, renders matching query results on the Search page, and pressing `Enter`/`Return` closes both the text input and top search bar (`closeTopSearchBar(false)`), syncs the query into `#searchFormName`, smooth-scrolls to `#sectionHeaderBlock` (`scroll-margin-top: 84px`) with a `.search-results-pulse` highlight, and shows a confirmation toast (`Showing N results for "..."` / `No events found for "..."`).
   - Updated `<title>` badges across `index.html` and `login.html` to `Version 1.4.5`.
 
 ### Version 1.4.4 (Previous Production Release — `v1.4.4`)

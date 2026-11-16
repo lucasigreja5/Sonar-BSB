@@ -1402,6 +1402,8 @@ window.executeAdvancedSearch = function() {
     return;
   }
 
+  state.searchQuery = "";
+  if (desktopSearchInput) desktopSearchInput.value = "";
   state.searchFilters.name = qName;
   state.searchFilters.date = qDate;
   state.searchFilters.location = qLoc;
@@ -2199,7 +2201,31 @@ function setupKeyboardShortcuts() {
     desktopSearchInput.addEventListener("keydown", (e) => {
       if (e.key === "Enter") {
         e.preventDefault();
+        const trimmed = desktopSearchInput.value.trim();
         closeTopSearchBar(false);
+        if (trimmed !== "") {
+          state.searchQuery = desktopSearchInput.value;
+          state.searchFilters.name = trimmed;
+          const searchFormNameEl = document.getElementById("searchFormName");
+          if (searchFormNameEl) searchFormNameEl.value = trimmed;
+          if (state.activeView !== "search") {
+            switchView("search");
+          } else {
+            renderEvents();
+          }
+          const resultCount = document.querySelectorAll("#eventsContainer .event-card").length;
+          showToast(
+            resultCount > 0
+              ? `Showing ${resultCount} result${resultCount === 1 ? "" : "s"} for "${trimmed}"`
+              : `No events found for "${trimmed}"`
+          );
+          if (sectionHeaderBlock) {
+            sectionHeaderBlock.classList.remove("search-results-pulse");
+            void sectionHeaderBlock.offsetWidth;
+            sectionHeaderBlock.classList.add("search-results-pulse");
+            sectionHeaderBlock.scrollIntoView({ behavior: "smooth", block: "start" });
+          }
+        }
       }
     });
   }

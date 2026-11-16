@@ -103,7 +103,7 @@ This log documents each iterative release of the project, recording the exact us
 
 #### 🛠️ Implementation Summary:
 - **Top Bar Animated Search Bar (`index.html`)**: Updated `#desktopSearchInput` inside `#desktopSearchBar` to `placeholder=""`, removing the `"SEARCH"` label inside the animated search bar while retaining keyboard/click search behavior and `aria-label` accessibility.
-- **Top Search Bar Results on Search Page & Enter/Return Collapse (`app.js`)**: Updated `#desktopSearchInput` input/keydown handling, `switchView("search")`, and `renderEvents()` so typing in the top search bar switches to the Search view, moves `.is-selected` on the bottom nav dock to `#navSearchBtn`, keeps typing focus on `#desktopSearchInput`, displays the matching results on the Search page, and collapses the text input and top search bar via `closeTopSearchBar(false)` when pressing `Enter` or `Return`.
+- **Top Search Bar Results on Search Page & Enter/Return Feedback (`app.js`, `styles.css`)**: Updated `#desktopSearchInput` input/keydown handling, `switchView("search")`, and `renderEvents()` so typing in the top search bar switches to the Search view, moves `.is-selected` on the bottom nav dock to `#navSearchBtn`, keeps typing focus on `#desktopSearchInput`, and displays matching results on the Search page. Pressing `Enter` or `Return` collapses the top search bar and input (`closeTopSearchBar(false)`), syncs the query into `#searchFormName`, smooth-scrolls to `#sectionHeaderBlock` (`scroll-margin-top: 84px`) with `.search-results-pulse`, and triggers a `showToast()` confirmation (`Showing N results for "..."`).
 
 ### 🏷️ Version 1.4.4 (Previous Release — `v1.4.4`)
 
