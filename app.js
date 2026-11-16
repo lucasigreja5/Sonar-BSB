@@ -717,7 +717,7 @@ function createDefaultTickets(referenceDate, events) {
 const state = {
   activeTab: "today",       // 'today' | 'month' | 'upcoming'
   activeView: "welcome",    // 'welcome' | 'home' | 'search' | 'favorites' | 'tickets' | 'checkout' | 'confirmation'
-  favorites: new Set(["trema-techno", "vapor-cybernetic"]), // Default pre-saved
+  favorites: new Set(),
   tickets: [],
   searchQuery: "",
   searchSubmitted: false,
