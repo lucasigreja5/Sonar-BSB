@@ -781,7 +781,63 @@ const addPaymentModal = document.getElementById("addPaymentModal");
 // ============================================================================
 // App Initialization - Responsive Web Model
 // ============================================================================
+function applyTheme(theme, persist = false) {
+  const normalized = theme === "dark" ? "dark" : "light";
+  document.documentElement.setAttribute("data-theme", normalized);
+
+  const toggleEl = document.getElementById("profileDarkModeToggle");
+  if (toggleEl) toggleEl.checked = normalized === "dark";
+
+  const statusEl = document.getElementById("profileThemeStatus");
+  if (statusEl) {
+    statusEl.textContent = normalized === "dark" ? "Dark theme active" : "Light theme active";
+  }
+
+  if (persist) {
+    try {
+      localStorage.setItem("sonar_theme", normalized);
+    } catch (_) {
+      // Ignore storage errors in restricted contexts
+    }
+  }
+}
+
+function initTheme() {
+  let savedTheme = null;
+  try {
+    savedTheme = localStorage.getItem("sonar_theme");
+  } catch (_) {
+    savedTheme = null;
+  }
+
+  const prefersDarkQuery = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
+  if (savedTheme === "dark" || savedTheme === "light") {
+    applyTheme(savedTheme, false);
+  } else {
+    applyTheme(prefersDarkQuery && prefersDarkQuery.matches ? "dark" : "light", false);
+  }
+
+  if (prefersDarkQuery && typeof prefersDarkQuery.addEventListener === "function") {
+    prefersDarkQuery.addEventListener("change", (e) => {
+      let currentSaved = null;
+      try {
+        currentSaved = localStorage.getItem("sonar_theme");
+      } catch (_) {
+        currentSaved = null;
+      }
+      if (!currentSaved) {
+        applyTheme(e.matches ? "dark" : "light", false);
+      }
+    });
+  }
+}
+
+window.toggleDarkMode = function(isDark) {
+  applyTheme(isDark ? "dark" : "light", true);
+};
+
 function initApp() {
+  initTheme();
   if (appContainer) {
     appContainer.className = "app-container";
   }
@@ -1292,10 +1348,10 @@ function renderEvents() {
   // Empty State
   if (list.length === 0) {
     eventsContainer.innerHTML = `
-      <div style="grid-column: 1 / -1; background: white; padding: 48px 24px; border-radius: 28px; text-align: center; box-shadow: var(--shadow-card);">
+      <div class="empty-search-state" style="grid-column: 1 / -1; background: var(--color-white); padding: 48px 24px; border-radius: 28px; text-align: center; box-shadow: var(--shadow-card);">
         <div style="font-size: 42px; margin-bottom: 12px;">🔍</div>
-        <h3 style="font-size: 20px; font-weight: 800; color: var(--color-secondary); margin-bottom: 8px;">No events match your criteria</h3>
-        <p style="color: #64748b; font-size: 14px; margin-bottom: 24px;">Try searching for "Techno", "Conic", "Galeria", or clearing filters.</p>
+        <h3 style="font-size: 20px; font-weight: 800; color: inherit; margin-bottom: 8px;">No events match your criteria</h3>
+        <p style="color: var(--color-text-muted); font-size: 14px; margin-bottom: 24px;">Try searching for "Techno", "Conic", "Galeria", or clearing filters.</p>
         <button class="btn-learn-more" style="width: auto; margin: 0 auto; padding: 12px 28px;" onclick="resetSearchFilters()">Reset Search</button>
       </div>
     `;

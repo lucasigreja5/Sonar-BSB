@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sonar BSB &bull; Events Discovery &amp; Ticketing (Version 1.4.6)</title>
+  <title>Sonar BSB &bull; Events Discovery &amp; Ticketing (Version 1.5)</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -780,6 +780,17 @@
           <p class="profile-user-username">@<span id="profileViewUsername">Johndoe</span></p>
           <p class="profile-user-email">johndoe@mail.com</p>
           <div class="profile-badge-vip">Sonar Club VIP &bull; Brasília</div>
+
+          <div class="profile-theme-toggle-card">
+            <div class="profile-theme-info">
+              <span class="profile-theme-title">Dark Mode</span>
+              <span id="profileThemeStatus" class="profile-theme-sub">Light theme active</span>
+            </div>
+            <label class="switch" for="profileDarkModeToggle" aria-label="Toggle Dark Mode">
+              <input type="checkbox" id="profileDarkModeToggle" onchange="toggleDarkMode(this.checked)" />
+              <span class="slider round"></span>
+            </label>
+          </div>
 
           <div class="profile-actions-list">
             <button class="profile-action-btn primary" onclick="closeProfileModal(); switchView('tickets');">

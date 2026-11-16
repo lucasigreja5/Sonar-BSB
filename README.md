@@ -92,7 +92,17 @@ This log documents each iterative release of the project, recording the exact us
 
 ---
 
-### 🏷️ Version 1.4.6 (Current Release — `v1.4.6`)
+### 🏷️ Version 1.5 (Current Release — `v1.5`)
+
+#### 💬 Original User Prompt:
+> *"For version 1.5, do you think we can implement a dark mode?"*  
+> *"Lets do it with the default behavior, starting with the light mode and matching the users dark mode settings. And also add a toggle button inside the user profile pop up"*
+
+#### 🛠️ Implementation Summary:
+- **Dark Mode Theme (`styles.css`, `app.js`)**: Added `:root[data-theme="dark"]` theme variables and dark surface/text/border styling across all views and modals, starting in Light Mode by default and automatically matching `prefers-color-scheme: dark` when no manual `localStorage` override is set.
+- **User Profile Dark Mode Toggle (`index.html`, `styles.css`, `app.js`)**: Added `#profileDarkModeToggle` and `#profileThemeStatus` inside `#profileViewMode` (`#profileModal`), persisting user preferences in `localStorage` (`sonar_theme`).
+
+### 🏷️ Version 1.4.6 (Previous Release — `v1.4.6`)
 
 #### 💬 Original User Prompt:
 > *"Please run a usability testing to see if there any issues that you think should be fixed, and areas that could be improved"*  
@@ -616,9 +626,9 @@ sonar-bsb-events/
 ├── .github/workflows/
 │   └── static.yml             # GitHub Pages workflow (deploys runtime files only)
 ├── assets/                    # Active runtime UI icons, welcome graphics, avatar & 27 event covers
-├── handoffs/                  # Historical HANDOFF_V1.0–V1.4.6 docs & CONVERSATION_HISTORY.md
+├── handoffs/                  # Historical HANDOFF_V1.0–V1.5 docs & CONVERSATION_HISTORY.md
 │   └── design-refs/           # Saved Figma reference screenshots (not deployed to Pages)
-├── versions/                  # Release archives (sonar-bsb-events-v*.zip for v0.4–v1.4.6)
+├── versions/                  # Release archives (sonar-bsb-events-v*.zip for v0.4–v1.5)
 ├── index.html                 # Main application shell & interactive views
 ├── login.html                 # Standalone 1-WelcomeLogin entry screen
 ├── styles.css                 # Responsive stylesheet & design system tokens

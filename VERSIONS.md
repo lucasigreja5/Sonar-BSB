@@ -6,7 +6,17 @@ This directory contains versioned snapshots of the Sonar BSB Events web applicat
 
 ## 🏷️ Version History
 
-### Version 1.4.6 (Current Production Release — `v1.4.6`)
+### Version 1.5 (Current Production Release — `v1.5`)
+- **Date**: 2026-11-16
+- **Snapshot Directory**: `versions/v1.5/`
+- **Archive Zip**: `versions/v1.5/sonar-bsb-events-v1.5.zip`
+- **Handoff Documentation**: `handoffs/HANDOFF_V1.5.md`
+- **Changes**:
+  - **Dark Mode Theme & System Preference Sync (`styles.css`, `app.js`)**: Implemented `[data-theme="dark"]` CSS tokens (`#121218` canvas, `#1C1C26` cards/modals, `#252536` inputs/panels, `#C7D2FE` headings, `#F2F862` price accents) with `initTheme()` / `applyTheme()` starting in Light Mode by default and matching OS/browser `prefers-color-scheme: dark` when no manual override is saved.
+  - **User Profile Dark Mode Toggle (`index.html`, `styles.css`, `app.js`)**: Added `.profile-theme-toggle-card` with `#profileDarkModeToggle` and `#profileThemeStatus` inside `#profileModal` (`#profileViewMode`), persisting manual selections in `localStorage` (`sonar_theme`).
+  - Updated `<title>` badges across `index.html` and `login.html` to `Version 1.5`.
+
+### Version 1.4.6 (Previous Production Release — `v1.4.6`)
 - **Date**: 2026-11-16
 - **Snapshot Directory**: `versions/v1.4.6/`
 - **Archive Zip**: `versions/v1.4.6/sonar-bsb-events-v1.4.6.zip`

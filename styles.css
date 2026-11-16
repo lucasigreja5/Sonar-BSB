@@ -3654,3 +3654,180 @@ input:checked + .slider:before {
     transform: translateY(0) translateX(0);
   }
 }
+
+
+/* ==========================================================================
+   Profile Theme Toggle & Dark Mode Theme (Version 1.5)
+   ========================================================================== */
+.profile-theme-toggle-card {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background-color: var(--color-bg-interface);
+  border: 1px solid var(--color-border-light);
+  margin-bottom: 16px;
+}
+
+.profile-theme-info {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  gap: 2px;
+}
+
+.profile-theme-title {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--color-secondary);
+}
+
+.profile-theme-sub {
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --color-bg-interface: #121218;
+  --color-white: #1c1c26;
+  --color-text-main: #f1f5f9;
+  --color-text-secondary: #cbd5e1;
+  --color-text-muted: #94a3b8;
+  --color-border: #334155;
+  --color-border-light: #2a2b3d;
+  --color-secondary-light: rgba(99, 102, 241, 0.18);
+  --color-secondary-alpha: rgba(129, 140, 248, 0.16);
+  --shadow-card: 0px 4px 18px rgba(0, 0, 0, 0.45);
+  --shadow-card-hover: 0px 12px 28px rgba(63, 50, 211, 0.35);
+}
+
+:root[data-theme="dark"] body,
+:root[data-theme="dark"] .app-shell {
+  background-color: var(--color-bg-interface);
+  color: var(--color-text-main);
+}
+
+:root[data-theme="dark"] .search-form-card,
+:root[data-theme="dark"] .empty-cart-card,
+:root[data-theme="dark"] .cart-summary-card,
+:root[data-theme="dark"] .order-card,
+:root[data-theme="dark"] .payment-option-card,
+:root[data-theme="dark"] .add-payment-modal-card,
+:root[data-theme="dark"] .confirmation-card,
+:root[data-theme="dark"] .eticket-card,
+:root[data-theme="dark"] .modal-sheet,
+:root[data-theme="dark"] .modal-footer,
+:root[data-theme="dark"] .profile-card,
+:root[data-theme="dark"] .ticket-modal-card,
+:root[data-theme="dark"] .empty-search-state {
+  background: var(--color-white);
+  color: var(--color-text-main);
+  border-color: var(--color-border-light);
+}
+
+:root[data-theme="dark"] .bottom-nav {
+  background: rgba(28, 28, 38, 0.94);
+  border-top: 1px solid var(--color-border-light);
+}
+
+:root[data-theme="dark"] .form-input,
+:root[data-theme="dark"] .toggle-card,
+:root[data-theme="dark"] .modal-info-grid,
+:root[data-theme="dark"] .lineup-artist-card,
+:root[data-theme="dark"] .eticket-detail-box,
+:root[data-theme="dark"] .btn-clear-filters,
+:root[data-theme="dark"] .btn-upload-photo,
+:root[data-theme="dark"] .modal-close-btn,
+:root[data-theme="dark"] .profile-action-btn.tertiary,
+:root[data-theme="dark"] .btn-ticket-action:not(.btn-primary-action),
+:root[data-theme="dark"] .checkout-qty-btn,
+:root[data-theme="dark"] .profile-theme-toggle-card {
+  background-color: #252536;
+  color: var(--color-text-main);
+  border-color: #363850;
+}
+
+:root[data-theme="dark"] .form-input::placeholder {
+  color: #94a3b8;
+}
+
+:root[data-theme="dark"] .section-title,
+:root[data-theme="dark"] .search-form-heading,
+:root[data-theme="dark"] .card-title,
+:root[data-theme="dark"] .fav-card-title,
+:root[data-theme="dark"] .ticket-card-title,
+:root[data-theme="dark"] .modal-title,
+:root[data-theme="dark"] .modal-tagline,
+:root[data-theme="dark"] .modal-section-title,
+:root[data-theme="dark"] .lineup-artist-name,
+:root[data-theme="dark"] .profile-heading,
+:root[data-theme="dark"] .profile-user-name,
+:root[data-theme="dark"] .profile-user-username,
+:root[data-theme="dark"] .profile-theme-title,
+:root[data-theme="dark"] .checkout-heading,
+:root[data-theme="dark"] .empty-cart-title,
+:root[data-theme="dark"] .event-count-badge,
+:root[data-theme="dark"] .back-btn,
+:root[data-theme="dark"] .nav-tab-btn:not(.active),
+:root[data-theme="dark"] .toggle-title,
+:root[data-theme="dark"] .form-label {
+  color: #c7d2fe;
+}
+
+:root[data-theme="dark"] .card-price,
+:root[data-theme="dark"] .fav-card-price,
+:root[data-theme="dark"] .modal-info-val.price-accent,
+:root[data-theme="dark"] .modal-price-val {
+  color: var(--color-primary);
+}
+
+:root[data-theme="dark"] .fav-card-price {
+  background-color: rgba(242, 248, 98, 0.14);
+}
+
+:root[data-theme="dark"] .modal-desc,
+:root[data-theme="dark"] .lineup-artist-bio,
+:root[data-theme="dark"] .modal-info-label,
+:root[data-theme="dark"] .toggle-sub {
+  color: #cbd5e1;
+}
+
+:root[data-theme="dark"] .date-badge,
+:root[data-theme="dark"] .modal-date-tag {
+  background-color: #1c1c26;
+  color: var(--color-primary);
+  border: 1px solid rgba(242, 248, 98, 0.35);
+}
+
+:root[data-theme="dark"] .modal-tag.tag-verified,
+:root[data-theme="dark"] .profile-badge-vip {
+  background: rgba(242, 248, 98, 0.18);
+  color: var(--color-primary);
+  border-color: rgba(242, 248, 98, 0.45);
+}
+
+:root[data-theme="dark"] .modal-footer,
+:root[data-theme="dark"] .modal-info-item.full-width {
+  border-color: #2e3047;
+}
+
+:root[data-theme="dark"] .modal-close-btn:hover {
+  background: #33354d;
+  color: #ffffff;
+}
+
+:root[data-theme="dark"] .profile-action-btn.secondary {
+  background: rgba(99, 102, 241, 0.22);
+  color: #e0e7ff;
+}
+
+:root[data-theme="dark"] .btn-clear-filters:hover,
+:root[data-theme="dark"] .btn-upload-photo:hover {
+  background: var(--color-secondary);
+  color: #ffffff;
+  border-color: var(--color-secondary);
+}
