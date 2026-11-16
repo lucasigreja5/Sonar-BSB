@@ -718,7 +718,7 @@ const state = {
   activeTab: "today",       // 'today' | 'month' | 'upcoming'
   activeView: "welcome",    // 'welcome' | 'home' | 'search' | 'favorites' | 'tickets' | 'checkout' | 'confirmation'
   favorites: new Set(["trema-techno", "vapor-cybernetic"]), // Default pre-saved
-  tickets: createDefaultTickets(APP_OPEN_DATE, EVENTS_DATA),
+  tickets: [],
   searchQuery: "",
   searchSubmitted: false,
   searchFilters: {
@@ -1142,10 +1142,10 @@ function renderEvents() {
 
     if (state.tickets.length === 0) {
       eventsContainer.innerHTML = `
-        <div style="width: 100%; background: white; padding: 48px 24px; border-radius: 28px; text-align: center; box-shadow: var(--shadow-card);">
+        <div class="empty-state-card">
           <div style="font-size: 44px; margin-bottom: 12px;">🎟️</div>
-          <h3 style="font-size: 20px; font-weight: 800; color: var(--color-secondary); margin-bottom: 8px;">No tickets purchased yet</h3>
-          <p style="color: #64748b; font-size: 14px; margin-bottom: 24px;">Explore tonight's raves and club nights to book your passes.</p>
+          <h3 class="empty-state-heading">No tickets purchased yet</h3>
+          <p class="empty-state-sub">Explore tonight's raves and club nights to book your passes.</p>
           <button class="btn-learn-more" style="width: auto; margin: 0 auto; padding: 12px 28px;" onclick="switchView('home')">Browse Events</button>
         </div>
       `;
@@ -1184,10 +1184,10 @@ function renderEvents() {
 
     if (list.length === 0) {
       eventsContainer.innerHTML = `
-        <div style="width: 100%; background: white; padding: 48px 24px; border-radius: 28px; text-align: center; box-shadow: var(--shadow-card);">
+        <div class="empty-state-card">
           <div style="font-size: 42px; margin-bottom: 12px;">❤️</div>
-          <h3 style="font-size: 20px; font-weight: 800; color: var(--color-secondary); margin-bottom: 8px;">No favorites saved yet</h3>
-          <p style="color: #64748b; font-size: 14px; margin-bottom: 24px;">Tap the heart icon on any event card to add it to your personal shortlist.</p>
+          <h3 class="empty-state-heading">No favorites saved yet</h3>
+          <p class="empty-state-sub">Tap the heart icon on any event card to add it to your personal shortlist.</p>
           <button class="btn-learn-more" style="width: auto; margin: 0 auto; padding: 12px 28px;" onclick="switchView('home')">Browse Events</button>
         </div>
       `;
