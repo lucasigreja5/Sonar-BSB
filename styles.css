@@ -3764,10 +3764,30 @@ input:checked + .slider:before {
 :root[data-theme="dark"] .btn-ticket-action:not(.btn-primary-action),
 :root[data-theme="dark"] .checkout-qty-btn,
 :root[data-theme="dark"] .profile-theme-toggle-card,
+:root[data-theme="dark"] .empty-cart-icon-halo {
+  background: rgba(129, 140, 248, 0.16);
+  border-color: rgba(129, 140, 248, 0.45);
+  color: #c7d2fe;
+}
+
+:root[data-theme="dark"] .empty-cart-suggestions {
+  border-top-color: rgba(148, 163, 184, 0.28);
+}
+
 :root[data-theme="dark"] .empty-cart-tag-pill {
   background-color: #252536;
   color: var(--color-text-main);
   border-color: #363850;
+}
+
+:root[data-theme="dark"] .empty-cart-icon-halo {
+  background: rgba(129, 140, 248, 0.16);
+  border-color: rgba(129, 140, 248, 0.45);
+  color: #c7d2fe;
+}
+
+:root[data-theme="dark"] .empty-cart-suggestions {
+  border-top-color: rgba(148, 163, 184, 0.28);
 }
 
 :root[data-theme="dark"] .empty-cart-tag-pill {
