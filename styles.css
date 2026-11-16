@@ -3714,9 +3714,10 @@ input:checked + .slider:before {
 :root[data-theme="dark"] .search-form-card,
 :root[data-theme="dark"] .empty-cart-card,
 :root[data-theme="dark"] .cart-summary-card,
+:root[data-theme="dark"] .checkout-card,
 :root[data-theme="dark"] .order-card,
 :root[data-theme="dark"] .payment-option-card,
-:root[data-theme="dark"] .add-payment-modal-card,
+:root[data-theme="dark"] .add-card-sheet,
 :root[data-theme="dark"] .confirmation-card,
 :root[data-theme="dark"] .eticket-card,
 :root[data-theme="dark"] .modal-sheet,
@@ -3729,15 +3730,32 @@ input:checked + .slider:before {
   border-color: var(--color-border-light);
 }
 
-:root[data-theme="dark"] .bottom-nav {
-  background: rgba(28, 28, 38, 0.94);
-  border-top: 1px solid var(--color-border-light);
+:root[data-theme="dark"] .dock-bg-layer {
+  background: rgba(28, 28, 38, 0.96);
+  border: 1px solid var(--color-border-light);
+  border-bottom: none;
+  box-shadow: 0px -4px 24px rgba(0, 0, 0, 0.45);
+}
+
+:root[data-theme="dark"] .nav-item:not(.is-selected) {
+  color: #cbd5e1;
+}
+
+:root[data-theme="dark"] .nav-item:not(.is-selected):hover {
+  color: var(--color-primary);
+}
+
+:root[data-theme="dark"] .nav-item:not(.is-selected) .nav-badge {
+  background-color: var(--color-primary);
+  color: #130f40;
 }
 
 :root[data-theme="dark"] .form-input,
+:root[data-theme="dark"] .add-card-input,
 :root[data-theme="dark"] .toggle-card,
 :root[data-theme="dark"] .modal-info-grid,
 :root[data-theme="dark"] .lineup-artist-card,
+:root[data-theme="dark"] .eticket-details-table,
 :root[data-theme="dark"] .eticket-detail-box,
 :root[data-theme="dark"] .btn-clear-filters,
 :root[data-theme="dark"] .btn-upload-photo,
@@ -3745,13 +3763,25 @@ input:checked + .slider:before {
 :root[data-theme="dark"] .profile-action-btn.tertiary,
 :root[data-theme="dark"] .btn-ticket-action:not(.btn-primary-action),
 :root[data-theme="dark"] .checkout-qty-btn,
-:root[data-theme="dark"] .profile-theme-toggle-card {
+:root[data-theme="dark"] .profile-theme-toggle-card,
+:root[data-theme="dark"] .empty-cart-tag-pill {
   background-color: #252536;
   color: var(--color-text-main);
   border-color: #363850;
 }
 
-:root[data-theme="dark"] .form-input::placeholder {
+:root[data-theme="dark"] .empty-cart-tag-pill {
+  color: #e0e7ff;
+}
+
+:root[data-theme="dark"] .empty-cart-tag-pill:hover {
+  background-color: var(--color-secondary);
+  color: var(--color-primary);
+  border-color: var(--color-secondary);
+}
+
+:root[data-theme="dark"] .form-input::placeholder,
+:root[data-theme="dark"] .add-card-input::placeholder {
   color: #94a3b8;
 }
 
@@ -3769,8 +3799,17 @@ input:checked + .slider:before {
 :root[data-theme="dark"] .profile-user-username,
 :root[data-theme="dark"] .profile-theme-title,
 :root[data-theme="dark"] .checkout-heading,
+:root[data-theme="dark"] .checkout-event-title,
+:root[data-theme="dark"] .checkout-total-label,
 :root[data-theme="dark"] .empty-cart-title,
-:root[data-theme="dark"] .event-count-badge,
+:root[data-theme="dark"] .empty-cart-heading,
+:root[data-theme="dark"] .eticket-title,
+:root[data-theme="dark"] .eticket-val.title-val,
+:root[data-theme="dark"] .eticket-val.mono,
+:root[data-theme="dark"] .payment-heading,
+:root[data-theme="dark"] .payment-method-name,
+:root[data-theme="dark"] .add-card-heading,
+:root[data-theme="dark"] .save-card-title,
 :root[data-theme="dark"] .back-btn,
 :root[data-theme="dark"] .nav-tab-btn:not(.active),
 :root[data-theme="dark"] .toggle-title,
@@ -3778,10 +3817,18 @@ input:checked + .slider:before {
   color: #c7d2fe;
 }
 
+:root[data-theme="dark"] .event-count-badge,
+:root[data-theme="dark"] .modal-tag:not(.tag-verified) {
+  background-color: rgba(129, 140, 248, 0.22);
+  color: #e0e7ff;
+}
+
 :root[data-theme="dark"] .card-price,
 :root[data-theme="dark"] .fav-card-price,
 :root[data-theme="dark"] .modal-info-val.price-accent,
-:root[data-theme="dark"] .modal-price-val {
+:root[data-theme="dark"] .modal-price-value,
+:root[data-theme="dark"] .modal-price-val,
+:root[data-theme="dark"] .checkout-total-value {
   color: var(--color-primary);
 }
 
@@ -3789,9 +3836,16 @@ input:checked + .slider:before {
   background-color: rgba(242, 248, 98, 0.14);
 }
 
+:root[data-theme="dark"] .card-venue,
+:root[data-theme="dark"] .modal-price-label,
+:root[data-theme="dark"] .eticket-label {
+  color: #94a3b8;
+}
+
 :root[data-theme="dark"] .modal-desc,
 :root[data-theme="dark"] .lineup-artist-bio,
 :root[data-theme="dark"] .modal-info-label,
+:root[data-theme="dark"] .save-card-desc,
 :root[data-theme="dark"] .toggle-sub {
   color: #cbd5e1;
 }
@@ -3803,6 +3857,11 @@ input:checked + .slider:before {
   border: 1px solid rgba(242, 248, 98, 0.35);
 }
 
+:root[data-theme="dark"] .date-badge .date-day,
+:root[data-theme="dark"] .date-badge .date-month {
+  color: var(--color-primary);
+}
+
 :root[data-theme="dark"] .modal-tag.tag-verified,
 :root[data-theme="dark"] .profile-badge-vip {
   background: rgba(242, 248, 98, 0.18);
@@ -3810,8 +3869,22 @@ input:checked + .slider:before {
   border-color: rgba(242, 248, 98, 0.45);
 }
 
+:root[data-theme="dark"] .eticket-val.status-approved {
+  background: rgba(16, 185, 129, 0.18);
+  color: #34d399;
+}
+
+:root[data-theme="dark"] .eticket-qr-box {
+  background: #ffffff;
+}
+
+:root[data-theme="dark"] .add-card-close-btn {
+  color: #cbd5e1;
+}
+
 :root[data-theme="dark"] .modal-footer,
-:root[data-theme="dark"] .modal-info-item.full-width {
+:root[data-theme="dark"] .modal-info-item.full-width,
+:root[data-theme="dark"] .checkout-divider {
   border-color: #2e3047;
 }
 

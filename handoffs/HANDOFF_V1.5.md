@@ -12,7 +12,7 @@
    - Added `initTheme()`, `applyTheme(theme, persist)`, and `toggleDarkMode(isDark)` in `app.js` (called from `initApp()`):
      - Starts in Light Mode (`data-theme="light"`) by default, or automatically matches the user's OS/browser dark mode setting (`window.matchMedia("(prefers-color-scheme: dark)").matches`) when no manual override is saved.
      - Persists manual theme choices in `localStorage` (`sonar_theme`) and listens for OS `prefers-color-scheme` changes when no manual override is stored.
-   - Added `:root[data-theme="dark"]` token overrides (`#121218` canvas, `#1C1C26` elevated cards/modals, `#252536` inputs & nested surfaces, `#F1F5F9` / `#CBD5E1` / `#94A3B8` text, `#C7D2FE` headings, `#F2F862` price accents) across Home, Search, Favorites, Tickets, Checkout, Payment, Modals, and Bottom Navigation in `styles.css`.
+   - Added `:root[data-theme="dark"]` token overrides (`#121218` canvas, `#1C1C26` elevated cards/modals, `#252536` inputs & nested surfaces, `#F1F5F9` / `#CBD5E1` / `#94A3B8` text, `#C7D2FE` headings, `#F2F862` price accents) across Home, Search, Favorites, Tickets, Checkout, Payment, Modals, and Bottom Navigation (`.dock-bg-layer`, `.nav-item:not(.is-selected)` `#CBD5E1`, `.date-day`/`.date-month`, `.card-venue`, `.eticket-details-table`, `.add-card-sheet`, `.save-card-title`/`.save-card-desc`, and `.empty-cart-heading`/`.empty-cart-tag-pill`) verified at `0` WCAG contrast failures in `styles.css`.
    - Updated the empty-search-state card in `renderEvents()` (`app.js`) to use `.empty-search-state` and `var(--color-white)` / `var(--color-text-muted)`.
 
 2. **User Profile Dark Mode Toggle (`index.html`, `styles.css`, `app.js`)**
