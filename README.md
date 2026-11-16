@@ -92,7 +92,17 @@ This log documents each iterative release of the project, recording the exact us
 
 ---
 
-### 🏷️ Version 1.4.4 (Current Release — `v1.4.4`)
+### 🏷️ Version 1.4.5 (Current Release — `v1.4.5`)
+
+#### 💬 Original User Prompt:
+> *"Version 1.4.5*  
+> *Please make the following adjustment:*  
+> *- On the top bar, remove the text "search" inside the animated search bar"*
+
+#### 🛠️ Implementation Summary:
+- **Top Bar Animated Search Bar (`index.html`)**: Updated `#desktopSearchInput` inside `#desktopSearchBar` to `placeholder=""`, removing the `"SEARCH"` label inside the animated search bar while retaining keyboard/click search behavior and `aria-label` accessibility.
+
+### 🏷️ Version 1.4.4 (Previous Release — `v1.4.4`)
 
 #### 💬 Original User Prompt:
 > *"Version 1.4.4*  
@@ -590,9 +600,9 @@ sonar-bsb-events/
 ├── .github/workflows/
 │   └── static.yml             # GitHub Pages workflow (deploys runtime files only)
 ├── assets/                    # Active runtime UI icons, welcome graphics, avatar & 27 event covers
-├── handoffs/                  # Historical HANDOFF_V1.0–V1.4.4 docs & CONVERSATION_HISTORY.md
+├── handoffs/                  # Historical HANDOFF_V1.0–V1.4.5 docs & CONVERSATION_HISTORY.md
 │   └── design-refs/           # Saved Figma reference screenshots (not deployed to Pages)
-├── versions/                  # Release archives (sonar-bsb-events-v*.zip for v0.4–v1.4.4)
+├── versions/                  # Release archives (sonar-bsb-events-v*.zip for v0.4–v1.4.5)
 ├── index.html                 # Main application shell & interactive views
 ├── login.html                 # Standalone 1-WelcomeLogin entry screen
 ├── styles.css                 # Responsive stylesheet & design system tokens

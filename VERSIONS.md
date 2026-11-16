@@ -6,7 +6,16 @@ This directory contains versioned snapshots of the Sonar BSB Events web applicat
 
 ## 🏷️ Version History
 
-### Version 1.4.4 (Current Production Release — `v1.4.4`)
+### Version 1.4.5 (Current Production Release — `v1.4.5`)
+- **Date**: 2026-11-16
+- **Snapshot Directory**: `versions/v1.4.5/`
+- **Archive Zip**: `versions/v1.4.5/sonar-bsb-events-v1.4.5.zip`
+- **Handoff Documentation**: `handoffs/HANDOFF_V1.4.5.md`
+- **Changes**:
+  - **Top Bar Search Bar Placeholder Removal (`index.html`)**: Removed `"SEARCH"` placeholder text inside `#desktopSearchInput` (`placeholder=""`) in `#desktopSearchBar` so the expanded animated pill displays cleanly with the search icon and close button without pre-filled placeholder text.
+  - Updated `<title>` badges across `index.html` and `login.html` to `Version 1.4.5`.
+
+### Version 1.4.4 (Previous Production Release — `v1.4.4`)
 - **Date**: 2026-11-13
 - **Snapshot Directory**: `versions/v1.4.4/`
 - **Archive Zip**: `versions/v1.4.4/sonar-bsb-events-v1.4.4.zip`
