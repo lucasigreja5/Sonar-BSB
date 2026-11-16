@@ -13,6 +13,7 @@ This directory contains versioned snapshots of the Sonar BSB Events web applicat
 - **Handoff Documentation**: `handoffs/HANDOFF_V1.4.5.md`
 - **Changes**:
   - **Top Bar Search Bar Placeholder Removal (`index.html`)**: Removed `"SEARCH"` placeholder text inside `#desktopSearchInput` (`placeholder=""`) in `#desktopSearchBar` so the expanded animated pill displays cleanly with the search icon and close button without pre-filled placeholder text.
+  - **Top Search Bar Routing to Search Page (`app.js`)**: Typing in `#desktopSearchInput` switches the active view to `"search"`, moves the bottom navigation `.is-selected` indicator to `#navSearchBtn`, preserves typing focus on `#desktopSearchInput`, and renders matching query results on the Search page.
   - Updated `<title>` badges across `index.html` and `login.html` to `Version 1.4.5`.
 
 ### Version 1.4.4 (Previous Production Release — `v1.4.4`)

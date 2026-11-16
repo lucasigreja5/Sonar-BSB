@@ -885,19 +885,21 @@ window.switchView = function(viewName) {
 
   // 2. Configure visibility based on view
   if (viewName === "search") {
+    const showSearchResults = state.searchSubmitted || state.searchQuery.trim() !== "";
     if (subHeaderNav) subHeaderNav.style.display = "block";
     if (backButton) backButton.style.display = "flex";
     if (searchFilterPanel) searchFilterPanel.style.display = "block";
     if (navTabsContainer) navTabsContainer.style.display = "none";
-    if (sectionHeaderBlock) sectionHeaderBlock.style.display = state.searchSubmitted ? "flex" : "none";
-    if (eventsContainer) eventsContainer.style.display = state.searchSubmitted ? "grid" : "none";
+    if (sectionHeaderBlock) sectionHeaderBlock.style.display = showSearchResults ? "flex" : "none";
+    if (eventsContainer) eventsContainer.style.display = showSearchResults ? "grid" : "none";
     // Version 1.1: On mobile/touch screen sizes, do NOT auto-focus so the virtual touch
     // keyboard only opens when the user explicitly interacts with/taps one of the input text boxes.
+    // Version 1.4.5: Do not steal focus if the user is actively typing in the top-bar search input.
     const isMobileOrTouch = window.innerWidth <= 768 || ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
-    if (!isMobileOrTouch) {
+    if (!isMobileOrTouch && document.activeElement !== desktopSearchInput) {
       const searchInput = document.getElementById("searchFormName");
       if (searchInput) searchInput.focus();
-    } else if (document.activeElement && typeof document.activeElement.blur === "function") {
+    } else if (isMobileOrTouch && document.activeElement !== desktopSearchInput && document.activeElement && typeof document.activeElement.blur === "function") {
       document.activeElement.blur();
     }
   } else if (viewName === "checkout") {
@@ -1134,7 +1136,8 @@ function renderEvents() {
   let list = [];
 
   if (state.activeView === "search") {
-    if (!state.searchSubmitted) {
+    const hasTopQuery = state.searchQuery.trim() !== "";
+    if (!state.searchSubmitted && !hasTopQuery) {
       if (sectionHeaderBlock) sectionHeaderBlock.style.display = "none";
       if (eventCountBadge) eventCountBadge.textContent = "0 events";
       eventsContainer.innerHTML = "";
@@ -1144,45 +1147,70 @@ function renderEvents() {
     if (sectionHeaderBlock) sectionHeaderBlock.style.display = "flex";
     eventsContainer.style.display = "grid";
 
-    const qName = state.searchFilters.name.toLowerCase().trim();
-    const qDate = state.searchFilters.date.toLowerCase().trim();
-    const qLoc = state.searchFilters.location.toLowerCase().trim();
-    const onlyToday = state.searchFilters.todayOnly;
+    if (hasTopQuery) {
+      const q = state.searchQuery.toLowerCase().trim();
+      list = EVENTS_DATA.filter(evt =>
+        evt.title.toLowerCase().includes(q) ||
+        evt.venue.toLowerCase().includes(q) ||
+        evt.genre.toLowerCase().includes(q) ||
+        evt.dateFormatted.toLowerCase().includes(q) ||
+        evt.dateMonth.toLowerCase().includes(q) ||
+        evt.dateShort.includes(q) ||
+        evt.lineup.some(artist => artist.name.toLowerCase().includes(q))
+      );
 
-    // Filter matching criteria
-    list = EVENTS_DATA.filter(evt => {
-      if (onlyToday && evt.category !== "today") return false;
-      const matchName = !qName ||
-        evt.title.toLowerCase().includes(qName) ||
-        evt.genre.toLowerCase().includes(qName) ||
-        evt.lineup.some(artist => artist.name.toLowerCase().includes(qName));
-      const isIsoDateQuery = /^\d{4}-\d{2}-\d{2}$/.test(qDate);
-      const matchDate = !qDate ||
-        (isIsoDateQuery && evt.dateISO === qDate) ||
-        (!isIsoDateQuery && (
-          ((qDate === "today" || qDate === "tonight") && evt.category === "today") ||
-          ((qDate === "this month" || qDate === "month") && evt.category === "month") ||
-          (qDate === "upcoming" && evt.category === "upcoming") ||
-          evt.dateDay.includes(qDate) ||
-          evt.dateMonth.toLowerCase().includes(qDate) ||
-          evt.dateFormatted.toLowerCase().includes(qDate) ||
-          evt.dateShort.includes(qDate)
-        ));
-      const matchLoc = !qLoc || evt.venue.toLowerCase().includes(qLoc);
-      return matchName && matchDate && matchLoc;
-    });
+      // STRICT DEDUPLICATION: Ensure no duplicate events appear by unique ID and title
+      const seenIds = new Set();
+      list = list.filter(evt => {
+        if (seenIds.has(evt.id)) return false;
+        seenIds.add(evt.id);
+        return true;
+      });
 
-    // STRICT DEDUPLICATION: Ensure no duplicate events appear by unique ID and title
-    const seenIds = new Set();
-    list = list.filter(evt => {
-      if (seenIds.has(evt.id)) return false;
-      seenIds.add(evt.id);
-      return true;
-    });
+      sectionTitleEl.textContent = `Search Results for "${state.searchQuery}"`;
+      sectionSubtitleEl.textContent = "Matching titles, venues, and musical genres";
+      eventCountBadge.textContent = `${list.length} result${list.length === 1 ? "" : "s"}`;
+    } else {
+      const qName = state.searchFilters.name.toLowerCase().trim();
+      const qDate = state.searchFilters.date.toLowerCase().trim();
+      const qLoc = state.searchFilters.location.toLowerCase().trim();
+      const onlyToday = state.searchFilters.todayOnly;
 
-    sectionTitleEl.textContent = "Search Results";
-    sectionSubtitleEl.textContent = onlyToday ? "Filtered for events happening tonight" : "Lineup matching your query criteria";
-    eventCountBadge.textContent = `${list.length} event${list.length === 1 ? "" : "s"}`;
+      // Filter matching criteria
+      list = EVENTS_DATA.filter(evt => {
+        if (onlyToday && evt.category !== "today") return false;
+        const matchName = !qName ||
+          evt.title.toLowerCase().includes(qName) ||
+          evt.genre.toLowerCase().includes(qName) ||
+          evt.lineup.some(artist => artist.name.toLowerCase().includes(qName));
+        const isIsoDateQuery = /^\d{4}-\d{2}-\d{2}$/.test(qDate);
+        const matchDate = !qDate ||
+          (isIsoDateQuery && evt.dateISO === qDate) ||
+          (!isIsoDateQuery && (
+            ((qDate === "today" || qDate === "tonight") && evt.category === "today") ||
+            ((qDate === "this month" || qDate === "month") && evt.category === "month") ||
+            (qDate === "upcoming" && evt.category === "upcoming") ||
+            evt.dateDay.includes(qDate) ||
+            evt.dateMonth.toLowerCase().includes(qDate) ||
+            evt.dateFormatted.toLowerCase().includes(qDate) ||
+            evt.dateShort.includes(qDate)
+          ));
+        const matchLoc = !qLoc || evt.venue.toLowerCase().includes(qLoc);
+        return matchName && matchDate && matchLoc;
+      });
+
+      // STRICT DEDUPLICATION: Ensure no duplicate events appear by unique ID and title
+      const seenIds = new Set();
+      list = list.filter(evt => {
+        if (seenIds.has(evt.id)) return false;
+        seenIds.add(evt.id);
+        return true;
+      });
+
+      sectionTitleEl.textContent = "Search Results";
+      sectionSubtitleEl.textContent = onlyToday ? "Filtered for events happening tonight" : "Lineup matching your query criteria";
+      eventCountBadge.textContent = `${list.length} event${list.length === 1 ? "" : "s"}`;
+    }
   }
   // --------------------------------------------------------------------------
   // 4. Desktop Search Input Filtering
@@ -2157,8 +2185,12 @@ function setupKeyboardShortcuts() {
 
     desktopSearchInput.addEventListener("input", (e) => {
       state.searchQuery = e.target.value;
-      if (state.searchQuery.trim() !== "" && state.activeView !== "home") {
-        switchView("home");
+      if (state.searchQuery.trim() !== "") {
+        if (state.activeView !== "search") {
+          switchView("search");
+        } else {
+          renderEvents();
+        }
       } else {
         renderEvents();
       }
