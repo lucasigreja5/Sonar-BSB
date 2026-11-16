@@ -2195,6 +2195,13 @@ function setupKeyboardShortcuts() {
         renderEvents();
       }
     });
+
+    desktopSearchInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        closeTopSearchBar(false);
+      }
+    });
   }
 
   // Collapse top search bar when clicking outside while empty

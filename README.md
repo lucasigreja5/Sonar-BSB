@@ -98,11 +98,12 @@ This log documents each iterative release of the project, recording the exact us
 > *"Version 1.4.5*  
 > *Please make the following adjustment:*  
 > *- On the top bar, remove the text "search" inside the animated search bar*  
-> *- Have the results from the top search bar show up on the Search page. When the user starts typing on the top search bar, move the bottom nav icon to the search page, and show the results of the user's search on the search page"*
+> *- Have the results from the top search bar show up on the Search page. When the user starts typing on the top search bar, move the bottom nav icon to the search page, and show the results of the user's search on the search page*  
+> *- When the user presses "enter" or "return" on the top search bar, the text input should be closed and the top search bar should be closed too"*
 
 #### 🛠️ Implementation Summary:
 - **Top Bar Animated Search Bar (`index.html`)**: Updated `#desktopSearchInput` inside `#desktopSearchBar` to `placeholder=""`, removing the `"SEARCH"` label inside the animated search bar while retaining keyboard/click search behavior and `aria-label` accessibility.
-- **Top Search Bar Results on Search Page (`app.js`)**: Updated `#desktopSearchInput` input handling, `switchView("search")`, and `renderEvents()` so typing in the top search bar switches to the Search view, moves `.is-selected` on the bottom nav dock to `#navSearchBtn`, keeps typing focus on `#desktopSearchInput`, and displays the matching results on the Search page.
+- **Top Search Bar Results on Search Page & Enter/Return Collapse (`app.js`)**: Updated `#desktopSearchInput` input/keydown handling, `switchView("search")`, and `renderEvents()` so typing in the top search bar switches to the Search view, moves `.is-selected` on the bottom nav dock to `#navSearchBtn`, keeps typing focus on `#desktopSearchInput`, displays the matching results on the Search page, and collapses the text input and top search bar via `closeTopSearchBar(false)` when pressing `Enter` or `Return`.
 
 ### 🏷️ Version 1.4.4 (Previous Release — `v1.4.4`)
 
