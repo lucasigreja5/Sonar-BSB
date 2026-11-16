@@ -881,7 +881,7 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
-  background: rgba(0, 0, 0, 0.05);
+  background: var(--color-secondary-light);
   padding: 5px;
   border-radius: 28px;
   width: fit-content;
@@ -3817,6 +3817,11 @@ input:checked + .slider:before {
   color: #c7d2fe;
 }
 
+:root[data-theme="dark"] .page-nav-tabs {
+  background-color: rgba(129, 140, 248, 0.22);
+  border: 1px solid rgba(129, 140, 248, 0.24);
+}
+
 :root[data-theme="dark"] .event-count-badge,
 :root[data-theme="dark"] .modal-tag:not(.tag-verified) {
   background-color: rgba(129, 140, 248, 0.22);
@@ -3921,15 +3926,17 @@ input:checked + .slider:before {
 }
 
 :root[data-theme="dark"] .payment-mode-checkbox {
+  background: #1c1c26;
   border-color: #94a3b8;
 }
 
 :root[data-theme="dark"] .payment-mode-item.is-selected .payment-mode-checkbox {
-  border-color: var(--color-primary);
+  border-color: #818cf8;
+  background: #1c1c26;
 }
 
 :root[data-theme="dark"] .payment-mode-item.is-selected .checkbox-indicator {
-  background-color: var(--color-primary);
+  background-color: #6366f1;
 }
 
 :root[data-theme="dark"] .order-summary-heading,
