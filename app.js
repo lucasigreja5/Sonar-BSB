@@ -847,11 +847,11 @@ function setupNavEventListeners() {
 window.switchView = function(viewName) {
   state.activeView = viewName;
 
-  // Version 1.4.5: Leaving Search (or clicking Home/Favorites/Tickets/etc.) clears active top-bar search text
-  // and returns Home to its original default state.
+  // Version 1.4.5: Leaving Search (or clicking Home/Favorites/Tickets/etc.) clears active top-bar search text,
+  // persists the search results on the Search page, and returns Home to its original default state.
   if (viewName !== "search") {
-    const hadTopSearch = state.searchQuery.trim() !== "" ||
-      (desktopSearchInput && desktopSearchInput.value !== "") ||
+    const activeTopQuery = (state.searchQuery || (desktopSearchInput ? desktopSearchInput.value : "")).trim();
+    const hadTopSearch = activeTopQuery !== "" ||
       (desktopSearchBar && desktopSearchBar.classList.contains("is-open"));
     if (hadTopSearch) {
       if (typeof window.closeTopSearchBar === "function") {
@@ -860,10 +860,12 @@ window.switchView = function(viewName) {
         state.searchQuery = "";
         if (desktopSearchInput) desktopSearchInput.value = "";
       }
-      state.searchSubmitted = false;
-      state.searchFilters.name = "";
-      const searchFormNameEl = document.getElementById("searchFormName");
-      if (searchFormNameEl) searchFormNameEl.value = "";
+      if (activeTopQuery) {
+        state.searchFilters.name = activeTopQuery;
+        const searchFormNameEl = document.getElementById("searchFormName");
+        if (searchFormNameEl) searchFormNameEl.value = activeTopQuery;
+        state.searchSubmitted = true;
+      }
 
       if (viewName === "home") {
         state.activeTab = "today";
@@ -1210,6 +1212,7 @@ function renderEvents() {
         if (onlyToday && evt.category !== "today") return false;
         const matchName = !qName ||
           evt.title.toLowerCase().includes(qName) ||
+          evt.venue.toLowerCase().includes(qName) ||
           evt.genre.toLowerCase().includes(qName) ||
           evt.lineup.some(artist => artist.name.toLowerCase().includes(qName));
         const isIsoDateQuery = /^\d{4}-\d{2}-\d{2}$/.test(qDate);
