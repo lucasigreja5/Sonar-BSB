@@ -2213,12 +2213,6 @@ function setupKeyboardShortcuts() {
           } else {
             renderEvents();
           }
-          const resultCount = document.querySelectorAll("#eventsContainer .event-card").length;
-          showToast(
-            resultCount > 0
-              ? `Showing ${resultCount} result${resultCount === 1 ? "" : "s"} for "${trimmed}"`
-              : `No events found for "${trimmed}"`
-          );
           if (sectionHeaderBlock) {
             sectionHeaderBlock.classList.remove("search-results-pulse");
             void sectionHeaderBlock.offsetWidth;
