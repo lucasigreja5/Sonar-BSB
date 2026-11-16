@@ -1480,6 +1480,24 @@ window.resetSearchFilters = function() {
 // ============================================================================
 // Event Details Modal (Figma 4.1- EventDetails1)
 // ============================================================================
+let lastFocusedTrigger = null;
+
+function moveFocusToModal(modalEl) {
+  if (!modalEl) return;
+  lastFocusedTrigger = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+  const focusTarget = modalEl.querySelector(".modal-close-btn, button, [href], input");
+  if (focusTarget && typeof focusTarget.focus === "function") {
+    setTimeout(() => focusTarget.focus(), 50);
+  }
+}
+
+function restoreFocusFromModal() {
+  if (lastFocusedTrigger && document.contains(lastFocusedTrigger) && typeof lastFocusedTrigger.focus === "function") {
+    lastFocusedTrigger.focus();
+  }
+  lastFocusedTrigger = null;
+}
+
 window.openEventModal = function(eventId) {
   const evt = EVENTS_DATA.find(item => item.id === eventId);
   if (!evt) return;
@@ -1527,11 +1545,15 @@ window.openEventModal = function(eventId) {
     eventModal.classList.add("open");
     const sheet = eventModal.querySelector(".modal-sheet");
     if (sheet) sheet.scrollTop = 0;
+    moveFocusToModal(eventModal);
   }
 };
 
 window.closeEventModal = function() {
-  if (eventModal) eventModal.classList.remove("open");
+  if (eventModal) {
+    eventModal.classList.remove("open");
+    restoreFocusFromModal();
+  }
 };
 
 // Trigger checkout flow directly from Event Details modal
@@ -1914,11 +1936,15 @@ function showTicketPopup(ticket) {
   if (ticketModal) {
     ticketModal.style.removeProperty("display");
     ticketModal.classList.add("open");
+    moveFocusToModal(ticketModal);
   }
 }
 
 window.closeTicketModal = function() {
-  if (ticketModal) ticketModal.classList.remove("open");
+  if (ticketModal) {
+    ticketModal.classList.remove("open");
+    restoreFocusFromModal();
+  }
 };
 
 window.openTicketWallet = function() {
@@ -1975,11 +2001,15 @@ window.openProfileModal = function() {
   if (profileModal) {
     profileModal.style.removeProperty("display");
     profileModal.classList.add("open");
+    moveFocusToModal(profileModal);
   }
 };
 
 window.closeProfileModal = function() {
-  if (profileModal) profileModal.classList.remove("open");
+  if (profileModal) {
+    profileModal.classList.remove("open");
+    restoreFocusFromModal();
+  }
 };
 
 window.toggleEditProfileView = function(showEdit) {

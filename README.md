@@ -92,7 +92,20 @@ This log documents each iterative release of the project, recording the exact us
 
 ---
 
-### 🏷️ Version 1.4.5 (Current Release — `v1.4.5`)
+### 🏷️ Version 1.4.6 (Current Release — `v1.4.6`)
+
+#### 💬 Original User Prompt:
+> *"Please run a usability testing to see if there any issues that you think should be fixed, and areas that could be improved"*  
+> *"Yes, add these fixes for version 1.4.6"*
+
+#### 🛠️ Implementation Summary:
+- **Edit Profile Mobile Scrolling (`styles.css`)**: Added `max-height: 90vh; overflow-y: auto;` to `.profile-card` so Edit Profile buttons never clip on compact mobile screens.
+- **Login Input Accessibility (`index.html`, `login.html`)**: Added `aria-label` attributes to `#loginUsername` and `#loginPassword`.
+- **Top Search Close Button Touch Target (`styles.css`)**: Increased `#desktopSearchCloseBtn` from `24×24px` to `34×34px`.
+- **Search Filter Panel Reset Action (`index.html`, `styles.css`)**: Added `#btnClearSearchFilters` (`Clear Filters`) beside `#btnFindEvents` inside `.search-form-actions`.
+- **Modal Keyboard Focus Management (`app.js`)**: Added `moveFocusToModal()` and `restoreFocusFromModal()` for `#eventModal`, `#ticketModal`, and `#profileModal`.
+
+### 🏷️ Version 1.4.5 (Previous Release — `v1.4.5`)
 
 #### 💬 Original User Prompt:
 > *"Version 1.4.5*  
@@ -603,9 +616,9 @@ sonar-bsb-events/
 ├── .github/workflows/
 │   └── static.yml             # GitHub Pages workflow (deploys runtime files only)
 ├── assets/                    # Active runtime UI icons, welcome graphics, avatar & 27 event covers
-├── handoffs/                  # Historical HANDOFF_V1.0–V1.4.5 docs & CONVERSATION_HISTORY.md
+├── handoffs/                  # Historical HANDOFF_V1.0–V1.4.6 docs & CONVERSATION_HISTORY.md
 │   └── design-refs/           # Saved Figma reference screenshots (not deployed to Pages)
-├── versions/                  # Release archives (sonar-bsb-events-v*.zip for v0.4–v1.4.5)
+├── versions/                  # Release archives (sonar-bsb-events-v*.zip for v0.4–v1.4.6)
 ├── index.html                 # Main application shell & interactive views
 ├── login.html                 # Standalone 1-WelcomeLogin entry screen
 ├── styles.css                 # Responsive stylesheet & design system tokens

@@ -6,7 +6,20 @@ This directory contains versioned snapshots of the Sonar BSB Events web applicat
 
 ## 🏷️ Version History
 
-### Version 1.4.5 (Current Production Release — `v1.4.5`)
+### Version 1.4.6 (Current Production Release — `v1.4.6`)
+- **Date**: 2026-11-16
+- **Snapshot Directory**: `versions/v1.4.6/`
+- **Archive Zip**: `versions/v1.4.6/sonar-bsb-events-v1.4.6.zip`
+- **Handoff Documentation**: `handoffs/HANDOFF_V1.4.6.md`
+- **Changes**:
+  - **Edit Profile Mobile Scroll Containment (`styles.css`)**: Added `max-height: 90vh; overflow-y: auto;` to `.profile-card` so Edit Profile stays scrollable on compact mobile screens.
+  - **Login Input Accessibility (`index.html`, `login.html`)**: Added `aria-label="Username"` and `aria-label="Password"` to `#loginUsername` and `#loginPassword`.
+  - **Top Search Close Touch Target (`styles.css`)**: Enlarged `.desktop-search-close-btn` from `24×24px` to `34×34px` for reliable mobile/touch tapping.
+  - **Search Filter Panel "Clear Filters" Button (`index.html`, `styles.css`)**: Added `#btnClearSearchFilters` alongside `#btnFindEvents` inside `.search-form-actions` calling `resetSearchFilters()`.
+  - **Modal Keyboard Focus Management (`app.js`)**: Added `moveFocusToModal()` and `restoreFocusFromModal()` across `#eventModal`, `#ticketModal`, and `#profileModal`.
+  - Updated `<title>` badges across `index.html` and `login.html` to `Version 1.4.6`.
+
+### Version 1.4.5 (Previous Production Release — `v1.4.5`)
 - **Date**: 2026-11-16
 - **Snapshot Directory**: `versions/v1.4.5/`
 - **Archive Zip**: `versions/v1.4.5/sonar-bsb-events-v1.4.5.zip`

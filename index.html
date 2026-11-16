@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sonar BSB &bull; Events Discovery &amp; Ticketing (Version 1.4.5)</title>
+  <title>Sonar BSB &bull; Events Discovery &amp; Ticketing (Version 1.4.6)</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -45,6 +45,7 @@
             id="loginUsername" 
             class="welcome-input" 
             placeholder="Username" 
+            aria-label="Username"
             value="Johndoe" 
             required 
             autocomplete="username"
@@ -58,6 +59,7 @@
             id="loginPassword" 
             class="welcome-input" 
             placeholder="Password" 
+            aria-label="Password"
             value="••••••••" 
             required 
             autocomplete="current-password"
@@ -215,11 +217,16 @@
             </label>
           </div>
 
-          <!-- Submit Button (Figma 758:6909) -->
-          <button id="btnFindEvents" class="btn-find-events" onclick="executeAdvancedSearch()">
-            <span>Find Events Near Me</span>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-          </button>
+          <!-- Submit & Clear Actions (Figma 758:6909) -->
+          <div class="search-form-actions">
+            <button id="btnFindEvents" class="btn-find-events" onclick="executeAdvancedSearch()">
+              <span>Find Events Near Me</span>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            </button>
+            <button type="button" id="btnClearSearchFilters" class="btn-clear-filters" onclick="resetSearchFilters()">
+              Clear Filters
+            </button>
+          </div>
         </div>
       </section>
 
