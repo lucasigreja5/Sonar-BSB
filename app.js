@@ -1087,6 +1087,7 @@ window.switchView = function(viewName) {
 // ============================================================================
 let dockIndicatorInitialized = false;
 let lastDockIndicatorX = 0;
+let lastDockIndicatorY = 0;
 
 function positionDockIndicator(targetBtn, instant = false) {
   const indicator = document.getElementById("dockActiveIndicator");
@@ -1094,23 +1095,25 @@ function positionDockIndicator(targetBtn, instant = false) {
 
   if (!targetBtn) {
     indicator.classList.add("is-hidden");
-    indicator.style.transform = `translate3d(${lastDockIndicatorX}px, 8px, 0) scale(0.55)`;
+    indicator.style.transform = `translate3d(${lastDockIndicatorX}px, ${lastDockIndicatorY + 24}px, 0) scale(0.55)`;
     return;
   }
 
   const x = targetBtn.offsetLeft + (targetBtn.offsetWidth - indicator.offsetWidth) / 2;
+  const y = targetBtn.offsetTop + (targetBtn.offsetHeight - indicator.offsetHeight) / 2 - 24;
   lastDockIndicatorX = x;
+  lastDockIndicatorY = y;
 
   if (instant || !dockIndicatorInitialized) {
     indicator.classList.add("is-instant");
     indicator.classList.remove("is-hidden");
-    indicator.style.transform = `translate3d(${x}px, -24px, 0) scale(1)`;
+    indicator.style.transform = `translate3d(${x}px, ${y}px, 0) scale(1)`;
     void indicator.offsetWidth;
     indicator.classList.remove("is-instant");
     dockIndicatorInitialized = true;
   } else {
     indicator.classList.remove("is-hidden");
-    indicator.style.transform = `translate3d(${x}px, -24px, 0) scale(1)`;
+    indicator.style.transform = `translate3d(${x}px, ${y}px, 0) scale(1)`;
   }
 }
 

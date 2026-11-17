@@ -2818,7 +2818,7 @@ input:checked + .slider:before {
 .dock-active-indicator {
   position: absolute;
   left: 0;
-  top: 10px;
+  top: 0;
   width: 64px;
   height: 64px;
   border-radius: 50%;
@@ -2916,7 +2916,7 @@ input:checked + .slider:before {
 }
 
 .nav-item.is-selected:hover {
-  transform: translate3d(0, -27px, 0) scale(1.06);
+  transform: translate3d(0, -24px, 0) scale(1.06);
 }
 
 .nav-item.is-selected:active {
