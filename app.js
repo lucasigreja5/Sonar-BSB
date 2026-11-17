@@ -900,7 +900,16 @@ function setupNavEventListeners() {
 // ============================================================================
 // View Navigation (Welcome, Home, Search, Favorites, Tickets, Checkout, Payment, Confirmation)
 // ============================================================================
+function triggerViewEnterAnimation(el) {
+  if (!el) return;
+  el.classList.remove("view-enter");
+  requestAnimationFrame(() => {
+    el.classList.add("view-enter");
+  });
+}
+
 window.switchView = function(viewName) {
+  const prevView = state.activeView;
   state.activeView = viewName;
 
   // Version 1.4.5: Leaving Search (or clicking Home/Favorites/Tickets/etc.) clears active top-bar search text,
@@ -1059,12 +1068,16 @@ window.switchView = function(viewName) {
     renderEvents();
   }
 
-  // Scroll mobile frame or page to top
+  if (prevView !== viewName && sectionHeaderBlock && sectionHeaderBlock.style.display !== "none") {
+    triggerViewEnterAnimation(sectionHeaderBlock);
+  }
+
+  // Snap scroll to top on view change so scroll doesn't fight entrance animations
   const mainContent = document.querySelector(".main-content");
   if (mainContent) {
-    mainContent.scrollTo({ top: 0, behavior: "smooth" });
+    mainContent.scrollTop = 0;
   } else {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo(0, 0);
   }
 };
 
@@ -1072,6 +1085,42 @@ window.switchView = function(viewName) {
 // Bottom Navigation Active Indicator
 // Selected state uses elevated blue circle (#3F32D3) and neon yellow icon (#F2F862)
 // ============================================================================
+let dockIndicatorInitialized = false;
+let lastDockIndicatorX = 0;
+
+function positionDockIndicator(targetBtn, instant = false) {
+  const indicator = document.getElementById("dockActiveIndicator");
+  if (!indicator) return;
+
+  if (!targetBtn) {
+    indicator.classList.add("is-hidden");
+    indicator.style.transform = `translate3d(${lastDockIndicatorX}px, 8px, 0) scale(0.55)`;
+    return;
+  }
+
+  const x = targetBtn.offsetLeft + (targetBtn.offsetWidth - indicator.offsetWidth) / 2;
+  lastDockIndicatorX = x;
+
+  if (instant || !dockIndicatorInitialized) {
+    indicator.classList.add("is-instant");
+    indicator.classList.remove("is-hidden");
+    indicator.style.transform = `translate3d(${x}px, -24px, 0) scale(1)`;
+    void indicator.offsetWidth;
+    indicator.classList.remove("is-instant");
+    dockIndicatorInitialized = true;
+  } else {
+    indicator.classList.remove("is-hidden");
+    indicator.style.transform = `translate3d(${x}px, -24px, 0) scale(1)`;
+  }
+}
+
+window.addEventListener("resize", () => {
+  const activeBtn = document.querySelector(".bottom-nav-bar .nav-item.is-selected");
+  if (activeBtn) {
+    requestAnimationFrame(() => positionDockIndicator(activeBtn, true));
+  }
+});
+
 function updateBottomNavUI(activeView) {
   const navMap = {
     home: document.getElementById("navHomeBtn"),
@@ -1087,10 +1136,12 @@ function updateBottomNavUI(activeView) {
     }
   });
 
-  // Apply selected state to current page
-  if (navMap[activeView]) {
-    navMap[activeView].classList.add("is-selected");
+  // Apply selected state to current page and glide indicator pill
+  const targetBtn = navMap[activeView] || null;
+  if (targetBtn) {
+    targetBtn.classList.add("is-selected");
   }
+  requestAnimationFrame(() => positionDockIndicator(targetBtn, !dockIndicatorInitialized));
 }
 
 // Tab Selection on Home (Today, This Month, Upcoming)
@@ -1157,8 +1208,8 @@ function renderEvents() {
     }
 
     // Render horizontal ticket cards matching Figma 767:10646
-    eventsContainer.innerHTML = state.tickets.map(ticket => `
-      <article class="ticket-card-horizontal">
+    eventsContainer.innerHTML = state.tickets.map((ticket, idx) => `
+      <article class="ticket-card-horizontal" style="--card-index: ${Math.min(idx, 4)}">
         <div class="ticket-card-thumb">
           <img src="${ticket.image}" alt="${ticket.title}" loading="lazy" />
         </div>
@@ -1202,8 +1253,8 @@ function renderEvents() {
       return;
     }
 
-    eventsContainer.innerHTML = list.map(evt => `
-      <article class="fav-card-horizontal" onclick="openEventModal('${evt.id}')">
+    eventsContainer.innerHTML = list.map((evt, idx) => `
+      <article class="fav-card-horizontal" style="--card-index: ${Math.min(idx, 4)}" onclick="openEventModal('${evt.id}')">
         <div class="fav-card-thumb">
           <img src="${evt.image}" alt="${evt.title}" loading="lazy" />
         </div>
@@ -1367,10 +1418,10 @@ function renderEvents() {
   }
 
   // Render Event Cards Grid (Figma EventCard)
-  eventsContainer.innerHTML = list.map(evt => {
+  eventsContainer.innerHTML = list.map((evt, idx) => {
     const isFav = state.favorites.has(evt.id);
     return `
-      <article class="event-card" data-event-id="${evt.id}">
+      <article class="event-card" style="--card-index: ${Math.min(idx, 4)}" data-event-id="${evt.id}">
         <!-- Image Box -->
         <div class="card-image-box" onclick="openEventModal('${evt.id}')" style="cursor: pointer;">
           <img src="${evt.image}" alt="${evt.title}" class="card-image" loading="lazy" />

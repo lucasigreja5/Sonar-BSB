@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sonar BSB &bull; Events Discovery &amp; Ticketing (Version 1.5)</title>
+  <title>Sonar BSB &bull; Events Discovery &amp; Ticketing (Version 1.5.1)</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -469,6 +469,8 @@
       <nav class="bottom-nav-bar" aria-label="Bottom Navigation">
         <!-- Floating white bar background with drop shadow -->
         <div class="dock-bg-layer"></div>
+        <!-- Gliding active pill indicator -->
+        <div id="dockActiveIndicator" class="dock-active-indicator" aria-hidden="true"></div>
 
         <!-- 1. Home -->
         <button type="button" id="navHomeBtn" class="nav-item is-selected" title="Home" onclick="switchView('home')">

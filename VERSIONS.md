@@ -6,7 +6,14 @@ This directory contains versioned snapshots of the Sonar BSB Events web applicat
 
 ## 🏷️ Version History
 
-### Version 1.5 (Current Production Release — `v1.5`)
+### Version 1.5.1 (Current Production Release — `v1.5.1`)
+- **Date**: 2026-11-17
+- **Changes**:
+  - **Fluid Bottom Navigation Dock (`index.html`, `styles.css`, `app.js`)**: Replaced layout-shifting `margin-top`/`width`/`height` active transitions with a GPU-accelerated gliding pill (`#dockActiveIndicator`) tuned to Figma's **Quick** easing (`--ease-figma-quick: cubic-bezier(0.18, 1.12, 0.32, 1)`, `600ms`), fixed `64×56px` `.nav-item` boxes so sibling icons never jump, smooth icon lift/scale, tactile `:active` press feedback, and automatic resize re-centering.
+  - **Fluid Page, Tab, Card & Modal Transitions (`styles.css`, `app.js`)**: Added shared motion tokens (`--ease-out-expo`, `--ease-spring`, `--ease-smooth`), `triggerViewEnterAnimation()` on view and Home tab transitions (`.view-enter` / `@keyframes viewEnter`), staggered card entrance animations (`@keyframes cardEnter` with `--card-index`), smoother modal sheet and image zoom curves, and `@media (prefers-reduced-motion: reduce)` support.
+  - Updated `<title>` badges across `index.html` and `login.html` to `Version 1.5.1`.
+
+### Version 1.5 (Previous Production Release — `v1.5`)
 - **Date**: 2026-11-16
 - **Snapshot Directory**: `versions/v1.5/`
 - **Archive Zip**: `versions/v1.5/sonar-bsb-events-v1.5.zip`
