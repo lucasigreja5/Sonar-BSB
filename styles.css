@@ -2235,6 +2235,10 @@ input:checked + .slider:before {
   margin-top: 4px;
 }
 
+.section-subtitle:empty {
+  display: none;
+}
+
 .event-count-badge {
   font-size: 14px;
   color: var(--color-secondary);

@@ -6,7 +6,13 @@ This directory contains versioned snapshots of the Sonar BSB Events web applicat
 
 ## 🏷️ Version History
 
-### Version 1.5.1 (Current Production Release — `v1.5.1`)
+### Version 1.5.2 (Current Production Release — `v1.5.2`)
+- **Date**: 2026-11-19
+- **Changes**:
+  - **Removed Secondary Section Titles (`index.html`, `app.js`, `styles.css`)**: Cleared `#sectionSubtitle` across Home (`What’s on Today`, `What’s Coming This Month`, `Hot and Upcoming Events`), `My Favorites`, `My Tickets and Events`, `Shopping Cart` (both empty and populated states), and `Search Results` (query results), and added `.section-subtitle:empty { display: none; }` so empty subtitles collapse cleanly without extra vertical margin.
+  - Updated `<title>` badges across `index.html` and `login.html` to `Version 1.5.2`.
+
+### Version 1.5.1 (Previous Production Release — `v1.5.1`)
 - **Date**: 2026-11-17
 - **Changes**:
   - **Fluid Bottom Navigation Dock (`index.html`, `styles.css`, `app.js`)**: Replaced layout-shifting `margin-top`/`width`/`height` active transitions with a GPU-accelerated gliding pill (`#dockActiveIndicator`) tuned to Figma's **Quick** easing (`--ease-figma-quick: cubic-bezier(0.18, 1.12, 0.32, 1)`, `600ms`), fixed `64×56px` `.nav-item` boxes so sibling icons never jump, smooth icon lift/scale, tactile `:active` press feedback, and automatic resize re-centering.

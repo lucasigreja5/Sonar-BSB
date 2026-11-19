@@ -1190,7 +1190,7 @@ function renderEvents() {
   // --------------------------------------------------------------------------
   if (state.activeView === "tickets") {
     sectionTitleEl.textContent = "My Tickets and Events";
-    sectionSubtitleEl.textContent = "Your confirmed electronic tickets & event entries";
+    sectionSubtitleEl.textContent = "";
     eventCountBadge.textContent = `${state.tickets.length} ticket${state.tickets.length === 1 ? "" : "s"}`;
     eventsContainer.className = "tickets-list-view";
 
@@ -1236,7 +1236,7 @@ function renderEvents() {
   if (state.activeView === "favorites") {
     const list = EVENTS_DATA.filter(evt => state.favorites.has(evt.id));
     sectionTitleEl.textContent = "My Favorites";
-    sectionSubtitleEl.textContent = "Your saved underground events and festivals";
+    sectionSubtitleEl.textContent = "";
     eventCountBadge.textContent = `${list.length} saved`;
     eventsContainer.className = "favorites-list-view";
 
@@ -1317,7 +1317,7 @@ function renderEvents() {
       });
 
       sectionTitleEl.textContent = `Search Results for "${state.searchQuery}"`;
-      sectionSubtitleEl.textContent = "Matching titles, venues, and musical genres";
+      sectionSubtitleEl.textContent = "";
       eventCountBadge.textContent = `${list.length} result${list.length === 1 ? "" : "s"}`;
     } else {
       const qName = state.searchFilters.name.toLowerCase().trim();
@@ -1386,7 +1386,7 @@ function renderEvents() {
     });
 
     sectionTitleEl.textContent = `Search Results for "${state.searchQuery}"`;
-    sectionSubtitleEl.textContent = `Matching titles, venues, and musical genres`;
+    sectionSubtitleEl.textContent = "";
     eventCountBadge.textContent = `${list.length} result${list.length === 1 ? "" : "s"}`;
   }
   // --------------------------------------------------------------------------
@@ -1396,14 +1396,12 @@ function renderEvents() {
     list = EVENTS_DATA.filter(evt => evt.category === state.activeTab);
     if (state.activeTab === "today") {
       sectionTitleEl.textContent = "What’s on Today";
-      sectionSubtitleEl.textContent = "Curated underground electronic events for tonight";
     } else if (state.activeTab === "month") {
       sectionTitleEl.textContent = "What’s Coming This Month";
-      sectionSubtitleEl.textContent = "Top raves, club nights, and lakeside sessions";
     } else {
       sectionTitleEl.textContent = "Hot and Upcoming Events";
-      sectionSubtitleEl.textContent = "Major festivals, ancestral showcases, and warehouse raves over the next two months";
     }
+    sectionSubtitleEl.textContent = "";
     eventCountBadge.textContent = `${list.length} events`;
   }
 
@@ -1703,7 +1701,7 @@ window.showEmptyCartView = function() {
   if (checkoutCard) checkoutCard.style.display = "none";
 
   if (sectionTitleEl) sectionTitleEl.textContent = "Shopping Cart";
-  if (sectionSubtitleEl) sectionSubtitleEl.textContent = "Your cart is currently empty";
+  if (sectionSubtitleEl) sectionSubtitleEl.textContent = "";
   if (eventCountBadge) eventCountBadge.textContent = "0 Items";
 
   switchView("checkout");
@@ -1722,7 +1720,7 @@ window.showPopulatedCartView = function() {
   updateCheckoutCalculations();
 
   if (sectionTitleEl) sectionTitleEl.textContent = "Shopping Cart";
-  if (sectionSubtitleEl) sectionSubtitleEl.textContent = "Review ticket quantities and proceed to secure checkout";
+  if (sectionSubtitleEl) sectionSubtitleEl.textContent = "";
   if (eventCountBadge) eventCountBadge.textContent = `${totalTickets} ${totalTickets === 1 ? 'Ticket' : 'Tickets'}`;
 
   switchView("checkout");
