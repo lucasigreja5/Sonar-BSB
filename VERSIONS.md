@@ -10,6 +10,7 @@ This directory contains versioned snapshots of the Sonar BSB Events web applicat
 - **Date**: 2026-11-19
 - **Changes**:
   - **Removed Secondary Section Titles (`index.html`, `app.js`, `styles.css`)**: Cleared `#sectionSubtitle` across Home (`What’s on Today`, `What’s Coming This Month`, `Hot and Upcoming Events`), `My Favorites`, `My Tickets and Events`, `Shopping Cart` (both empty and populated states), and `Search Results` (query results), and added `.section-subtitle:empty { display: none; }` so empty subtitles collapse cleanly without extra vertical margin.
+  - **Instant Dark/Light Theme Switching (`styles.css`, `app.js`, `index.html`)**: Added `.theme-switching` transition suppression during theme changes, added `1px solid transparent` border parity on light-mode cards/badges/tabs/buttons to eliminate 1px layout shifts on toggle, and added pre-paint theme initialization in `index.html` `<head>` to prevent initial load flash.
   - Updated `<title>` badges across `index.html` and `login.html` to `Version 1.5.2`.
 
 ### Version 1.5.1 (Previous Production Release — `v1.5.1`)

@@ -781,9 +781,21 @@ const addPaymentModal = document.getElementById("addPaymentModal");
 // ============================================================================
 // App Initialization - Responsive Web Model
 // ============================================================================
+let themeSwitchRaf1 = null;
+let themeSwitchRaf2 = null;
+
 function applyTheme(theme, persist = false) {
   const normalized = theme === "dark" ? "dark" : "light";
-  document.documentElement.setAttribute("data-theme", normalized);
+  const root = document.documentElement;
+  const isChanging = root.getAttribute("data-theme") !== normalized;
+
+  if (isChanging) {
+    if (themeSwitchRaf1 !== null) cancelAnimationFrame(themeSwitchRaf1);
+    if (themeSwitchRaf2 !== null) cancelAnimationFrame(themeSwitchRaf2);
+    root.classList.add("theme-switching");
+  }
+
+  root.setAttribute("data-theme", normalized);
 
   const toggleEl = document.getElementById("profileDarkModeToggle");
   if (toggleEl) toggleEl.checked = normalized === "dark";
@@ -799,6 +811,18 @@ function applyTheme(theme, persist = false) {
     } catch (_) {
       // Ignore storage errors in restricted contexts
     }
+  }
+
+  if (isChanging) {
+    // Force synchronous style flush with transition:none active, then re-enable transitions after paint
+    void root.offsetHeight;
+    themeSwitchRaf1 = requestAnimationFrame(() => {
+      themeSwitchRaf1 = null;
+      themeSwitchRaf2 = requestAnimationFrame(() => {
+        themeSwitchRaf2 = null;
+        root.classList.remove("theme-switching");
+      });
+    });
   }
 }
 

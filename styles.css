@@ -890,6 +890,7 @@ body {
   gap: 8px;
   background: var(--color-secondary-light);
   padding: 5px;
+  border: 1px solid transparent;
   border-radius: 28px;
   width: fit-content;
   margin-left: auto;
@@ -2123,6 +2124,7 @@ input:checked + .slider:before {
 .confirmation-summary-table {
   width: 100%;
   background: #f8fafc;
+  border: 1px solid transparent;
   border-radius: 16px;
   padding: 16px;
   display: flex;
@@ -2186,6 +2188,7 @@ input:checked + .slider:before {
 .btn-conf-action.tertiary {
   background-color: #f1f5f9;
   color: #475569;
+  border: 1px solid transparent;
 }
 
 .btn-conf-action:hover {
@@ -2324,6 +2327,7 @@ input:checked + .slider:before {
   top: 14px;
   left: 14px;
   background-color: var(--color-white);
+  border: 1px solid transparent;
   border-radius: 8px;
   padding: 5px 9px;
   display: flex;
@@ -3010,7 +3014,7 @@ input:checked + .slider:before {
   right: 20px;
   z-index: 10;
   background: #f1f5f9;
-  border: none;
+  border: 1px solid transparent;
   border-radius: 50%;
   width: 38px;
   height: 38px;
@@ -3054,6 +3058,7 @@ input:checked + .slider:before {
   bottom: 14px;
   left: 14px;
   background: var(--color-white);
+  border: 1px solid transparent;
   color: var(--color-secondary);
   font-weight: 800;
   font-size: 14px;
@@ -3748,6 +3753,14 @@ input:checked + .slider:before {
   color: var(--color-text-muted);
 }
 
+/* Instant Theme Switching — suppresses staggered transitions during theme flip without restarting keyframes */
+:root.theme-switching,
+:root.theme-switching *,
+:root.theme-switching *::before,
+:root.theme-switching *::after {
+  transition: none !important;
+}
+
 :root[data-theme="dark"] {
   color-scheme: dark;
   --color-bg-interface: #121218;
@@ -4120,6 +4133,7 @@ input:checked + .slider:before {
 .empty-state-card {
   width: 100%;
   background: var(--color-white);
+  border: 1px solid transparent;
   padding: 48px 24px;
   border-radius: 28px;
   text-align: center;
